@@ -1,2 +1,2 @@
-# Isolated_no_more
+# Isolated-no-more
 Ranchito
