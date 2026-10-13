@@ -29,7 +29,7 @@ let torso = 0;
 let cabeza = 0;
 
 let entidades = [];
-let robot1 = new Entidad(0, 0, "robot3.png", ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]);
+let robot1 = new Entidad(0, 0, 1, "robot3.png", ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]);
 
 entidades.push(robot1);
 

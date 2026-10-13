@@ -1,3 +1,25 @@
+<?php
+session_start();
+$color_general = $_SESSION["color_general"];
+$saturacion = $_SESSION["saturacion"];
+$tono = $_SESSION["tono"];
+/*if(!isset($color_general) || !isset($saturacion) || !isset($tono)){
+    echo "Error: No se han recibido los valores de color, saturación y tono.";
+    exit;
+}
+else
+{
+    echo "aaaaaaaaaaaaaaaaaa";
+}
+echo $color_general;
+echo $saturacion;
+echo $tono;*/
+
+header("Content-Type: application/javascript");
+
+?>
+
+
 import { Entidad } from "./entidades.js";
 import { calculos } from "./general.js";
 
@@ -7,7 +29,13 @@ let canvas = document.getElementById("juego");
 let ctx = canvas.getContext("2d");
 
 let entidades = [];
-let robot1 = new Entidad(100, 100, "robot1.png", ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]);
+const color_post = <?php echo $color_general; ?>;
+const saturacion_post = <?php echo $saturacion; ?>;
+const tono_post = <?php echo $tono; ?>;
+let color_rgb = calculo.hsvToRgba(color_post, saturacion_post, tono_post);
+/*console.log(color_rgb);
+console.log(`hsv(${color_post},${saturacion_post},${tono_post})`);*/
+let robot1 = new Entidad(100, 100, 1, "robot1.png", [color_rgb]);
 let h = 0;
 
 entidades.push(robot1);
@@ -35,8 +63,8 @@ function ajustarResolucionCanvas(can, contexto) {
     can.width = anchoVisual * dpr;
     can.height = altoVisual * dpr;
     
-    can.style.width = anchoVisual + "px";
-    can.style.height = altoVisual + "px";
+    /*can.style.width = anchoVisual + "px";
+    can.style.height = altoVisual + "px";*/
     
     contexto.scale(dpr, dpr);
     contexto.imageSmoothingEnabled = false; 

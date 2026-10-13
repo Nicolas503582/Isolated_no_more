@@ -15,8 +15,8 @@ export class Entidad{
             this.imagenes = {"torso": "Robot1_torsoR1_post.png", "cabeza": "Robot1_cabezaR1_post.png", "brazo": "Robot1_brazoR1_post.png", "pierna": "Robot1_piernaR1_post.png"};
 
             this.canvasOculto = document.createElement('canvas');
-            this.canvasOculto.width = 0;
-            this.canvasOculto.height = 0;
+            this.canvasOculto.width = 1;
+            this.canvasOculto.height = 1;
             this.ctxOculto = this.canvasOculto.getContext('2d');
 
             this.canvasAux = document.createElement('canvas');
@@ -218,8 +218,8 @@ export class Entidad{
                 this.canvasOculto.height = this.imagen.naturalHeight;
                 this.inicio();
             }
-            this.canvasOculto.width = this.imagen.naturalWidth;
-            this.canvasOculto.height = this.imagen.naturalHeight;
+            /*this.canvasOculto.width = this.imagen.naturalWidth;
+            this.canvasOculto.height = this.imagen.naturalHeight;*/
         }
         cambiarcolores(colores, tonos = [50], saturaciones = [50]){
             for(let i = 0; i < this.imagenes.length; i++){
