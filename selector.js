@@ -120,44 +120,53 @@ cabeza_mas.addEventListener("click", function(){
     if(cabeza >2) cabeza = 0;
     //robot1.cambiarimagen(("robot" + (cabeza +1) + ".png"));
     cabeza_oculto.value = cabeza;
+    robot1.cambiarimagen(misSprites.cabezaR2_post, "cabeza");
 });
 cabeza_men.addEventListener("click", function(){
     cabeza -= 1;
     if(cabeza <0) cabeza = 2;
     cabeza_oculto.value = cabeza;
+    robot1.cambiarimagen(misSprites.cabezaR1_post, "cabeza");
 });
 
 torso_mas.addEventListener("click", function(){
    torso += 1;
    if(torso >2) torso = 0;
    torso_oculto.value = torso;
+   robot1.cambiarimagen(misSprites.torsoR2, "torso");
 });
 torso_men.addEventListener("click", function(){
    torso -= 1;
    if(torso <0) torso = 2;
    torso_oculto.value = torso;
+   robot1.cambiarimagen(misSprites.torsoR1, "torso");
 });
 
 brazo_mas.addEventListener("click", function(){
    brazo += 1;
    if(brazo >2) brazo = 0;
    brazo_oculto.value = brazo;
+   robot1.cambiarimagen([misSprites.brazoR2_der, misSprites.brazoR2_izq], "brazo");
 });
 brazo_men.addEventListener("click", function(){
    brazo -= 1;
    if(brazo <0) brazo = 2;
    brazo_oculto.value = brazo;
+   //[misSprites.cabezaR1_post, [misSprites.brazoR1_der, misSprites.brazoR1_izq], misSprites.torsoR1, [misSprites.piernaR1_der, misSprites.piernaR1_izq]
+   robot1.cambiarimagen([misSprites.brazoR1_der, misSprites.brazoR1_izq], "brazo");
 });
 
 pierna_mas.addEventListener("click", function(){
     pierna += 1;
     if(pierna >2) pierna = 0;
     pierna_oculto.value = pierna;
+    robot1.cambiarimagen([misSprites.piernaR2_der, misSprites.piernaR2_izq], "pierna");
 });
 pierna_men.addEventListener("click", function(){
     pierna -= 1;
     if(pierna <0) pierna = 2;
     pierna_oculto.value = pierna;
+    robot1.cambiarimagen([misSprites.piernaR1_der, misSprites.piernaR1_izq], "pierna");
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -179,7 +188,17 @@ const imagenesRobot = [
     "./Robot1/cabezaR1_post.png",
     "./Robot1/piernaR1_der.png",
     "./Robot1/piernaR1_izq.png",
-    "./Robot1/torsoR1.png"
+    "./Robot1/torsoR1.png",   //
+    "./Robot2/antebrazoR2_der.png",
+    "./Robot2/antebrazoR2_izq.png",
+    "./Robot2/brazoR2_der_suelto.png",
+    "./Robot2/brazoR2_der.png",
+    "./Robot2/brazoR2_izq_suelto.png",
+    "./Robot2/brazoR2_izq.png",
+    "./Robot2/cabezaR2_post.png",
+    "./Robot2/piernaR2_der.png",
+    "./Robot2/piernaR2_izq.png",
+    "./Robot2/torsoR2.png"
 ];
 
 // 2. Función que envuelve la carga de la imagen en una Promesa

@@ -169,7 +169,7 @@ export class Entidad{
         {
             ///////////hay que adaptarlo para solo recolorear una parte
             if(Array.isArray(sprite)){
-                console.log(sprite);
+                //console.log(sprite);
                 sprite.forEach(img => {
                     ctx.drawImage(img, 0, 0);    
                 });
