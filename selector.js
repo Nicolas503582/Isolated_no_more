@@ -6,8 +6,10 @@ const calculo = new calculos();
 
 let canvas = document.getElementById("selector");
 let ctx = canvas.getContext("2d");
+
 canvas.width = 100;
 canvas.height = 100;
+
 let selector = document.getElementById("selector_de_color");
 let selector_value = document.getElementById("selector_de_tono");
 let selector_saturacion = document.getElementById("selector_de_saturacion");
@@ -49,19 +51,22 @@ valorActual = selector.value;
 
 const color_nuevo0 = calculo.hsvToRgba(h, 100, 100);
 robot1.cambiarColor([`rgb(${color_nuevo0.r},${color_nuevo0.g},${color_nuevo0.b})`], v, s);
+
 function loop() {
     ctx.fillStyle = "black";
     ctx.clearRect(0,0, canvas.height, canvas.width);
     ctx.clearRect(0, 0, 1000, 1000);
-    //console.log(s);
     
+    h = valorActual;
+    v = tonoActual;
+    s = saturacionActual;
+
     const color_nuevo = calculo.hsvToRgba(h, 100, 100);
     robot1.cambiarColor([`rgb(${color_nuevo.r},${color_nuevo.g},${color_nuevo.b})`], v, s);
 
 
-    h = valorActual;
-    v = tonoActual;
-    s = saturacionActual;
+    console.log(`rgb(${color_nuevo.r},${color_nuevo.g},${color_nuevo.b})`);
+    console.log(`h: ${h}, s: ${s}, v: ${v}`);
 
     entidades.forEach(entidad => {
         entidad.dibujar(canvas, ctx, 10);
@@ -89,7 +94,9 @@ function ajustarResolucionCanvas(can, contexto) {
 }
 
 
-window.addEventListener("resize", ajustarResolucionCanvas);
+window.addEventListener("resize", function(){
+    ajustarResolucionCanvas(canvas, ctx);
+});
 
 
 ajustarResolucionCanvas(canvas, ctx);
@@ -109,7 +116,7 @@ selector_saturacion.addEventListener("input", function() {
 cabeza_mas.addEventListener("click", function(){
     cabeza += 1;
     if(cabeza >2) cabeza = 0;
-    robot1.guardarimagen(("robot" + (cabeza +1) + ".png"));
+    //robot1.cambiarimagen(("robot" + (cabeza +1) + ".png"));
     cabeza_oculto.value = cabeza;
 });
 cabeza_men.addEventListener("click", function(){
@@ -151,4 +158,83 @@ pierna_men.addEventListener("click", function(){
     pierna_oculto.value = pierna;
 });
 
-loop();
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// 1. Array con las rutas de los archivos de tu carpeta "Robot1"
+const imagenesRobot = [
+    "./Robot1/antebrazoR1_der.png",
+    "./Robot1/antebrazoR1_izq.png",
+    "./Robot1/brazoR1_der_suelto.png",
+    "./Robot1/brazoR1_der.png",
+    "./Robot1/brazoR1_izq_suelto.png",
+    "./Robot1/brazoR1_izq.png",
+    "./Robot1/cabezaR1_post.png",
+    "./Robot1/piernaR1_der.png",
+    "./Robot1/piernaR1_izq.png",
+    "./Robot1/torsoR1.png"
+];
+
+// 2. Función que envuelve la carga de la imagen en una Promesa
+function cargarImagen(url) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        
+        img.onload = () => {
+            console.log(`✅ Cargada con éxito: ${url}`);
+            resolve(img); // Devuelve el objeto Image listo
+        };
+        
+        img.onerror = () => {
+            console.error(`❌ Error al cargar la imagen: ${url}`);
+            reject(new Error(`No se pudo cargar: ${url}`));
+        };
+        
+        img.src = url; // Inicia la carga de la imagen
+    });
+}
+
+// 3. Función asíncrona con el bucle secuencial
+async function inicializarSprites() {
+    const spritesCargados = {};
+
+    console.log("=== Iniciando carga secuencial de imágenes ===");
+
+    // IMPORTANTE: Se usa un bucle 'for...of' porque 'forEach' NO respeta el await
+    for (const url of imagenesRobot) {
+        try {
+            // El bucle se detiene aquí de forma estricta hasta que la promesa se resuelva (resolve)
+            const imgObjeto = await cargarImagen(url);
+            
+            // Extraemos solo el nombre del archivo para usarlo como clave (ej: "torsoR1")
+            const nombreClave = url.split('/').pop().replace('.png', '');
+            
+            // Guardamos el objeto de la imagen cargada
+            spritesCargados[nombreClave] = imgObjeto; 
+            
+        } catch (error) {
+            // Si una imagen falla, el código atrapa el error y continúa con la siguiente
+            console.warn("Saltando imagen debido al error.");
+        }
+    }
+
+    console.log("=== ¡Todas las imágenes han sido cargadas en orden! ===");
+    return spritesCargados;
+}
+
+// 4. Ejecución del proceso
+inicializarSprites().then((misSprites) => {
+    // Aquí dentro ya tienes todas tus imágenes listas para usar en tu Canvas o lógica
+    console.log("Diccionario de sprites listos:", misSprites);
+    
+    
+    robot1.guardarimagenes([misSprites]);
+    loop();
+    
+    // Ejemplo de uso: ctx.drawImage(misSprites.torsoR1, 100, 100);
+});

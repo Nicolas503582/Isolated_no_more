@@ -24,6 +24,7 @@ export class Entidad{
             this.canvasAux.width = 1;
             this.canvasAux.height = 1;
             this.ctxAux = this.canvasAux.getContext('2d');
+            this.imagenes =[];
             this.canvases = [];
             this.ctxs = [];
 
@@ -268,25 +269,11 @@ export class Entidad{
             }
             ctx.putImageData(Dataimage, 0, 0);
         }
-        guardarimagenes(src) {
-            for(let i = 0; i < src.length; i++){
-                if(!this.imagenes[i]) this.imagenes.push(new Image());
-                this.imagenes[i].src = src[i];
-                this.imagenes[i].onload = () => {
-                    this.canvasOculto.width = this.imagenes[i].naturalWidth;
-                    this.canvasOculto.height = this.imagenes[i].naturalHeight;
-                    this.ctxOculto.drawImage(this.imagenes[i], 0, 0);
-                    this.listo = true;
-                    this.inicio();
-                }
-                this.canvases.push(document.createElement('canvas'));
-                this.canvases[i].width = this.imagenes[i].naturalWidth;
-                this.canvases[i].height = this.imagenes[i].naturalHeight;
-                this.ctxs.push(this.canvases[i].getContext('2d'));
-            }
+        guardarimagenes(imagenes) {
+            this.imagenes = imagenes;
         }
-        cambiarimagen(valor, clave){
-            this.imagenes[clave] = ("Robot1/" + valor + "png");
+        cambiarimagen(imagen, clave){
+            this.imagenes[clave] = imagen;
         }
         
         dibujar(can, ct, tamaño){

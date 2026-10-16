@@ -46,11 +46,18 @@ let entidades = [];
 const color_post = <?php echo $color_general; ?>;
 const saturacion_post = <?php echo $saturacion; ?>;
 const tono_post = <?php echo $tono; ?>;
-let color_rgb = calculo.hsvToRgba(color_post, saturacion_post, tono_post);
+
+const v  = tono_post;
+const s  = saturacion_post;
+
+console.log("h: " + color_post + ", s: " + s + ", v: " + v);
+let color_rgb = calculo.hsvToRgba(color_post, 100, 100);
 let robot1 = new Entidad(100, 100, 1, "robot1.png", [color_rgb]);
 let h = 0;
 
 entidades.push(robot1);
+
+robot1.cambiarColor([`rgb(${color_rgb.r}, ${color_rgb.g}, ${color_rgb.b})`], v, s);
 
 function loop() {
     ajustarResolucionCanvas(canvas, ctx);
@@ -58,12 +65,13 @@ function loop() {
     ctx.fillRect(0,0, canvas.width, canvas.height);
 
     const color_nuevo = calculo.hsvToRgba(h, 100, 100);
-    robot1.cambiarColor([`rgb(${color_nuevo.r},${color_nuevo.g},${color_nuevo.b})`]);
+    robot1.cambiarColor([`rgb(${color_rgb.r},${color_rgb.g},${color_rgb.b})`], v, s);
     
     direccion.x = teclas.d - teclas.a  + 0;
     direccion.z = teclas.s - teclas.w   + 0;
     robot1.movimiento.moviendo(direccion);
-    console.log(direccion);
+
+    console.log(`rgb(${color_rgb.r},${color_rgb.g},${color_rgb.b})`);
 
     entidades.forEach(entidad => {
         entidad.dibujar(canvas, ctx, 1);
@@ -106,7 +114,9 @@ window.addEventListener("keyup", (e) => {
     teclas[tecla] = false;
 });
 
-window.addEventListener("resize", ajustarResolucionCanvas);
+window.addEventListener("resize", function(){
+    ajustarResolucionCanvas(canvas, ctx);
+});
 
 
 ajustarResolucionCanvas(canvas, ctx);
