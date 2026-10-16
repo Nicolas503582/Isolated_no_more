@@ -6,14 +6,17 @@ const pincel = new dibujo();
 const calculo = new calculos();
 
 export class Entidad{
-        constructor(x, y, velocidad = 1, imagen = "", colores_iniciales = ["red"], tono = 50, saturacion = 50){
+        constructor(x, y, velocidad = 1, imagen = "", claves = [], imagenes = [] /*{"torso": torso.img ....}*/, colores_iniciales = ["red"], tono = 50, saturacion = 50){
             //this.listo = false;
             this.x = x; //x actual
             this.y = y; //y actual
             this.velocidad = velocidad;
 
             this.imagen = new Image();
-            this.imagenes = {"torso": "Robot1_torsoR1_post.png", "cabeza": "Robot1_cabezaR1_post.png", "brazo": "Robot1_brazoR1_post.png", "pierna": "Robot1_piernaR1_post.png"};
+
+            this.urls = imagen;
+            this.claves = claves;
+            this.imagenes = {};
 
             this.canvasOculto = document.createElement('canvas');
             this.canvasOculto.width = 1;
@@ -24,7 +27,6 @@ export class Entidad{
             this.canvasAux.width = 1;
             this.canvasAux.height = 1;
             this.ctxAux = this.canvasAux.getContext('2d');
-            this.imagenes =[];
             this.canvases = [];
             this.ctxs = [];
 
@@ -36,7 +38,7 @@ export class Entidad{
 
             this.movimiento = new movimiento(this);
 
-            this.guardarimagen(imagen);
+            this.start(this.claves, this.urls);
         }
 
         inicio(){
@@ -44,6 +46,11 @@ export class Entidad{
             this.cambiarColor(this.colores, this.tono, this.saturacion);
             //console.log(pincel.aNormal(this.ctxOculto, this.canvasOculto));
         }
+        start(){
+            this.guardarimagenes(this.claves, this.imagenes);
+            this.cambiarcolores(this.colores_iniciales, this.tono, this.saturacion);
+        }
+
         cambiarColor(color, tono = 50, saturacion = 50){
             this.ctxOculto.drawImage(this.imagen, 0, 0);
             let Dataimage = pincel.aNormal(this.ctxOculto, this.canvasOculto);
@@ -104,69 +111,13 @@ export class Entidad{
                     colores_viejos.push([Data[i], Data[i + 1], Data[i + 2]]);
                     colores_viejos_hsv.push(hsv_Data);
                 }
-            }/*
-            console.log("menor_s:" + menor_s);
-            console.log("mayor_s:" + mayor_s);
-            console.log("menor_v:" + menor_v);
-            console.log("mayor_v:" + mayor_v);*/
+            }
             
 
             const nuevo_tono = tono-50;
             const nueva_saturacion = saturacion-50;
             let aux_tono = 0;
             let aux_s = 0;
-            /*if(nuevo_tono > 0)
-            {
-                //console.log("mayor_v: " + mayor_v + " tono nuevo: " + nuevo_tono);
-                aux_tono = mayor_v + nuevo_tono;
-                if(aux_tono >95)
-                {
-                    aux_tono = 95 - mayor_v;
-                }
-                else
-                {
-                    aux_tono = nuevo_tono;
-                }
-            }
-            else
-            {
-                //console.log("menor_v: " + menor_v + " tono nuevo: " + nuevo_tono);
-                aux_tono = menor_v + nuevo_tono;
-                if(aux_tono <5)
-                {
-                    aux_tono = menor_v;
-                }
-                else
-                {
-                    aux_tono = nuevo_tono;
-                }
-            }
-            if(nueva_saturacion > 0)
-            {
-                //console.log("mayor_s: " + mayor_s + " saturacion nuevo: " + nueva_saturacion);
-                aux_s = mayor_s + nueva_saturacion;
-                if(aux_s >95)
-                {
-                    aux_s = 95 - mayor_s;
-                }
-                else
-                {
-                    aux_s = nueva_saturacion;
-                }
-            }
-            else
-            {
-               //console.log("menor_s: " + menor_s + " saturacion nuevo: " + nueva_saturacion);
-                aux_s = menor_s + nueva_saturacion;
-                if(aux_s <5)
-                {
-                    aux_s = menor_s;
-                }
-                else
-                {
-                    aux_s = nueva_saturacion;
-                }
-            }*/
             
             for(let i = 0; i < Data.length; i += 4){
                 const hsv_Data = calculo.rgbaToHsv(Data[i], Data[i + 1], Data[i + 2]);
@@ -174,15 +125,6 @@ export class Entidad{
                 //if(hsv_Data.v > 95 || hsv_Data.v < 5) continue;
                 for(let j = 0; j< colores_viejos.length && j < colores_nuevos.length; j++)
                 {
-                    //const diferencia_h = hsv_Data.h - colores_viejos_hsv[j].h;
-                    /*const diferencia_s = hsv_Data.s - colores_viejos_hsv[j].s;
-                    const diferencia_v = hsv_Data.v - colores_viejos_hsv[j].v;*/
-                    /*console.log("menor s: " + menor_s);
-                    console.log("menor v: " + menor_v);
-                    console.log("mayor v: " + mayor_v);
-                    console.log("mayor s: " + mayor_s);*/
-                    /*if(Math.abs(diferencia_h)<= 20)
-                    {*/
                         hsv_Data.h = colores_nuevos_hsv[0].h/*+ diferencia_h*/;
                         if(hsv_Data.h < 0) hsv_Data.h += 360;
                         if(hsv_Data.h > 360) hsv_Data.h -= 360;
@@ -205,7 +147,6 @@ export class Entidad{
                         Data[i + 3] = Data[i + 3];
                         aux = true;
                         break;
-                    //}
                 }
             }
             this.tono_viejo = aux_tono;
@@ -213,28 +154,29 @@ export class Entidad{
             //console.log(Dataimage);
             this.ctxOculto.putImageData(Dataimage, 0, 0);
         }
-        guardarimagen(src) {
-            this.imagen.src = src;
-            this.imagen.onload = () => {
-                this.ctxOculto.drawImage(this.imagen, 0, 0);
-                this.listo = true;
-                this.canvasOculto.width = this.imagen.naturalWidth;
-                this.canvasOculto.height = this.imagen.naturalHeight;
-                this.inicio();
-            }
-            /*this.canvasOculto.width = this.imagen.naturalWidth;
-            this.canvasOculto.height = this.imagen.naturalHeight;*/
-        }
-        cambiarcolores(colores, tonos = [50], saturaciones = [50]){
-            for(let i = 0; i < this.imagenes.length; i++){
-                recolor(this.imagenes[i], this.canvases[i], this.ctxs[i], colores[i], tonos[i], saturaciones[i]);
-                this.ctxOculto.drawImage(this.canvases[i], 0, 0);
-            }
+        cambiarcolores(colores = ["red"], tonos = [50], saturaciones = [50]){
+            Object.entries(this.imagenes).forEach(([clave, imagen], i)=>{
+                if(!colores[i]) colores[i] = colores[0];
+                if(!tonos[i]) tonos[i] = tonos[0];
+                if(!saturaciones[i]) saturaciones[i] = saturaciones[0];
+                this.recolor(imagen, this.canvases[i], this.ctxs[i], colores[i], tonos[i], saturaciones[i]);
+                //this.ctxOculto.drawImage(this.canvases[i], 0, 0);
+                //this.ctxOculto.fillStyle = "red";
+                //this.ctxOculto.fillRect(0,0,100,100);
+            });
         }
         recolor(sprite, canvas, ctx, color, tono, saturacion)
         {
             ///////////hay que adaptarlo para solo recolorear una parte
-            ctx.drawImage(sprite, 0, 0);
+            if(Array.isArray(sprite)){
+                console.log(sprite);
+                sprite.forEach(img => {
+                    ctx.drawImage(img, 0, 0);    
+                });
+            }
+            else{
+                ctx.drawImage(sprite, 0, 0);
+            }
             let Dataimage = pincel.aNormal(ctx, canvas);
             let Data = Dataimage.data;
 
@@ -249,7 +191,6 @@ export class Entidad{
             for(let i = 0; i < Data.length; i += 4){
                 const hsv_Data = calculo.rgbaToHsv(Data[i], Data[i + 1], Data[i + 2]);
                 //let aux = false;
-                if(hsv_Data.v > 95 || hsv_Data.v < 5) continue;
                 hsv_Data.h = color_hsv.h;
                 if(hsv_Data.h < 0) hsv_Data.h += 360;
                 if(hsv_Data.h > 360) hsv_Data.h -= 360;
@@ -268,18 +209,44 @@ export class Entidad{
                 Data[i + 3] = Data[i + 3];
             }
             ctx.putImageData(Dataimage, 0, 0);
+            //this.ctxOculto.putImageData(Dataimage, 0, 0);
+            this.ctxOculto.drawImage(canvas, 0, 0);
+           //console.log(this.canvasOculto);
         }
-        guardarimagenes(imagenes) {
-            this.imagenes = imagenes;
+        guardarimagen(clave, imagen, i) {
+            this.imagenes[clave] = imagen;
+            let img_aux = imagen;
+            if(Array.isArray(imagen)) img_aux = imagen[0];
+
+            this.canvases[i] = document.createElement('canvas');
+            this.canvases[i].width = img_aux.naturalWidth || img_aux.width;
+            this.canvases[i].height = img_aux.naturalHeight || img_aux.height;
+            this.ctxs[i] = this.canvases[i].getContext('2d');
+            this.canvasOculto.width = img_aux.naturalWidth || img_aux.width;
+            this.canvasOculto.height = img_aux.naturalHeight || img_aux.height;
+        }
+        guardarimagenes(claves, imgs) {
+            claves.forEach((clave, i) => {
+                if (imgs[i])
+                {
+                    this.guardarimagen(clave, imgs[i], i);
+                    /*this.imagenes[clave] = imgs[i];
+                    this.canvases[i] = document.createElement('canvas');
+                    this.canvases[i].width = imgs[i].naturalWidth || imgs[i].width;
+                    this.canvases[i].height = imgs[i].naturalHeight || imgs[i].height;
+                    this.ctxs[i] = this.canvases[i].getContext('2d');
+                    //this.ctxOculto.drawImage(imgs[i], 0, 0);
+                   //console.log(this.ctxOculto);
+                    this.canvasOculto.width = imgs[i].naturalWidth || imgs[i].width;
+                    this.canvasOculto.height = imgs[i].naturalHeight || imgs[i].height;*/
+                }
+            });
         }
         cambiarimagen(imagen, clave){
             this.imagenes[clave] = imagen;
         }
         
         dibujar(can, ct, tamaño){
-            //const normal = pincel.aNormal(this.ctxOculto, this.canvasOculto);
-            if(!this.listo) return;
-            pincel.dibujarData(this.canvasOculto/*normal*/, can, ct, tamaño, this.x, this.y);
-            //ct.drawImage(this.canvasOculto, this.x, this.y);
+            pincel.dibujarData(this.canvasOculto, can, ct, tamaño, this.x, this.y);
         }
     }

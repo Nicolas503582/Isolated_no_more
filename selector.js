@@ -36,7 +36,7 @@ let torso = 0;
 let cabeza = 0;
 
 let entidades = [];
-let robot1 = new Entidad(0, 0, 1, "robot3.png", ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]);
+let robot1 = new Entidad(0, 0, 1, "", ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]);
 
 entidades.push(robot1);
 
@@ -53,20 +53,22 @@ const color_nuevo0 = calculo.hsvToRgba(h, 100, 100);
 robot1.cambiarColor([`rgb(${color_nuevo0.r},${color_nuevo0.g},${color_nuevo0.b})`], v, s);
 
 function loop() {
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "white";
     ctx.clearRect(0,0, canvas.height, canvas.width);
     ctx.clearRect(0, 0, 1000, 1000);
+    ctx.fillRect(0, 0, 1000, 1000);
     
     h = valorActual;
     v = tonoActual;
     s = saturacionActual;
 
     const color_nuevo = calculo.hsvToRgba(h, 100, 100);
-    robot1.cambiarColor([`rgb(${color_nuevo.r},${color_nuevo.g},${color_nuevo.b})`], v, s);
+    robot1.cambiarcolores([`rgb(${color_nuevo.r},${color_nuevo.g},${color_nuevo.b})`], [v], [s]);
 
-
+    /*console.log(robot1);
+    
     console.log(`rgb(${color_nuevo.r},${color_nuevo.g},${color_nuevo.b})`);
-    console.log(`h: ${h}, s: ${s}, v: ${v}`);
+    console.log(`h: ${h}, s: ${s}, v: ${v}`);*/
 
     entidades.forEach(entidad => {
         entidad.dibujar(canvas, ctx, 10);
@@ -232,8 +234,13 @@ inicializarSprites().then((misSprites) => {
     // Aquí dentro ya tienes todas tus imágenes listas para usar en tu Canvas o lógica
     console.log("Diccionario de sprites listos:", misSprites);
     
-    
-    robot1.guardarimagenes([misSprites]);
+    robot1.guardarimagenes(["cabeza", "torso", "brazo", "pierna"], [misSprites.cabezaR1_post, [misSprites.brazoR1_der, misSprites.brazoR1_izq], misSprites.torsoR1, [misSprites.piernaR1_der, misSprites.piernaR1_izq]]);
+
+    ctx.drawImage(misSprites.cabezaR1_post, 0, 0);
+    ctx.drawImage(misSprites.brazoR1_der_suelto, 0, 0);
+    ctx.drawImage(misSprites.brazoR1_izq_suelto, 0, 0);
+    ctx.drawImage(misSprites.torsoR1, 0, 0);
+    ctx.drawImage(misSprites.cabezaR1_post, 0, 0);
     loop();
     
     // Ejemplo de uso: ctx.drawImage(misSprites.torsoR1, 100, 100);
