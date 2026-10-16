@@ -49,7 +49,7 @@ function loop() {
     robot1.cambiarColor([`rgb(${color_nuevo.r},${color_nuevo.g},${color_nuevo.b})`]);
     
     direccion.x = teclas.d - teclas.a  + 0;
-    direccion.z = dddddddddddddteclas.s - teclas.w   + 0;
+    direccion.z = teclas.s - teclas.w   + 0;
     robot1.movimiento.moviendo(direccion);
     console.log(direccion);
 
