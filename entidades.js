@@ -1,5 +1,6 @@
 import { dibujo } from './funciones_dibujo.js';
 import { calculos } from './general.js';
+import { movimiento } from './movimiento.js';
 
 const pincel = new dibujo();
 const calculo = new calculos();
@@ -31,6 +32,8 @@ export class Entidad{
             this.tono = tono;
             this.saturacion_viejo = 0;
             this.saturacion = saturacion;
+
+            this.movimiento = new movimiento(this);
 
             this.guardarimagen(imagen);
         }

@@ -53,8 +53,6 @@ export class calculos{
         };
     }
     hsvToRgba(h, s, v, a = 255) {
-        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        console.log(`hsv(${h},${s},${v})`);
         // Normalizamos S y V
         s /= 100;
         v /= 100;

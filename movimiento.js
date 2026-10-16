@@ -6,7 +6,13 @@ export class movimiento {
         //direccion {x=0, z=0};
     }
 
-    mover(direccion, salto = false) {
+    moviendo(direccion, salto = false)
+    {
+        this.mover(direccion, salto);
+        this.movicion();
+    }
+
+    mover(direccion, salto) {
         this.caminar(direccion);
         if (salto) {
             this.saltar();
@@ -16,8 +22,8 @@ export class movimiento {
     }
     movicion() {
         this.entidad.x += this.movimiento.x;
-        this.entidad.y += this.movimiento.y;
-        this.entidad.z += this.movimiento.z;
+        this.entidad.y += this.movimiento.z;
+        this.entidad.z += this.movimiento.y;
     }
 
     caminar(direccion) {    //x, z
