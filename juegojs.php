@@ -3,6 +3,17 @@ session_start();
 $color_general = $_SESSION["color_general"];
 $saturacion = $_SESSION["saturacion"];
 $tono = $_SESSION["tono"];
+
+
+$color_cabeza = $_SESSION["color_cabeza"];
+$color_torso = $_SESSION["color_torso"];
+$color_brazo = $_SESSION["color_brazo"];
+$color_pierna = $_SESSION["color_pierna"];
+
+$cabeza = $_SESSION["id_cabeza"];
+$torso = $_SESSION["id_torso"];
+$brazo = $_SESSION["id_brazo"];
+$pierna = $_SESSION["id_pierna"];
 /*if(!isset($color_general) || !isset($saturacion) || !isset($tono)){
     echo "Error: No se han recibido los valores de color, saturación y tono.";
     exit;
@@ -42,8 +53,9 @@ let h = 0;
 entidades.push(robot1);
 
 function loop() {
+    ajustarResolucionCanvas(canvas, ctx);
     ctx.fillStyle = "white";
-    ctx.fillRect(0,0, canvas.height, canvas.width);
+    ctx.fillRect(0,0, canvas.width, canvas.height);
 
     const color_nuevo = calculo.hsvToRgba(h, 100, 100);
     robot1.cambiarColor([`rgb(${color_nuevo.r},${color_nuevo.g},${color_nuevo.b})`]);
@@ -69,8 +81,8 @@ function ajustarResolucionCanvas(can, contexto) {
     can.width = anchoVisual * dpr;
     can.height = altoVisual * dpr;
     
-    /*can.style.width = anchoVisual + "px";
-    can.style.height = altoVisual + "px";*/
+    can.style.width = anchoVisual + "px";
+    can.style.height = altoVisual + "px";
     
     contexto.scale(dpr, dpr);
     contexto.imageSmoothingEnabled = false; 

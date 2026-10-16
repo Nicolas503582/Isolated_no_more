@@ -6,15 +6,15 @@ $_SESSION["saturacion"] = $_POST["saturacion"];
 $_SESSION["tono"] = $_POST["tono"];
 
 
-$color_cabeza = $_POST["color_cabeza"] ?? 0;
-$color_torso = $_POST["color_torso"] ?? 0;
-$color_brazo = $_POST["color_brazo"] ?? 0;
-$color_pierna = $_POST["color_pierna"] ?? 0;
+$_SESSION["color_cabeza"] = $_POST["color_cabeza"] ?? 0;
+$_SESSION["color_torso"] = $_POST["color_torso"] ?? 0;
+$_SESSION["color_brazo"] = $_POST["color_brazo"] ?? 0;
+$_SESSION["color_pierna"] = $_POST["color_pierna"] ?? 0;
 
-$id_cabeza = $_POST["id_cabeza"] ?? 0;
-$id_torso =  $_POST["id_torso"] ?? 0;
-$id_brazo =  $_POST["id_brazo"] ?? 0;
-$id_pierna = $_POST["id_pierna"] ?? 0;
+$_SESSION["id_cabeza"] = $_POST["cabeza"] ?? 0;
+$_SESSION["id_torso"] = $_POST["torso"] ?? 0;
+$_SESSION["id_brazo"] = $_POST["brazo"] ?? 0;
+$_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
 ?>
 
 <!DOCTYPE html>

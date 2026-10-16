@@ -15,6 +15,11 @@ let tonoActual = 25;
 let valorActual = 50;
 let saturacionActual = 50;
 
+let cabeza_oculto = document.getElementById("cabeza");
+let torso_oculto = document.getElementById("torso");
+let brazo_oculto = document.getElementById("brazo");
+let pierna_oculto = document.getElementById("pierna");
+
 const cabeza_mas = document.getElementById("cabeza_+");
 const cabeza_men = document.getElementById("cabeza_-");
 const torso_mas = document.getElementById("torso_+");
@@ -105,37 +110,45 @@ cabeza_mas.addEventListener("click", function(){
     cabeza += 1;
     if(cabeza >2) cabeza = 0;
     robot1.guardarimagen(("robot" + (cabeza +1) + ".png"));
+    cabeza_oculto.value = cabeza;
 });
 cabeza_men.addEventListener("click", function(){
     cabeza -= 1;
     if(cabeza <0) cabeza = 2;
+    cabeza_oculto.value = cabeza;
 });
 
 torso_mas.addEventListener("click", function(){
    torso += 1;
    if(torso >2) torso = 0;
+   torso_oculto.value = torso;
 });
 torso_men.addEventListener("click", function(){
    torso -= 1;
    if(torso <0) torso = 2;
+   torso_oculto.value = torso;
 });
 
 brazo_mas.addEventListener("click", function(){
    brazo += 1;
    if(brazo >2) brazo = 0;
+   brazo_oculto.value = brazo;
 });
 brazo_men.addEventListener("click", function(){
    brazo -= 1;
    if(brazo <0) brazo = 2;
+   brazo_oculto.value = brazo;
 });
 
 pierna_mas.addEventListener("click", function(){
     pierna += 1;
     if(pierna >2) pierna = 0;
+    pierna_oculto.value = pierna;
 });
 pierna_men.addEventListener("click", function(){
     pierna -= 1;
     if(pierna <0) pierna = 2;
+    pierna_oculto.value = pierna;
 });
 
 loop();
