@@ -35,6 +35,8 @@ let pierna = 0;
 let torso = 0;
 let cabeza = 0;
 
+const imagenes = {};
+
 let entidades = [];
 let robot1 = new Entidad(0, 0, 1, "", ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]);
 
@@ -260,6 +262,8 @@ inicializarSprites().then((misSprites) => {
     ctx.drawImage(misSprites.brazoR1_izq_suelto, 0, 0);
     ctx.drawImage(misSprites.torsoR1, 0, 0);
     ctx.drawImage(misSprites.cabezaR1_post, 0, 0);
+
+    imagenes = misSprites;
     loop();
     
     // Ejemplo de uso: ctx.drawImage(misSprites.torsoR1, 100, 100);
