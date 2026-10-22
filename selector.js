@@ -30,6 +30,8 @@ const brazo_mas = document.getElementById("brazo_+");
 const brazo_men = document.getElementById("brazo_-");
 const pierna_mas = document.getElementById("pierna_+");
 const pierna_men = document.getElementById("pierna_-");
+
+let selector_cabeza = document.getElementById("selector_de_color_cabeza");
 let brazo = 0;
 let pierna = 0;
 let torso = 0;
@@ -156,9 +158,13 @@ brazo_mas.addEventListener("click", function(){
     if(brazo >2) brazo = 0;
     brazo_oculto.value = brazo;
     const imagen_brazo = "brazoR" + (brazo + 1);
-    const imagen_brazo_der = imagen_brazo + "_der"
-    const imagen_brazo_izq = imagen_brazo + "_izq"
+    const imagen_brazo_der = imagen_brazo + "_der";
+    const imagen_brazo_izq = imagen_brazo + "_izq";
+    
+    const imagen_antebrazo_der = "ante" + imagen_brazo + "_der";
+    const imagen_antebrazo_izq = "ante" + imagen_brazo + "_izq";
     robot1.cambiarimagen([imagenes[imagen_brazo_der], imagenes[imagen_brazo_izq]], "brazo");
+    robot1.cambiarimagen([imagenes[imagen_antebrazo_der], imagenes[imagen_antebrazo_izq]], "antebrazo");
 });
 brazo_men.addEventListener("click", function(){
     brazo -= 1;
@@ -292,12 +298,13 @@ inicializarSprites().then((misSprites) => {
     
     // Configuración automática de Robot1
     robot1.guardarimagenes(
-        ["cabeza", "brazo", "pierna", "torso"], 
+        ["cabeza", "brazo", "pierna", "torso", "antebrazo"], 
         [
             misSprites.cabezaR1_post, 
             [misSprites.brazoR1_der, misSprites.brazoR1_izq], 
             [misSprites.piernaR1_der, misSprites.piernaR1_izq], 
-            misSprites.torsoR1
+            misSprites.torsoR1,
+            [misSprites.antebrazoR1_der, misSprites.antebrazoR1_izq]
         ]
     );
 
