@@ -35,7 +35,7 @@ let pierna = 0;
 let torso = 0;
 let cabeza = 0;
 
-const imagenes = {};
+let imagenes = {};
 
 let entidades = [];
 let robot1 = new Entidad(0, 0, 1, "", ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]);
@@ -57,6 +57,7 @@ robot1.cambiarColor([`rgb(${color_nuevo0.r},${color_nuevo0.g},${color_nuevo0.b})
 function loop() {
     ctx.fillStyle = "white";
     ctx.clearRect(0,0, canvas.height, canvas.width);
+    ctx.fillRect(0,0,canvas.height, canvas.width);
     ctx.clearRect(0, 0, 1000, 1000);
     ctx.fillRect(0, 0, 1000, 1000);
     
@@ -75,6 +76,8 @@ function loop() {
     entidades.forEach(entidad => {
         entidad.dibujar(canvas, ctx, 10);
     });
+    
+    //ctx.fillRect(0,0,100,100000);
     
     requestAnimationFrame(loop);
 }
@@ -120,55 +123,70 @@ selector_saturacion.addEventListener("input", function() {
 cabeza_mas.addEventListener("click", function(){
     cabeza += 1;
     if(cabeza >2) cabeza = 0;
-    //robot1.cambiarimagen(("robot" + (cabeza +1) + ".png"));
     cabeza_oculto.value = cabeza;
-    robot1.cambiarimagen(misSprites.cabezaR2_post, "cabeza");
+    const imagen_cabeza = "cabezaR" + (cabeza + 1) + "_post";
+    robot1.cambiarimagen(imagenes[imagen_cabeza], "cabeza");
 });
 cabeza_men.addEventListener("click", function(){
     cabeza -= 1;
     if(cabeza <0) cabeza = 2;
     cabeza_oculto.value = cabeza;
-    robot1.cambiarimagen(misSprites.cabezaR1_post, "cabeza");
+    robot1.cambiarimagen(imagenes.cabezaR1_post, "cabeza");
+    const imagen_cabeza = "cabezaR" + (cabeza + 1) + "_post";
+    robot1.cambiarimagen(imagenes[imagen_cabeza], "cabeza");
 });
 
 torso_mas.addEventListener("click", function(){
-   torso += 1;
-   if(torso >2) torso = 0;
-   torso_oculto.value = torso;
-   robot1.cambiarimagen(misSprites.torsoR2, "torso");
+    torso += 1;
+    if(torso >2) torso = 0;
+    torso_oculto.value = torso;
+    const imagen_torso = "torsoR" + (torso + 1);
+    robot1.cambiarimagen(imagenes[imagen_torso], "torso");
 });
 torso_men.addEventListener("click", function(){
-   torso -= 1;
-   if(torso <0) torso = 2;
-   torso_oculto.value = torso;
-   robot1.cambiarimagen(misSprites.torsoR1, "torso");
+    torso -= 1;
+    if(torso <0) torso = 2;
+    torso_oculto.value = torso;
+    const imagen_torso = "torsoR" + (torso + 1);
+    robot1.cambiarimagen(imagenes[imagen_torso], "torso");
 });
 
 brazo_mas.addEventListener("click", function(){
-   brazo += 1;
-   if(brazo >2) brazo = 0;
-   brazo_oculto.value = brazo;
-   robot1.cambiarimagen([misSprites.brazoR2_der, misSprites.brazoR2_izq], "brazo");
+    brazo += 1;
+    if(brazo >2) brazo = 0;
+    brazo_oculto.value = brazo;
+    const imagen_brazo = "brazoR" + (brazo + 1);
+    const imagen_brazo_der = imagen_brazo + "_der"
+    const imagen_brazo_izq = imagen_brazo + "_izq"
+    robot1.cambiarimagen([imagenes[imagen_brazo_der], imagenes[imagen_brazo_izq]], "brazo");
 });
 brazo_men.addEventListener("click", function(){
-   brazo -= 1;
-   if(brazo <0) brazo = 2;
-   brazo_oculto.value = brazo;
-   //[misSprites.cabezaR1_post, [misSprites.brazoR1_der, misSprites.brazoR1_izq], misSprites.torsoR1, [misSprites.piernaR1_der, misSprites.piernaR1_izq]
-   robot1.cambiarimagen([misSprites.brazoR1_der, misSprites.brazoR1_izq], "brazo");
+    brazo -= 1;
+    if(brazo <0) brazo = 2;
+    brazo_oculto.value = brazo;
+    const imagen_brazo = "brazoR" + (brazo + 1);
+    const imagen_brazo_der = imagen_brazo + "_der"
+    const imagen_brazo_izq = imagen_brazo + "_izq"
+    robot1.cambiarimagen([imagenes[imagen_brazo_der], imagenes[imagen_brazo_izq]], "brazo");
 });
 
 pierna_mas.addEventListener("click", function(){
     pierna += 1;
     if(pierna >2) pierna = 0;
     pierna_oculto.value = pierna;
-    robot1.cambiarimagen([misSprites.piernaR2_der, misSprites.piernaR2_izq], "pierna");
+    const imagen_brazo = "piernaR" + (pierna + 1);
+    const imagen_brazo_der = imagen_brazo + "_der"
+    const imagen_brazo_izq = imagen_brazo + "_izq"
+    robot1.cambiarimagen([imagenes[imagen_brazo_der], imagenes[imagen_brazo_izq]], "pierna");
 });
 pierna_men.addEventListener("click", function(){
     pierna -= 1;
     if(pierna <0) pierna = 2;
     pierna_oculto.value = pierna;
-    robot1.cambiarimagen([misSprites.piernaR1_der, misSprites.piernaR1_izq], "pierna");
+    const imagen_brazo = "piernaR" + (pierna + 1);
+    const imagen_brazo_der = imagen_brazo + "_der"
+    const imagen_brazo_izq = imagen_brazo + "_izq"
+    robot1.cambiarimagen([imagenes[imagen_brazo_der], imagenes[imagen_brazo_izq]], "pierna");
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -179,38 +197,51 @@ pierna_men.addEventListener("click", function(){
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-// 1. Array con las rutas de los archivos de tu carpeta "Robot1"
-const imagenesRobot = [
-    "./Robot1/antebrazoR1_der.png",
-    "./Robot1/antebrazoR1_izq.png",
-    "./Robot1/brazoR1_der_suelto.png",
-    "./Robot1/brazoR1_der.png",
-    "./Robot1/brazoR1_izq_suelto.png",
-    "./Robot1/brazoR1_izq.png",
-    "./Robot1/cabezaR1_post.png",
-    "./Robot1/piernaR1_der.png",
-    "./Robot1/piernaR1_izq.png",
-    "./Robot1/torsoR1.png",   //
-    "./Robot2/antebrazoR2_der.png",
-    "./Robot2/antebrazoR2_izq.png",
-    "./Robot2/brazoR2_der_suelto.png",
-    "./Robot2/brazoR2_der.png",
-    "./Robot2/brazoR2_izq_suelto.png",
-    "./Robot2/brazoR2_izq.png",
-    "./Robot2/cabezaR2_post.png",
-    "./Robot2/piernaR2_der.png",
-    "./Robot2/piernaR2_izq.png",
-    "./Robot2/torsoR2.png"
+// ============================================================================
+// 1. GENERACIÓN DINÁMICA DEL ARRAY CON LAS RUTAS DE LOS 3 ROBOTS
+// ============================================================================
+const nombresBaseImagenes = [
+    "antebrazo_der",
+    "antebrazo_izq",
+    "brazo_der_suelto",
+    "brazo_der",
+    "brazo_izq_suelto",
+    "brazo_izq",
+    "cabeza_post",
+    "pierna_der",
+    "pierna_izq",
+    "torso"
 ];
 
-// 2. Función que envuelve la carga de la imagen en una Promesa
+const imagenesRobot = [];
+
+// Recorremos las carpetas de los 3 robots (Robot1, Robot2, Robot3)
+for (let i = 1; i <= 3; i++) {
+    for (const nombre of nombresBaseImagenes) {
+        let nombreConId;
+        
+        // Regla especial para inyectar "R1", "R2" o "R3" en la posición correcta
+        if (nombre.includes('_')) {
+            nombreConId = nombre.replace('_', `R${i}_`);
+        } else {
+            nombreConId = `${nombre}R${i}`; // Caso para 'torso' -> 'torsoR1'
+        }
+        
+        imagenesRobot.push(`./Robot${i}/${nombreConId}.png`);
+    }
+}
+
+
+// ============================================================================
+// 2. FUNCIÓN PARA CARGAR UNA IMAGEN MEDIANTE PROMESA
+// ============================================================================
 function cargarImagen(url) {
     return new Promise((resolve, reject) => {
         const img = new Image();
         
         img.onload = () => {
             console.log(`✅ Cargada con éxito: ${url}`);
-            resolve(img); // Devuelve el objeto Image listo
+            resolve(img); 
         };
         
         img.onerror = () => {
@@ -218,53 +249,65 @@ function cargarImagen(url) {
             reject(new Error(`No se pudo cargar: ${url}`));
         };
         
-        img.src = url; // Inicia la carga de la imagen
+        img.src = url; 
     });
 }
 
-// 3. Función asíncrona con el bucle secuencial
+
+// ============================================================================
+// 3. FUNCIÓN ASÍNCRONA PARA CARGAR TODOS LOS SPRITES EN SECUENCIA
+// ============================================================================
 async function inicializarSprites() {
     const spritesCargados = {};
 
     console.log("=== Iniciando carga secuencial de imágenes ===");
 
-    // IMPORTANTE: Se usa un bucle 'for...of' porque 'forEach' NO respeta el await
     for (const url of imagenesRobot) {
         try {
-            // El bucle se detiene aquí de forma estricta hasta que la promesa se resuelva (resolve)
             const imgObjeto = await cargarImagen(url);
             
-            // Extraemos solo el nombre del archivo para usarlo como clave (ej: "torsoR1")
+            // Extrae el nombre final del archivo sin extensión (ej: "torsoR1")
             const nombreClave = url.split('/').pop().replace('.png', '');
             
-            // Guardamos el objeto de la imagen cargada
+            // Almacena el elemento de imagen en el objeto de sprites
             spritesCargados[nombreClave] = imgObjeto; 
             
         } catch (error) {
-            // Si una imagen falla, el código atrapa el error y continúa con la siguiente
             console.warn("Saltando imagen debido al error.");
         }
     }
 
-    console.log("=== ¡Todas las imágenes han sido cargadas en orden! ===");
+    console.log("=== ¡Todas las imágenes de los 3 robots han sido cargadas! ===");
     return spritesCargados;
 }
 
-// 4. Ejecución del proceso
-inicializarSprites().then((misSprites) => {
-    // Aquí dentro ya tienes todas tus imágenes listas para usar en tu Canvas o lógica
-    console.log("Diccionario de sprites listos:", misSprites);
-    
-    robot1.guardarimagenes(["cabeza", "torso", "brazo", "pierna"], [misSprites.cabezaR1_post, [misSprites.brazoR1_der, misSprites.brazoR1_izq], misSprites.torsoR1, [misSprites.piernaR1_der, misSprites.piernaR1_izq]]);
 
+// ============================================================================
+// 4. EJECUCIÓN DEL PROCESO Y ASIGNACIÓN DE LOS ELEMENTOS
+// ============================================================================
+inicializarSprites().then((misSprites) => {
+    // 'misSprites' ahora contiene los archivos de Robot1, Robot2 y Robot3 estructurados así:
+    // misSprites.torsoR1, misSprites.torsoR2, misSprites.torsoR3, etc.
+    console.log("Diccionario completo de sprites listos:", misSprites);
+    
+    // Configuración automática de Robot1
+    robot1.guardarimagenes(
+        ["cabeza", "brazo", "pierna", "torso"], 
+        [
+            misSprites.cabezaR1_post, 
+            [misSprites.brazoR1_der, misSprites.brazoR1_izq], 
+            [misSprites.piernaR1_der, misSprites.piernaR1_izq], 
+            misSprites.torsoR1
+        ]
+    );
+
+    // Renderizado de prueba inicial en tu Canvas (Ejemplo usando Robot 1)
     ctx.drawImage(misSprites.cabezaR1_post, 0, 0);
     ctx.drawImage(misSprites.brazoR1_der_suelto, 0, 0);
     ctx.drawImage(misSprites.brazoR1_izq_suelto, 0, 0);
     ctx.drawImage(misSprites.torsoR1, 0, 0);
-    ctx.drawImage(misSprites.cabezaR1_post, 0, 0);
 
+    // Guardar referencia en tu variable global e iniciar el bucle principal (loop)
     imagenes = misSprites;
     loop();
-    
-    // Ejemplo de uso: ctx.drawImage(misSprites.torsoR1, 100, 100);
 });

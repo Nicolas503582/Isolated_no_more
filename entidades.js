@@ -155,6 +155,7 @@ export class Entidad{
             this.ctxOculto.putImageData(Dataimage, 0, 0);
         }
         cambiarcolores(colores = ["red"], tonos = [50], saturaciones = [50]){
+            this.ctxOculto.clearRect(0,0,this.canvasOculto.width, this.canvasOculto.height)
             Object.entries(this.imagenes).forEach(([clave, imagen], i)=>{
                 if(!colores[i]) colores[i] = colores[0];
                 if(!tonos[i]) tonos[i] = tonos[0];
@@ -167,7 +168,9 @@ export class Entidad{
         }
         recolor(sprite, canvas, ctx, color, tono, saturacion)
         {
-            ///////////hay que adaptarlo para solo recolorear una parte
+            ///////////hay que adaptarlo para solo recolorear una part
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             if(Array.isArray(sprite)){
                 //console.log(sprite);
                 sprite.forEach(img => {
