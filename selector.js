@@ -32,10 +32,18 @@ const pierna_mas = document.getElementById("pierna_+");
 const pierna_men = document.getElementById("pierna_-");
 
 let selector_cabeza = document.getElementById("selector_de_color_cabeza");
+let selector_torso = document.getElementById("selector_de_color_torso");
+let selector_brazo = document.getElementById("selector_de_color_brazo");
+let selector_pierna = document.getElementById("selector_de_color_pierna");
+
 let brazo = 0;
 let pierna = 0;
 let torso = 0;
 let cabeza = 0;
+let color_cabeza = 0;
+let color_torso = 0;
+let color_brazo = 0;
+let color_pierna = 0;
 
 let imagenes = {};
 
@@ -119,6 +127,19 @@ selector_value.addEventListener("input", function() {
 });
 selector_saturacion.addEventListener("input", function() {
     saturacionActual = selector_saturacion.value;
+});
+
+selector_cabeza.addEventListener("input", function() {
+    color_cabeza = selector_cabeza.value;
+});
+selector_torso.addEventListener("input", function() {
+    color_torso = selector_torso.value;
+});
+selector_brazo.addEventListener("input", function() {
+    color_brazo = selector_brazo.value;
+});
+selector_pierna.addEventListener("input", function() {
+    color_pierna = selector_pierna.value;
 });
 
 
