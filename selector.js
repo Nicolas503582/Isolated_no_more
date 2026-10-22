@@ -40,10 +40,15 @@ let brazo = 0;
 let pierna = 0;
 let torso = 0;
 let cabeza = 0;
+
 let color_cabeza = 0;
 let color_torso = 0;
 let color_brazo = 0;
 let color_pierna = 0;
+let color_cabeza_rgb = calculo.hsvToRgba(color_cabeza, 100, 100);
+let color_torso_rgb = calculo.hsvToRgba(color_torso, 100, 100);;
+let color_brazo_rgb = calculo.hsvToRgba(color_brazo, 100, 100);;
+let color_pierna_rgb = calculo.hsvToRgba(color_pierna, 100, 100);;
 
 let imagenes = {};
 
@@ -76,7 +81,7 @@ function loop() {
     s = saturacionActual;
 
     const color_nuevo = calculo.hsvToRgba(h, 100, 100);
-    robot1.cambiarcolores([`rgb(${color_nuevo.r},${color_nuevo.g},${color_nuevo.b})`], [v], [s]);
+    robot1.cambiarcolores([`rgb(${color_nuevo.r},${color_nuevo.g},${color_nuevo.b})`, `rgb(${color_cabeza_rgb.r},${color_cabeza_rgb.g},${color_cabeza_rgb.b})`, `rgb(${color_brazo_rgb.r},${color_brazo_rgb.g},${color_brazo_rgb.b})`, `rgb(${color_pierna_rgb.r},${color_pierna_rgb.g},${color_pierna_rgb.b})`, `rgb(${color_torso_rgb.r},${color_torso_rgb.g},${color_torso_rgb.b})`, `rgb(${color_brazo_rgb.r},${color_brazo_rgb.g},${color_brazo_rgb.b})`], [v], [s]);
 
     /*console.log(robot1);
     
@@ -131,15 +136,19 @@ selector_saturacion.addEventListener("input", function() {
 
 selector_cabeza.addEventListener("input", function() {
     color_cabeza = selector_cabeza.value;
+    color_cabeza_rgb = calculo.hsvToRgba(color_cabeza, 100, 100);
 });
 selector_torso.addEventListener("input", function() {
     color_torso = selector_torso.value;
+    color_torso_rgb = calculo.hsvToRgba(color_torso, 100, 100);
 });
 selector_brazo.addEventListener("input", function() {
     color_brazo = selector_brazo.value;
+    color_brazo_rgb = calculo.hsvToRgba(color_brazo, 100, 100);
 });
 selector_pierna.addEventListener("input", function() {
     color_pierna = selector_pierna.value;
+    color_pierna_rgb = calculo.hsvToRgba(color_pierna, 100, 100);
 });
 
 

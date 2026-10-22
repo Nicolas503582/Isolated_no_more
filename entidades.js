@@ -157,10 +157,10 @@ export class Entidad{
         cambiarcolores(colores = ["red"], tonos = [50], saturaciones = [50]){
             this.ctxOculto.clearRect(0,0,this.canvasOculto.width, this.canvasOculto.height)
             Object.entries(this.imagenes).forEach(([clave, imagen], i)=>{
-                if(!colores[i]) colores[i] = colores[0];
+                if(!colores[i+1]) colores[i+1] = colores[0];
                 if(!tonos[i]) tonos[i] = tonos[0];
                 if(!saturaciones[i]) saturaciones[i] = saturaciones[0];
-                this.recolor(imagen, this.canvases[i], this.ctxs[i], colores[i], tonos[i], saturaciones[i]);
+                this.recolor(imagen, this.canvases[i], this.ctxs[i], colores[i+1], tonos[i], saturaciones[i]);
                 //this.ctxOculto.drawImage(this.canvases[i], 0, 0);
                 //this.ctxOculto.fillStyle = "red";
                 //this.ctxOculto.fillRect(0,0,100,100);
