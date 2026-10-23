@@ -36,6 +36,11 @@ let selector_torso = document.getElementById("selector_de_color_torso");
 let selector_brazo = document.getElementById("selector_de_color_brazo");
 let selector_pierna = document.getElementById("selector_de_color_pierna");
 
+let bloqueo_cabeza = document.getElementById("cabeza_bloqueada");
+let bloqueo_torso = document.getElementById("torso_bloqueada");
+let bloqueo_brazos = document.getElementById("brazos_bloqueada");
+let bloqueo_piernas = document.getElementById("piernas_bloqueada");
+
 let brazo = 0;
 let pierna = 0;
 let torso = 0;
@@ -81,6 +86,12 @@ function loop() {
     s = saturacionActual;
 
     const color_nuevo = calculo.hsvToRgba(h, 100, 100);
+    
+    color_cabeza_rgb = calculo.hsvToRgba(color_cabeza, 100, 100);
+    color_torso_rgb = calculo.hsvToRgba(color_torso, 100, 100);
+    color_brazo_rgb = calculo.hsvToRgba(color_brazo, 100, 100);
+    color_pierna_rgb = calculo.hsvToRgba(color_pierna, 100, 100);
+
     robot1.cambiarcolores([`rgb(${color_nuevo.r},${color_nuevo.g},${color_nuevo.b})`, `rgb(${color_cabeza_rgb.r},${color_cabeza_rgb.g},${color_cabeza_rgb.b})`, `rgb(${color_brazo_rgb.r},${color_brazo_rgb.g},${color_brazo_rgb.b})`, `rgb(${color_pierna_rgb.r},${color_pierna_rgb.g},${color_pierna_rgb.b})`, `rgb(${color_torso_rgb.r},${color_torso_rgb.g},${color_torso_rgb.b})`, `rgb(${color_brazo_rgb.r},${color_brazo_rgb.g},${color_brazo_rgb.b})`], [v], [s]);
 
     /*console.log(robot1);
@@ -126,6 +137,26 @@ ajustarResolucionCanvas(canvas, ctx);
 
 selector.addEventListener("input", function() {
     valorActual = selector.value;
+    if(bloqueo_cabeza.value == "true")
+    {
+        color_cabeza = valorActual;
+        selector_cabeza.value = valorActual;
+    }
+    if(bloqueo_torso.value == "true")
+    {
+        color_torso = valorActual;
+        selector_torso.value = valorActual;
+    }
+    if(bloqueo_brazos.value == "true")
+    {
+        color_brazo = valorActual;
+        selector_brazo.value = valorActual;
+    }
+    if(bloqueo_piernas.value == "true")
+    {
+        color_pierna = valorActual;
+        selector_pierna.value = valorActual;
+    }
 });
 selector_value.addEventListener("input", function() {
     tonoActual = selector_value.value;
