@@ -232,9 +232,13 @@ brazo_men.addEventListener("click", function(){
     if(brazo <0) brazo = 2;
     brazo_oculto.value = brazo;
     const imagen_brazo = "brazoR" + (brazo + 1);
-    const imagen_brazo_der = imagen_brazo + "_der"
-    const imagen_brazo_izq = imagen_brazo + "_izq"
+    const imagen_brazo_der = imagen_brazo + "_der";
+    const imagen_brazo_izq = imagen_brazo + "_izq";
+    
+    const imagen_antebrazo_der = "ante" + imagen_brazo + "_der";
+    const imagen_antebrazo_izq = "ante" + imagen_brazo + "_izq";
     robot1.cambiarimagen([imagenes[imagen_brazo_der], imagenes[imagen_brazo_izq]], "brazo");
+    robot1.cambiarimagen([imagenes[imagen_antebrazo_der], imagenes[imagen_antebrazo_izq]], "antebrazo");
 });
 
 pierna_mas.addEventListener("click", function(){
