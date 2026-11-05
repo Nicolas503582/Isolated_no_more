@@ -363,7 +363,7 @@ inicializarSprites().then((misSprites) => {
     
     // Configuración automática de Robot1
     robot1.guardarimagenes(
-        ["cabeza", "brazo", "pierna", "torso", "antebrazo"], 
+        ["cabeza", "brazo", "torso", "pierna", "antebrazo"], 
         [
             misSprites.cabezaR1_post, 
             [misSprites.brazoR1_der, misSprites.brazoR1_izq], 

@@ -57,18 +57,41 @@ let brazo_rgb = calculo.hsvToRgba(brazo_color, 100, 100);
 let torso_rgb = calculo.hsvToRgba(torso_color, 100, 100);
 let pierna_rgb = calculo.hsvToRgba(pierna_color, 100, 100);
 
+let aux_entidad = 0;
 
 const v  = tono_post;
 const s  = saturacion_post;
 
 console.log("h: " + color_post + ", s: " + s + ", v: " + v);
 let color_rgb = calculo.hsvToRgba(color_post, 100, 100);
-let robot1 = new Entidad(100, 100, 1, "robot1.png", [color_rgb]);
+let robot1 = new Entidad(100, 100, 0, 1, "robot1.png", [color_rgb]);
 let h = 0;
 
 entidades.push(robot1);
 
 function loop() {
+    if(aux_entidad >= 30)
+    {
+        if(entidades.length <2)
+        {
+            entidades.push(new Entidad(100, 150, 0, 1, "robot1.png", [color_rgb]));
+            entidades[(entidades.length - 1)].guardarimagenes(["cabeza", "brazo", "torso", "pierna", "antebrazo"], 
+            [
+                imagenes.cabezaR1_post, 
+                [imagenes.brazoR1_der, imagenes.brazoR1_izq], 
+                [imagenes.piernaR1_der, imagenes.piernaR1_izq], 
+                imagenes.torsoR1,
+                [imagenes.antebrazoR1_der, imagenes.antebrazoR1_izq]
+            ]);
+            entidades[(entidades.length - 1)].cambiarcolores();
+        }
+
+        aux_entidad = 0;
+    }
+    else
+    {
+        aux_entidad++;
+    }
     ajustarResolucionCanvas(canvas, ctx);
     ctx.fillStyle = "white";
     ctx.fillRect(0,0, canvas.width, canvas.height);
@@ -84,6 +107,7 @@ function loop() {
         entidad.dibujar(canvas, ctx, 1);
     });
     
+    console.log(entidades);
     requestAnimationFrame(loop);
 }
 
@@ -229,8 +253,8 @@ inicializarSprites().then((misSprites) => {
         [
             misSprites[nom_cabeza], 
             [misSprites[nom_brazo.izq], misSprites[nom_brazo.der]],
-            misSprites[nom_torso],
             [misSprites[nom_pierna.der], misSprites[nom_pierna.izq]], 
+            misSprites[nom_torso],
             [misSprites[nom_antebrazo.izq], misSprites[nom_antebrazo.der]]
         ]
     );
