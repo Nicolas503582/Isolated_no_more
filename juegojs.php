@@ -72,7 +72,7 @@ entidades.push(robot1);
 function loop() {
     if(aux_entidad >= 30)
     {
-        if(entidades.length <2)
+        if(entidades.length < 2)
         {
             entidades.push(new Entidad(100, 150, 0, 1, "robot1.png", [color_rgb]));
             entidades[(entidades.length - 1)].guardarimagenes(["cabeza", "brazo", "torso", "pierna", "antebrazo"], 
