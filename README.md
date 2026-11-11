@@ -6,7 +6,7 @@ Ranchito
  En desarrollo.
 
 ## Contenido
-- [x] Personalización
+- [ ] Personalización
 - [x] Movimiento
 - [ ] Colisiones
 - [ ] Inventarío

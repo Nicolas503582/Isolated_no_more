@@ -14,60 +14,81 @@
         <form action="juego.php" method="post">
             <div class="partes_cuerpo">
                 <div id="barras">
-                    <input type="range" min="0" max="360" value="0"   id = "selector_de_color" name="color_general">
-                    <input type="range" min="0" max="100" value="50" id = "selector_de_saturacion" name="saturacion">
-                    <input type="range" min="0" max="100" value="50" id = "selector_de_tono" name="tono">
+                    <div class="peru">
+                        <p>Tono</p>
+                        <input type="range" min="0" max="360" value="0"   id = "selector_de_color" name="color_general">
+                    </div>
+                    <div class="peru">
+                        <p>Saturacion</p>
+                        <input type="range" min="0" max="100" value="50" id = "selector_de_saturacion" name="saturacion">
+                    </div>
+                    <div class="peru">
+                        <p>Brillo</p>
+                        <input type="range" min="0" max="100" value="50" id = "selector_de_tono" name="tono">
+                    </div>
                 </div>
 
-                <input type="hidden" name = "cabeza" id="cabeza" value="0">
-                <div class="parte_cuerpo">
-                    <p>cabeza</p>
-                    <button id="cabeza_-" type="button" >
-                        ←
-                    </button>
-                    <button id="cabeza_+" type="button" >
-                        →
-                    </button>
-                    <input type="range" min="0" max="360" value="0"   id = "selector_de_color_cabeza" name="color_cabeza">
-                </div>
+                <button type ="button" id="avanzado">Avanzado</button>
 
-                
-                <input type="hidden" name = "torso" id="torso" value="0">
-                <div class="parte_cuerpo" name="id_torso">
-                    <p>torso</p>
-                    <button id="torso_-" type="button" >
-                        ←
-                    </button>
-                    <button id="torso_+" type="button" >
-                        →
-                    </button>
-                    <input type="range" min="0" max="360" value="0"   id = "selector_de_color_torso" name="color_torso">
-                </div>
+                <div id = "jorge">
+                    <input type="hidden" name = "cabeza" id="cabeza" value="0">
+                    <div class="parte_cuerpo">
+                        <p>cabeza</p>
+                        <button id="cabeza_-" type="button" >
+                            ←
+                        </button>
+                        <button id="cabeza_+" type="button" >
+                            →
+                        </button>
+                        <input type="range" min="0" max="360" value="0"   id = "selector_de_color_cabeza" name="color_cabeza">
+                        <button type="button" class="candadito" id="can_cabeza"> candado.png</button>
+                        <input type="hidden" id="cabeza_bloqueada" value="true">
+                    </div>
 
-                
-                <input type="hidden" name = "brazo" id="brazo" value="0">
-                <div class="parte_cuerpo" name="id_brazo">
-                    <p>brazo</p>
-                    <button id="brazo_-" type="button" >
-                        ←
-                    </button>
-                    <button id="brazo_+" type="button" >
-                        →
-                    </button>
-                    <input type="range" min="0" max="360" value="0"   id = "selector_de_color_brazo" name="color_brazo">
-                </div>
+                    
+                    <input type="hidden" name = "torso" id="torso" value="0">
+                    <div class="parte_cuerpo" name="id_torso">
+                        <p>torso</p>
+                        <button id="torso_-" type="button" >
+                            ←
+                        </button>
+                        <button id="torso_+" type="button" >
+                            →
+                        </button>
+                        <input type="range" min="0" max="360" value="0"   id = "selector_de_color_torso" name="color_torso">
+                        <button type="button" class="candadito" id="can_torso"> candado.png</button>
+                        <input type="hidden" id="torso_bloqueada" value="true">
+                    </div>
 
-                
-                <input type="hidden" name = "pierna" id="pierna" value="0">
-                <div class="parte_cuerpo" name="id_pierna">
-                    <p>pierna</p>
-                    <button id="pierna_-" type="button" >
-                        ←
-                    </button>
-                    <button id="pierna_+" type="button" >
-                        →
-                    </button>
-                    <input type="range" min="0" max="360" value="0"   id = "selector_de_color_pierna" name="color_pierna">
+                    
+                    <input type="hidden" name = "brazo" id="brazo" value="0">
+                    <div class="parte_cuerpo" name="id_brazo">
+                        <p>brazo</p>
+                        <button id="brazo_-" type="button" >
+                            ←
+                        </button>
+                        <button id="brazo_+" type="button" >
+                            →
+                        </button>
+                        <input type="range" min="0" max="360" value="0"   id = "selector_de_color_brazo" name="color_brazo">
+                        <button type="button" class="candadito" id="can_brazos"> candado.png</button>
+                        <input type="hidden" id="brazos_bloqueada" value="true">
+                    </div>
+
+                    
+                    <input type="hidden" name = "pierna" id="pierna" value="0">
+                    <div class="parte_cuerpo" name="id_pierna">
+                        <p>pierna</p>
+                        <button id="pierna_-" type="button" >
+                            ←
+                        </button>
+                        <button id="pierna_+" type="button" >
+                            →
+                        </button>
+                        <input type="range" min="0" max="360" value="0"   id = "selector_de_color_pierna" name="color_pierna">
+                        <button type="button" class="candadito" id="can_piernas"> candado.png</button>
+                        <input type="hidden" id="piernas_bloqueada" value="true">
+                    </div>
                 </div>
             </div>
             <button type="submit">
@@ -80,6 +101,24 @@
         import { calculos } from "./general.js";
         const calculo = new calculos();
         const rango = [0, 15, 30, 45, 60, 75, 90, 100];
+
+        let candado_cabeza = document.getElementById("can_cabeza");
+        let bloqueo_cabeza = document.getElementById("cabeza_bloqueada");
+        let candado_torso = document.getElementById("can_torso");
+        let bloqueo_torso = document.getElementById("torso_bloqueada");
+        let candado_brazos = document.getElementById("can_brazos");
+        let bloqueo_brazos = document.getElementById("brazos_bloqueada");
+        let candado_piernas = document.getElementById("can_piernas");
+        let bloqueo_piernas = document.getElementById("piernas_bloqueada");
+
+        let selector_cabeza = document.getElementById("selector_de_color_cabeza");
+        let selector_torso = document.getElementById("selector_de_color_torso");
+        let selector_brazos = document.getElementById("selector_de_color_brazo");
+        let selector_piernas = document.getElementById("selector_de_color_pierna");
+
+        let boton = document.getElementById("avanzado");
+        let oculto = document.getElementById("jorge");
+
         let color = document.getElementById("selector_de_color");
         let tono = document.getElementById("selector_de_tono");
         let saturacion = document.getElementById("selector_de_saturacion");
@@ -115,7 +154,6 @@
             estilo_tono = estilo_tono + ")";
             saturacion.style.background = estilo_tono;
         });
-
         tono.addEventListener("input", function(){
             brillo_Actual = tono.value;
             let estilo_tono = "linear-gradient(to right";
@@ -132,6 +170,22 @@
             saturacion.style.background = estilo_tono;
         });
     
+        boton.addEventListener("click", function(){
+           oculto.classList.toggle("oculto");
+        });
+    
+        candado_cabeza.addEventListener("click", function(){
+            bloqueo_cabeza.value = !selector_cabeza.classList.toggle("bloqueado");
+        });
+        candado_torso.addEventListener("click", function(){
+            bloqueo_torso.value = !selector_torso.classList.toggle("bloqueado");
+        });
+        candado_brazos.addEventListener("click", function(){
+            bloqueo_brazos.value = !selector_brazos.classList.toggle("bloqueado");
+        });
+        candado_piernas.addEventListener("click", function(){
+            bloqueo_piernas.value = !selector_piernas.classList.toggle("bloqueado");
+        });
     </script>
 
     <script type="module" src ="selector.js"></script>

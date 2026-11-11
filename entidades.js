@@ -6,7 +6,7 @@ const pincel = new dibujo();
 const calculo = new calculos();
 
 export class Entidad{
-        constructor(x, y, velocidad = 1, imagen = "", claves = [], imagenes = [] /*{"torso": torso.img ....}*/, colores_iniciales = ["red"], tono = 50, saturacion = 50){
+        constructor(x, y, z = 0, velocidad = 1, imagen = "", claves = [], imagenes = [], colores_iniciales = ["red"], tono = 50, saturacion = 50){
             //this.listo = false;
             this.x = x; //x actual
             this.y = y; //y actual
