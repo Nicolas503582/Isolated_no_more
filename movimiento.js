@@ -6,10 +6,13 @@ export class movimiento {
         //direccion {x=0, z=0};
     }
 
-    moviendo(direccion, salto = false)
+    moviendo(direccion, espacio_x, espacio_y, id, salto = false)
     {
         this.mover(direccion, salto);
-        this.movicion();
+        if(this.comprobar(espacio_x, espacio_y, id))
+        {
+            this.movicion();
+        }
     }
 
     mover(direccion, salto) {
@@ -44,5 +47,32 @@ export class movimiento {
     }
     gravedad() {
         this.movimiento.y -= 1;
+    }
+
+    comprobar(x, y, id)
+    {
+        let toca_x = false;
+        let toca_y = false;
+        for(let i = this.entidad.x + this.entidad.hitbox.x + this.movimiento.x; i < this.entidad.x + this.entidad.hitbox.x + this.entidad.hitbox.ancho + this.movimiento.x; i++)
+        {
+            x[i].forEach(espacio => {
+                if(espacio != id)
+                {
+                    toca_x = true;
+                }
+            });
+        }
+        for(let i = this.entidad.y + this.entidad.hitbox.y + this.movimiento.z; i < this.entidad.y + this.entidad.hitbox.y + this.entidad.hitbox.alto + this.movimiento.z; i++)
+        {
+            y[i].forEach(espacio => {
+                if(espacio != id)
+                {
+                    toca_y = true;
+                }
+            });
+        }
+        const toca = toca_x == true && toca_y == true;
+        console.log(toca, toca_x, toca_y);
+        return !toca;
     }
 }

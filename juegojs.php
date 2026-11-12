@@ -65,7 +65,7 @@ const s  = saturacion_post;
 console.log("h: " + color_post + ", s: " + s + ", v: " + v);
 let color_rgb = calculo.hsvToRgba(color_post, 100, 100);
 //x, y, z, velocidad, imagen, clavesn, imagenesn, colores_iniciales, hitbox, tono = 50, saturacion = 50
-let robot1 = new Entidad(100, 100, {x: 5, y: 2, alto: 60, ancho: 25}, 2);
+let robot1 = new Entidad(100, 100, {x: 8, y: 50, alto: 12, ancho: 19}, 2);
 console.log(robot1);
 for(let i = robot1.x+robot1.hitbox.x; i< robot1.x+robot1.hitbox.x+robot1.hitbox.ancho; i++)
 {
@@ -85,7 +85,7 @@ function loop() {
     {
         if(entidades.length < 2)
         {
-            entidades.push(new Entidad(100, 150, {x: 5, y: 2, alto: 60, ancho: 25}, 1));
+            entidades.push(new Entidad(100, 150, {x: 8, y: 50, alto: 12, ancho: 19}, 1));
 
             const aux_esp = entidades.length - 1;
             for(let i = entidades[aux_esp].x+entidades[aux_esp].hitbox.x; i< entidades[aux_esp].x+entidades[aux_esp].hitbox.x+entidades[aux_esp].hitbox.ancho; i++)
@@ -117,10 +117,12 @@ function loop() {
     ajustarResolucionCanvas(canvas, ctx);
     ctx.fillStyle = "white";
     ctx.fillRect(0,0, canvas.width, canvas.height);
+
+    console.log("5485");
     
     direccion.x = teclas.d - teclas.a  + 0;
     direccion.z = teclas.s - teclas.w  + 0;
-    robot1.movimiento.moviendo(direccion);
+    robot1.movimiento.moviendo(direccion, espacio_x, espacio_y, 0);
     //movimiento
     /*console.log("y: " + espacio_y);
     console.log("x: " + espacio_x);*/

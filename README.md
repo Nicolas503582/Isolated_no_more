@@ -6,9 +6,9 @@ Ranchito
  En desarrollo.
 
 ## Contenido
-- [ ] Personalización
+- [x] Personalización
 - [x] Movimiento
-- [ ] Colisiones
+- [x] Colisiones
 - [ ] Inventarío
 - [ ] Partidas
 - [ ] Animales
