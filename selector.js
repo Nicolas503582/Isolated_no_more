@@ -58,7 +58,7 @@ let color_pierna_rgb = calculo.hsvToRgba(color_pierna, 100, 100);;
 let imagenes = {};
 
 let entidades = [];
-let robot1 = new Entidad(0, 0, 1, "", ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]);
+let robot1 = new Entidad(0, 0/*, 1, "", ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]*/);
 
 entidades.push(robot1);
 
@@ -363,7 +363,7 @@ inicializarSprites().then((misSprites) => {
     
     // Configuración automática de Robot1
     robot1.guardarimagenes(
-        ["cabeza", "brazo", "torso", "pierna", "antebrazo"], 
+        ["cabeza", "brazo", "pierna", "torso", "antebrazo"], 
         [
             misSprites.cabezaR1_post, 
             [misSprites.brazoR1_der, misSprites.brazoR1_izq], 

@@ -64,7 +64,18 @@ const s  = saturacion_post;
 
 console.log("h: " + color_post + ", s: " + s + ", v: " + v);
 let color_rgb = calculo.hsvToRgba(color_post, 100, 100);
-let robot1 = new Entidad(100, 100, 0, 1, "robot1.png", [color_rgb]);
+//x, y, z, velocidad, imagen, clavesn, imagenesn, colores_iniciales, hitbox, tono = 50, saturacion = 50
+let robot1 = new Entidad(100, 100, {x: 5, y: 2, alto: 60, ancho: 25}, 2);
+console.log(robot1);
+for(let i = robot1.x+robot1.hitbox.x; i< robot1.x+robot1.hitbox.x+robot1.hitbox.ancho; i++)
+{
+    espacio_x[i] = [0]; 
+}
+for(let i = robot1.y+robot1.hitbox.y; i< robot1.y+robot1.hitbox.y+robot1.hitbox.alto; i++)
+{
+    espacio_y[i] = [0]; 
+}
+
 let h = 0;
 
 entidades.push(robot1);
@@ -74,8 +85,19 @@ function loop() {
     {
         if(entidades.length < 2)
         {
-            entidades.push(new Entidad(100, 150, 0, 1, "robot1.png", [color_rgb]));
-            entidades[(entidades.length - 1)].guardarimagenes(["cabeza", "brazo", "torso", "pierna", "antebrazo"], 
+            entidades.push(new Entidad(100, 150, {x: 5, y: 2, alto: 60, ancho: 25}, 1));
+
+            const aux_esp = entidades.length - 1;
+            for(let i = entidades[aux_esp].x+entidades[aux_esp].hitbox.x; i< entidades[aux_esp].x+entidades[aux_esp].hitbox.x+entidades[aux_esp].hitbox.ancho; i++)
+            {
+                espacio_x[i] = [aux_esp]; 
+            }
+            for(let i = entidades[aux_esp].y+entidades[aux_esp].hitbox.y; i< entidades[aux_esp].y+entidades[aux_esp].hitbox.y+entidades[aux_esp].hitbox.alto; i++)
+            {
+                espacio_y[i] = [aux_esp]; 
+            }
+
+            entidades[(entidades.length - 1)].guardarimagenes(["cabeza", "brazo", "pierna", "torso", "antebrazo"], 
             [
                 imagenes.cabezaR1_post, 
                 [imagenes.brazoR1_der, imagenes.brazoR1_izq], 
@@ -100,14 +122,14 @@ function loop() {
     direccion.z = teclas.s - teclas.w  + 0;
     robot1.movimiento.moviendo(direccion);
     //movimiento
-    console.log("y: " + espacio_y);
-    console.log("x: " + espacio_x);
+    /*console.log("y: " + espacio_y);
+    console.log("x: " + espacio_x);*/
 
     entidades.forEach(entidad => {
         entidad.dibujar(canvas, ctx, 1);
     });
     
-    console.log(entidades);
+    //console.log(entidades);
     requestAnimationFrame(loop);
 }
 
@@ -132,13 +154,18 @@ window.addEventListener('wheel', (e) => {
     while(h < 0 || h > 360)
     {
         if(h > 360) h -=360;
-        if(h<0) h += 360;
+        if(h < 0) h += 360;
     }
 });
 
 window.addEventListener("keydown", (e) => {
     const tecla = e.key.toLowerCase();
-    teclas[tecla] = true;
+    if(tecla in teclas){
+        /*Object.keys(teclas).forEach(clave =>{
+            teclas[clave] = false;
+        });*/
+        teclas[tecla] = true;
+    }
 });
 window.addEventListener("keyup", (e) => {
     const tecla = e.key.toLowerCase();
@@ -249,7 +276,7 @@ inicializarSprites().then((misSprites) => {
     const nom_antebrazo = {izq: "ante" + nom_brazo.izq, der: "ante" + nom_brazo.der};
     const nom_torso = "torsoR" + torso;
     robot1.guardarimagenes(
-        ["cabeza", "brazo", "torso", "pierna", "antebrazo"], 
+        ["cabeza", "brazo", "pierna", "torso", "antebrazo"], 
         [
             misSprites[nom_cabeza], 
             [misSprites[nom_brazo.izq], misSprites[nom_brazo.der]],
