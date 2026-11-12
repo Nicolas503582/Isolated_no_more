@@ -27,7 +27,36 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
 </head>
 <body>
     <div id = "Inventario">
-        <p>aaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+        <div id = "Inventario_contenido">
+            <div id = "Imagenes_inventario">
+                <div id="Equipamiento" class = "equipacion">
+
+                </div>
+
+                <div id="Hamster" class = "equipacion">
+
+                </div>
+            </div>
+            
+            <div id = "Inv_objetos">
+                <div id = "Insumos" class = "objetos">
+
+                </div>
+
+                <div id = "Herramientas" class = "objetos">
+                    
+                </div>
+                
+                <div id = "Materiales" class = "objetos">
+                    
+                </div>
+                
+                <div id = "Rapido" class = "objetos">
+                    
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <canvas id = "juego">
