@@ -27,14 +27,17 @@ const calculo = new calculos();
 
 let canvas = document.getElementById("juego");
 let ctx = canvas.getContext("2d");
+let inventario = document.getElementById("Inventario");
+let inv_activo = false;
 
-let teclas = {a: false, d: false, s: false, w: false};
+let teclas = {a: false, d: false, s: false, w: false, e: false};
 let direccion = {x : 0, y: 0, z: 0};
 let espacio_x = [];
 let espacio_y = [];
 let imagenes = {};
 
 let entidades = [];
+let entidades_dibujables = [];
 let color_post = <?php echo $color_general; ?>;
 let saturacion_post = <?php echo $saturacion; ?>;
 let tono_post = <?php echo $tono; ?>;
@@ -64,7 +67,6 @@ const s  = saturacion_post;
 
 console.log("h: " + color_post + ", s: " + s + ", v: " + v);
 let color_rgb = calculo.hsvToRgba(color_post, 100, 100);
-//x, y, z, velocidad, imagen, clavesn, imagenesn, colores_iniciales, hitbox, tono = 50, saturacion = 50
 let robot1 = new Entidad(100, 100, {x: 8, y: 50, alto: 12, ancho: 19}, 2);
 console.log(robot1);
 for(let i = robot1.x+robot1.hitbox.x; i< robot1.x+robot1.hitbox.x+robot1.hitbox.ancho; i++)
@@ -79,59 +81,63 @@ for(let i = robot1.y+robot1.hitbox.y; i< robot1.y+robot1.hitbox.y+robot1.hitbox.
 let h = 0;
 
 entidades.push(robot1);
+entidades_dibujables.push(robot1);
 
 function loop() {
-    if(aux_entidad >= 30)
+    if(!inv_activo)
     {
-        if(entidades.length < 2)
+        if(aux_entidad >= 30)
         {
-            entidades.push(new Entidad(100, 150, {x: 8, y: 50, alto: 12, ancho: 19}, 1));
-
-            const aux_esp = entidades.length - 1;
-            for(let i = entidades[aux_esp].x+entidades[aux_esp].hitbox.x; i< entidades[aux_esp].x+entidades[aux_esp].hitbox.x+entidades[aux_esp].hitbox.ancho; i++)
+            if(entidades.length < 2)
             {
-                espacio_x[i] = [aux_esp]; 
-            }
-            for(let i = entidades[aux_esp].y+entidades[aux_esp].hitbox.y; i< entidades[aux_esp].y+entidades[aux_esp].hitbox.y+entidades[aux_esp].hitbox.alto; i++)
-            {
-                espacio_y[i] = [aux_esp]; 
+                entidades.push(new Entidad(100, 150, {x: 8, y: 50, alto: 12, ancho: 19}, 1));
+
+                const aux_esp = entidades.length - 1;
+                for(let i = entidades[aux_esp].x+entidades[aux_esp].hitbox.x; i< entidades[aux_esp].x+entidades[aux_esp].hitbox.x+entidades[aux_esp].hitbox.ancho; i++)
+                {
+                    espacio_x[i] = [aux_esp]; 
+                }
+                for(let i = entidades[aux_esp].y+entidades[aux_esp].hitbox.y; i< entidades[aux_esp].y+entidades[aux_esp].hitbox.y+entidades[aux_esp].hitbox.alto; i++)
+                {
+                    espacio_y[i] = [aux_esp]; 
+                }
+
+                entidades[(entidades.length - 1)].guardarimagenes(["cabeza", "brazo", "pierna", "torso", "antebrazo"], 
+                [
+                    imagenes.cabezaR1_post, 
+                    [imagenes.brazoR1_der, imagenes.brazoR1_izq], 
+                    [imagenes.piernaR1_der, imagenes.piernaR1_izq], 
+                    imagenes.torsoR1,
+                    [imagenes.antebrazoR1_der, imagenes.antebrazoR1_izq]
+                ]);
+                entidades[(entidades.length - 1)].cambiarcolores();
             }
 
-            entidades[(entidades.length - 1)].guardarimagenes(["cabeza", "brazo", "pierna", "torso", "antebrazo"], 
-            [
-                imagenes.cabezaR1_post, 
-                [imagenes.brazoR1_der, imagenes.brazoR1_izq], 
-                [imagenes.piernaR1_der, imagenes.piernaR1_izq], 
-                imagenes.torsoR1,
-                [imagenes.antebrazoR1_der, imagenes.antebrazoR1_izq]
-            ]);
-            entidades[(entidades.length - 1)].cambiarcolores();
+            aux_entidad = 0;
         }
+        else
+        {
+            aux_entidad++;
+        }
+        ajustarResolucionCanvas(canvas, ctx);
+        ctx.fillStyle = "white";
+        ctx.fillRect(0,0, canvas.width, canvas.height);
 
-        aux_entidad = 0;
+        console.log("5485");
+        
+        direccion.x = teclas.d - teclas.a  + 0;
+        direccion.z = teclas.s - teclas.w  + 0;
+        robot1.movimiento.moviendo(direccion, espacio_x, espacio_y, 0);
+        //movimiento
+        /*console.log("y: " + espacio_y);
+        console.log("x: " + espacio_x);*/
+
+        entidades.forEach(entidad => {
+            entidad.dibujar(canvas, ctx, 1);
+        });
+        
+        //console.log(entidades);
     }
-    else
-    {
-        aux_entidad++;
-    }
-    ajustarResolucionCanvas(canvas, ctx);
-    ctx.fillStyle = "white";
-    ctx.fillRect(0,0, canvas.width, canvas.height);
-
-    console.log("5485");
-    
-    direccion.x = teclas.d - teclas.a  + 0;
-    direccion.z = teclas.s - teclas.w  + 0;
-    robot1.movimiento.moviendo(direccion, espacio_x, espacio_y, 0);
-    //movimiento
-    /*console.log("y: " + espacio_y);
-    console.log("x: " + espacio_x);*/
-
-    entidades.forEach(entidad => {
-        entidad.dibujar(canvas, ctx, 1);
-    });
-    
-    //console.log(entidades);
     requestAnimationFrame(loop);
 }
 
@@ -151,6 +157,21 @@ function ajustarResolucionCanvas(can, contexto) {
     contexto.imageSmoothingEnabled = false; 
 }
 
+/*reordenar_entidades(entidads, dibujables)
+{/*
+    let objetos
+    entidads.forEach((entidad, i) => {
+        for(let l = entidad.x; l < entidad.x + entidad.ancho; l++)
+        {
+            espacio_x[l].push(i);
+        }
+        for(let l = entidad.y; l < entidad.y + entidad.alto; l++)
+        {
+            espacio_y[l].push(i);
+        }
+    });*/
+//}*/
+
 window.addEventListener('wheel', (e) => {
     h += (e.deltaY/3)/8;
     while(h < 0 || h > 360)
@@ -167,6 +188,11 @@ window.addEventListener("keydown", (e) => {
             teclas[clave] = false;
         });*/
         teclas[tecla] = true;
+        if(tecla == "e")
+        {
+            inventario.classList.toggle("activo");
+            inv_activo = !inv_activo;
+        }
     }
 });
 window.addEventListener("keyup", (e) => {

@@ -44,3 +44,15 @@ input[type="range"]{
 .bloqueado{
     pointer-events: none;
 }
+
+#Inventario{
+    display: none;
+    position: fixed;
+    bottom: 20px;  /* Distancia desde abajo */
+    right: 20px;   /* Distancia desde la derecha */
+    z-index: 9999;
+}
+
+#Inventario.activo{
+    display: block;
+}

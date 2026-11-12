@@ -26,6 +26,10 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id = "Inventario">
+        <p>dffvuaglriiiiiekkuhgbk</p>
+    </div>
+
     <canvas id = "juego">
 
     </canvas>
