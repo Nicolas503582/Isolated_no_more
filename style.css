@@ -124,6 +124,11 @@ input[type="range"]{
     align-items: center;
 }
 
+#Hamster{
+    padding: 0;
+    background-color: rgb(80, 20, 62);
+}
+
 .objetos {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -149,8 +154,8 @@ input[type="range"]{
     image-rendering: pixelated; /* Mantiene los píxeles nítidos */
 }
 #foto_hamster{
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: 90%;
     object-fit: contain;
     image-rendering: pixelated;
 }
@@ -191,4 +196,108 @@ input[type="range"]{
 }
 .seleccionado{
     border-color: aqua;
+}
+
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+
+#Crafteador {
+    width: 770px;
+    height: 380px;
+    box-sizing: border-box;
+
+    padding: 12px;
+
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    gap: 20px;
+
+    background: white;
+    border: 4px solid black;
+}
+
+/* ===== LADO IZQUIERDO ===== */
+
+#crafteos {
+    border: 4px solid black;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    overflow-y: auto;
+}
+
+/* Cada receta */
+
+.crafteo {
+    width: 100%;
+    min-height: 65px;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    border: 2px solid black;
+    background: white;
+}
+
+/* Precio y resultado */
+
+.precio,
+.resultado {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+
+    border: 3px solid black;
+    background: white;
+}
+
+/* Flecha */
+
+.flecha {
+    width: 45px;
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flecha::before {
+    content: "➜";
+    font-size: 35px;
+    color: black;
+}
+
+/* ===== LADO DERECHO ===== */
+
+#lado_derecho {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 14px;
+
+    min-width: 0;
+    min-height: 0;
+}
+
+/* Paneles de inventario */
+
+.Inventario_materiales,
+.Inventario_rapido {
+    border: 4px solid black;
+    padding: 10px;
+
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+
+    align-items: stretch;
+
+    min-width: 0;
+    min-height: 0;
+    background: white;
 }
