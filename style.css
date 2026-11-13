@@ -1,20 +1,39 @@
-*{
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 canvas{
-    width: 150;
-    height: 150;
+    width: 150px;
+    height: 150px;
     display: block;
     background-color: black;
     border: 5px solid white;
 }
+nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #333;
+}
 input[type="range"]{
-  appearance: none;
-  background: linear-gradient(to right, red 0%, rgb(255, 230, 0) 15%, rgb(51, 255, 0) 30%, rgb(0, 255, 179) 45%, rgb(0, 102, 255) 60%, rgb(128, 0, 255) 75%, rgb(255, 0, 153) 90%, rgb(255, 0, 0) 100%);
-  accent-color: #ff5722;  
-  height: 8px;              
-  border-radius: 4px;
+    appearance: none;
+    background: linear-gradient(to right, red 0%, rgb(255, 230, 0) 15%, rgb(51, 255, 0) 30%, rgb(0, 255, 179) 45%, rgb(0, 102, 255) 60%, rgb(128, 0, 255) 75%, rgb(255, 0, 153) 90%, rgb(255, 0, 0) 100%);
+    accent-color: #ff5722;  
+    height: 8px;              
+    border-radius: 4px;
+}
+.menu{
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    background-color: #333;
+    gap: 20px;
+}
+.girar{
+    width: 100px;
+    height: 30px;
+    margin: 5px;
 }
 #selector_de_tono{
     background: linear-gradient(to right, black 0%, white 100%);
@@ -43,4 +62,125 @@ input[type="range"]{
 }
 .bloqueado{
     pointer-events: none;
+}
+#Inventario {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#Inventario.activo {
+    display: grid;
+    place-items: center;
+}
+
+#Inventario_contenido {
+    display: grid;
+    width: 90vw;
+    max-width: 1100px;
+    height: 80vh;
+    max-height: 650px;
+    
+    grid-template-columns: minmax(0, 1fr) minmax(0, 4fr);
+    gap: 20px;
+    padding: 15px;
+    box-sizing: border-box;
+    
+    background-color: #ffffff;
+    border: 4px solid #000000;
+}
+
+#Imagenes_inventario {
+    display: grid;
+    grid-template-rows: minmax(0, 2.5fr) minmax(0, 1fr);
+    gap: 15px;
+    height: 100%;
+}
+#Inv_objetos {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3fr);
+    gap: 15px;
+    height: 100%;
+    min-height: 0; /* Evita que la columna de objetos estire el alto del inventario */
+}
+
+.equipacion,
+.objetos {
+    border: 4px solid #000000;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+}
+
+.objetos {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+    min-height: 0; /* Frena el crecimiento de cada fila */
+}
+
+.espacio_inv {
+    border: 2px solid #000000;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden; /* Impide que la imagen desborde el casillero */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.espacio_inv img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ajusta el sprite al casillero sin deformarlo */
+    image-rendering: pixelated; /* Mantiene los píxeles nítidos */
+}
+
+.espacio_inv img[src=""],
+.espacio_inv img:not([src]) {
+    display: none;
+}
+
+.espacio_inv p {
+    display: none;
+}
+
+#canvas_equipamiento {
+    width: 100%;
+    height: 100%;
+}
+#canvas_hamster {
+    width: 100%;
+    height: 100%;
+}
+
+.contenedor{
+    margin: 0;
+    height: 100vh;          
+    display: flex;          
+    justify-content: center;
+    align-items: center; 
+}
+.login-container {
+    width: 50%;
+    height: 50%;
+    background-color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.seleccionado{
+    border-color: aqua;
 }

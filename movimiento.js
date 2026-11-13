@@ -6,10 +6,14 @@ export class movimiento {
         //direccion {x=0, z=0};
     }
 
-    moviendo(direccion, salto = false)
+    moviendo(direccion, espacio_x, espacio_y, id = this.entidad.id, salto = false)
     {
         this.mover(direccion, salto);
-        this.movicion();
+        if(this.comprobar(espacio_x, espacio_y, id))
+        {
+            this.movicion();
+            this.afectarHitbox(espacio_x, espacio_y, id);
+        }
     }
 
     mover(direccion, salto) {
@@ -44,5 +48,54 @@ export class movimiento {
     }
     gravedad() {
         this.movimiento.y -= 1;
+    }
+
+    comprobar(x, y, id)
+    {
+        let toca = false;
+        let toca_x = [];
+        let toca_y = [];
+        for(let i = this.entidad.x + this.entidad.hitbox.x + this.movimiento.x; i < this.entidad.x + this.entidad.hitbox.x + this.entidad.hitbox.ancho + this.movimiento.x; i++)
+        {
+            x[i].forEach(espacio => {
+                if(espacio != id)
+                {
+                    toca_x.push(espacio);
+                }
+            });
+        }
+        for(let i = this.entidad.y + this.entidad.hitbox.y + this.movimiento.z; i < this.entidad.y + this.entidad.hitbox.y + this.entidad.hitbox.alto + this.movimiento.z; i++)
+        {
+            y[i].forEach(espacio => {
+                if(espacio != id)
+                {
+                    if(toca_x.includes(espacio))
+                    {
+                        toca = true;
+                    }
+                }
+            });
+        }
+        //console.log(toca, toca_x, toca_y);
+        return !toca;
+    }
+    afectarHitbox(espacio_x, espacio_y, id){
+        for(let i = this.entidad.x + this.entidad.hitbox.x - this.movimiento.x; i < this.entidad.x + this.entidad.hitbox.x + this.entidad.hitbox.ancho - this.movimiento.x; i++)
+        {
+            espacio_x[i] = espacio_x[i].filter(espacio => espacio != id);
+        }
+        for(let i = this.entidad.y + this.entidad.hitbox.y - this.movimiento.z; i < this.entidad.y + this.entidad.hitbox.y + this.entidad.hitbox.alto - this.movimiento.z; i++)
+        {
+            espacio_y[i] = espacio_y[i].filter(espacio => espacio != id);
+        }
+
+        for(let i = this.entidad.x + this.entidad.hitbox.x; i < this.entidad.x + this.entidad.hitbox.x + this.entidad.hitbox.ancho; i++)
+        {
+            espacio_x[i].push(id);
+        }
+        for(let i = this.entidad.y + this.entidad.hitbox.y; i < this.entidad.y + this.entidad.hitbox.y + this.entidad.hitbox.alto; i++)
+        {
+            espacio_y[i].push(id);
+        }
     }
 }

@@ -6,23 +6,15 @@ Ranchito
  En desarrollo.
 
 ## Contenido
-- [ ] Personalización
+- [x] Personalización
 - [x] Movimiento
-- [ ] Colisiones
-- [ ] Inventarío
-- [ ] Partidas
-- [ ] Animales
-- [ ] Combate
-- [ ] Mejoras
+- [x] Colisiones
+- [ ] Animaciones
 - [ ] Mapa
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
+- [x] Jerarquia
+- [ ] Inventarío
+- [ ] Animales
+- [ ] Partidas
+- [ ] UI
+- [ ] Mejoras
+- [ ] Combate

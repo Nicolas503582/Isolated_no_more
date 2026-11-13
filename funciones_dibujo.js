@@ -21,7 +21,6 @@ export class dibujo{
         ct.drawImage(imagen, 0, 0, imagen.naturalWidth, imagen.naturalHeight, inicioX, inicioY, newWidth, newHeight);
     }
     dibujarData(oculto, can, ct, tamaño, inicioX, inicioY) {
-        // 1. Obtenemos la escala base del canvas
         const scale = calculo.calculo_escala(oculto, can);
 
         let newWidth = Math.floor(oculto.width * scale * tamaño)/10;
@@ -33,6 +32,14 @@ export class dibujo{
             oculto.width, oculto.height, 
             inicioX, inicioY, 
             newWidth, newHeight
+        );
+    }
+    dibujarData_total(oculto, can, ct, tamaño_x, tamaño_y) {
+
+        ct.drawImage(
+            oculto,
+            0, 0, 
+            tamaño_x, tamaño_y
         );
     }
     aNormal(ctxOculto, oculto)
