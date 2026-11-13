@@ -16,6 +16,11 @@ input[type="range"]{
   height: 8px;              
   border-radius: 4px;
 }
+.girar{
+    width: 100px;
+    height: 30px;
+    margin: 5px;
+}
 #selector_de_tono{
     background: linear-gradient(to right, black 0%, white 100%);
 }

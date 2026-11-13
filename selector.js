@@ -10,6 +10,9 @@ let ctx = canvas.getContext("2d");
 canvas.width = 100;
 canvas.height = 100;
 
+let flecha_girar_derecha = document.getElementById("girar_derecha");
+let flecha_girar_izquierda = document.getElementById("girar_izquierda");
+
 let selector = document.getElementById("selector_de_color");
 let selector_value = document.getElementById("selector_de_tono");
 let selector_saturacion = document.getElementById("selector_de_saturacion");
