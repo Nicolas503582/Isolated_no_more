@@ -35,8 +35,8 @@ let craf_activo = false;
 
 let equipamiento = document.getElementById("canvas_equipamiento");
 let ctx_robot = equipamiento.getContext("2d");
-let hamster = document.getElementById("canvas_hamster");
-let ctx_hamster = hamster.getContext("2d");
+/*let hamster = document.getElementById("canvas_hamster");
+let ctx_hamster = hamster.getContext("2d");*/
 
 let teclas = {a: false, d: false, s: false, w: false, e: false};
 let entidades_id = 0;
