@@ -141,6 +141,7 @@ function loop() {
         entidades.forEach(entidad => {
             entidad.dibujar(canvas, ctx, 1);
         });
+        jerarquia();
         
         //console.log(entidades);
     }
@@ -152,6 +153,13 @@ function loop() {
         robot1.dibujar_max(equipamiento, ctx_robot, equipamiento.width, equipamiento.height);
     }
     requestAnimationFrame(loop);
+}
+
+function jerarquia(){
+    entidades.sort((a, b) => {
+        return ((a.y + a.hitbox.y + a.hitbox.alto) - (b.y + b.hitbox.y + b.hitbox.alto)) || ((b.x + b.hitbox.x + b.hitbox.ancho) - (a.x + a.hitbox.x + a.hitbox.ancho));
+    });
+    
 }
 
 function ajustarResolucionCanvas(can, contexto, bool = true) {

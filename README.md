@@ -9,11 +9,11 @@ Ranchito
 - [x] Personalización
 - [x] Movimiento
 - [x] Colisiones
+- [ ] Mapa
 - [ ] Jerarquia
 - [ ] Inventarío
-- [ ] Partidas
 - [ ] Animales
-- [ ] Combate
-- [ ] Mejoras
-- [ ] Mapa
+- [ ] Partidas
 - [ ] UI
+- [ ] Mejoras
+- [ ] Combate
