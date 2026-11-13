@@ -47,7 +47,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Insumo2">
@@ -55,7 +55,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Insumo3">
@@ -63,7 +63,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Insumo4">
@@ -71,7 +71,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Insumo5">
@@ -79,7 +79,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
 
 
@@ -93,7 +93,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Herramienta2">
@@ -101,7 +101,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Herramienta3">
@@ -109,7 +109,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Herramienta4">
@@ -117,7 +117,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Herramienta5">
@@ -125,7 +125,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     
@@ -139,7 +139,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Material2">
@@ -147,7 +147,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Material3">
@@ -155,7 +155,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Material4">
@@ -163,7 +163,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Material5">
@@ -171,7 +171,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
 
                     
@@ -185,7 +185,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Rapido2">
@@ -193,7 +193,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Rapido3">
@@ -201,7 +201,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Rapido4">
@@ -209,7 +209,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
                     
                     <div class="espacio_inv" id="Rapido5">
@@ -217,7 +217,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                         <p class="nombre_objeto"></p>
                         <p class="cantidad"></p>
                         <p class="descripcion"></p>
-                        <img src="" alt="Objeto" class="imagen_Item">
+                        <img src="" alt="" class="imagen_Item">
                     </div>
 
                     

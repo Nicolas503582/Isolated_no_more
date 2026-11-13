@@ -22,8 +22,10 @@ header("Content-Type: application/javascript");
 
 import { Entidad } from "./entidades.js";
 import { calculos } from "./general.js";
+import { Inventario } from "./inventario.js";
 
 const calculo = new calculos();
+let inv = new Inventario();
 
 let canvas = document.getElementById("juego");
 let ctx = canvas.getContext("2d");
@@ -124,6 +126,8 @@ function loop() {
         }
         else
         {
+            //categoria, imagen, nombre, descripcion, id, cantidad
+            inv.guardarObjetoEnInventario("Insumos", imagenes.cabezaR1_post, "cabeza", "Cabeza robot", "1", 85);
             aux_entidad++;
         }
         ajustarResolucionCanvas(canvas, ctx);
@@ -223,6 +227,7 @@ window.addEventListener("resize", function(){
 
 
 ajustarResolucionCanvas(canvas, ctx);
+
 const nombresBaseImagenes = [
     "antebrazo_der",
     "antebrazo_izq",
@@ -238,48 +243,41 @@ const nombresBaseImagenes = [
 
 const imagenesRobot = [];
 
-// Recorremos las carpetas de los 3 robots (Robot1, Robot2, Robot3)
 for (let i = 1; i <= 3; i++) {
     for (const nombre of nombresBaseImagenes) {
         let nombreConId;
-        
-        // Regla especial para inyectar "R1", "R2" o "R3" en la posición correcta
+
         if (nombre.includes('_')) {
             nombreConId = nombre.replace('_', `R${i}_`);
         } else {
-            nombreConId = `${nombre}R${i}`; // Caso para 'torso' -> 'torsoR1'
+            nombreConId = `${nombre}R${i}`;
         }
-        
+
         imagenesRobot.push(`./Robot${i}/${nombreConId}.png`);
     }
 }
 
+const rutasGenerales = [
+];
 
-// ============================================================================
-// 2. FUNCIÓN PARA CARGAR UNA IMAGEN MEDIANTE PROMESA
-// ============================================================================
 function cargarImagen(url) {
     return new Promise((resolve, reject) => {
         const img = new Image();
-        
+
         img.onload = () => {
             console.log(`✅ Cargada con éxito: ${url}`);
-            resolve(img); 
+            resolve(img);
         };
-        
+
         img.onerror = () => {
             console.error(`❌ Error al cargar la imagen: ${url}`);
             reject(new Error(`No se pudo cargar: ${url}`));
         };
-        
-        img.src = url; 
+
+        img.src = url;
     });
 }
 
-
-// ============================================================================
-// 3. FUNCIÓN ASÍNCRONA PARA CARGAR TODOS LOS SPRITES EN SECUENCIA
-// ============================================================================
 async function inicializarSprites() {
     const spritesCargados = {};
 
@@ -288,72 +286,105 @@ async function inicializarSprites() {
     for (const url of imagenesRobot) {
         try {
             const imgObjeto = await cargarImagen(url);
-            
-            // Extrae el nombre final del archivo sin extensión (ej: "torsoR1")
+
             const nombreClave = url.split('/').pop().replace('.png', '');
-            
-            // Almacena el elemento de imagen en el objeto de sprites
-            spritesCargados[nombreClave] = imgObjeto; 
-            
+
+            spritesCargados[nombreClave] = imgObjeto;
+
         } catch (error) {
             console.warn("Saltando imagen debido al error.");
         }
     }
 
     console.log("=== ¡Todas las imágenes de los 3 robots han sido cargadas! ===");
+
     return spritesCargados;
 }
 
+Promise.all([
+    inicializarSprites(),
+    Promise.all(rutasGenerales.map(cargarImagen))
+]).then(([spritesRobots, imagenesGenerales]) => {
 
-// ============================================================================
-// 4. EJECUCIÓN DEL PROCESO Y ASIGNACIÓN DE LOS ELEMENTOS
-// ============================================================================
-inicializarSprites().then((misSprites) => {
-    // 'misSprites' ahora contiene los archivos de Robot1, Robot2 y Robot3 estructurados así:
-    // misSprites.torsoR1, misSprites.torsoR2, misSprites.torsoR3, etc.
+    const misSprites = { ...spritesRobots };
+
+    rutasGenerales.forEach((ruta, i) => {
+        const nombreClave = ruta.split('/').pop().replace('.png', '');
+        misSprites[nombreClave] = imagenesGenerales[i];
+    });
+
     console.log("Diccionario completo de sprites listos:", misSprites);
-    
+
     // Configuración automática de Robot1
 
     const nom_cabeza = "cabezaR" + cabeza + "_post";
-    const nom_brazo = {izq: "brazoR" + brazo + "_izq", der: "brazoR" + brazo + "_der"};
-    const nom_pierna = {izq: "piernaR" + pierna + "_izq", der: "piernaR" + pierna + "_der"};
-    const nom_antebrazo = {izq: "ante" + nom_brazo.izq, der: "ante" + nom_brazo.der};
+
+    const nom_brazo = {
+        izq: "brazoR" + brazo + "_izq",
+        der: "brazoR" + brazo + "_der"
+    };
+
+    const nom_pierna = {
+        izq: "piernaR" + pierna + "_izq",
+        der: "piernaR" + pierna + "_der"
+    };
+
+    const nom_antebrazo = {
+        izq: "ante" + nom_brazo.izq,
+        der: "ante" + nom_brazo.der
+    };
+
     const nom_torso = "torsoR" + torso;
+
     robot1.guardarimagenes(
-        ["cabeza", "brazo", "pierna", "torso", "antebrazo"], 
+        ["cabeza", "brazo", "pierna", "torso", "antebrazo"],
         [
-            misSprites[nom_cabeza], 
+            misSprites[nom_cabeza],
             [misSprites[nom_brazo.izq], misSprites[nom_brazo.der]],
-            [misSprites[nom_pierna.der], misSprites[nom_pierna.izq]], 
+            [misSprites[nom_pierna.der], misSprites[nom_pierna.izq]],
             misSprites[nom_torso],
             [misSprites[nom_antebrazo.izq], misSprites[nom_antebrazo.der]]
         ]
     );
 
-    robot1.cambiarcolores([`rgb(${color_rgb.r},${color_rgb.g},${color_rgb.b})`, `rgb(${cabeza_rgb.r},${cabeza_rgb.g},${cabeza_rgb.b})`, `rgb(${brazo_rgb.r},${brazo_rgb.g},${brazo_rgb.b})`, `rgb(${torso_rgb.r},${torso_rgb.g},${torso_rgb.b})`, `rgb(${pierna_rgb.r},${pierna_rgb.g},${pierna_rgb.b})`, `rgb(${brazo_rgb.r},${brazo_rgb.g},${brazo_rgb.b})`], [<?php echo $tono?>], [<?php echo $saturacion?>]);
+    robot1.cambiarcolores(
+        [
+            `rgb(${color_rgb.r},${color_rgb.g},${color_rgb.b})`,
+            `rgb(${cabeza_rgb.r},${cabeza_rgb.g},${cabeza_rgb.b})`,
+            `rgb(${brazo_rgb.r},${brazo_rgb.g},${brazo_rgb.b})`,
+            `rgb(${torso_rgb.r},${torso_rgb.g},${torso_rgb.b})`,
+            `rgb(${pierna_rgb.r},${pierna_rgb.g},${pierna_rgb.b})`,
+            `rgb(${brazo_rgb.r},${brazo_rgb.g},${brazo_rgb.b})`
+        ],
+        [<?php echo $tono?>],
+        [<?php echo $saturacion?>]
+    );
+
     imagenes = misSprites;
-    
+
     ajustarResolucionCanvas(equipamiento, ctx_robot, false);
 
-    
-    for (let i = 0; i < canvas.width; i++)
-    {
+    for (let i = 0; i < canvas.width; i++) {
         espacio_x[i] = [];
     }
-    for (let i = 0; i < canvas.height; i++)
-    {
+
+    for (let i = 0; i < canvas.height; i++) {
         espacio_y[i] = [];
     }
+
     entidades.forEach((entidad, i) => {
-        for(let l = entidad.x; l < entidad.x + entidad.ancho; l++)
-        {
+        for (let l = entidad.x; l < entidad.x + entidad.ancho; l++) {
             espacio_x[l].push(i);
         }
-        for(let l = entidad.y; l < entidad.y + entidad.alto; l++)
-        {
+
+        for (let l = entidad.y; l < entidad.y + entidad.alto; l++) {
             espacio_y[l].push(i);
         }
     });
+
+    // Iniciar juego únicamente cuando todas las imágenes estén cargadas
     loop();
+
+}).catch(error => {
+    console.error("Error al inicializar las imágenes:", error);
 });

@@ -101,12 +101,12 @@ input[type="range"]{
     gap: 15px;
     height: 100%;
 }
-
 #Inv_objetos {
     display: grid;
     grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3fr);
     gap: 15px;
     height: 100%;
+    min-height: 0; /* Evita que la columna de objetos estire el alto del inventario */
 }
 
 .equipacion,
@@ -121,19 +121,32 @@ input[type="range"]{
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 10px;
+    min-height: 0; /* Frena el crecimiento de cada fila */
 }
 
 .espacio_inv {
     border: 2px solid #000000;
     width: 100%;
     height: 100%;
-    place-items: center;
+    min-height: 0;
+    overflow: hidden; /* Impide que la imagen desborde el casillero */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 .espacio_inv img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: contain; /* Ajusta el sprite al casillero sin deformarlo */
+    image-rendering: pixelated; /* Mantiene los píxeles nítidos */
 }
+
+.espacio_inv img[src=""],
+.espacio_inv img:not([src]) {
+    display: none;
+}
+
 .espacio_inv p {
     display: none;
 }
