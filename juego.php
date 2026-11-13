@@ -30,11 +30,11 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
         <div id = "Inventario_contenido">
             <div id = "Imagenes_inventario">
                 <div id="Equipamiento" class = "equipacion">
-
+                    <canvas id="canvas_equipamiento"></canvas>
                 </div>
 
                 <div id="Hamster" class = "equipacion">
-
+                    <canvas id="canvas_hamster"></canvas>
                 </div>
             </div>
             

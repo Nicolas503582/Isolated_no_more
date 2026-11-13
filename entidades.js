@@ -6,11 +6,12 @@ const pincel = new dibujo();
 const calculo = new calculos();
 
 export class Entidad{
-        constructor(x, y, hitbox = {x: 2, y: 0, alto: 11, ancho: 15}, velocidad = 1, imagen = "", claves = [], imagenes = [], colores_iniciales = ["red"], tono = 50, saturacion = 50){
+        constructor(x, y, hitbox = {x: 2, y: 0, alto: 11, ancho: 15}, velocidad = 1, id = 0, imagen = "", claves = [], imagenes = [], colores_iniciales = ["red"], tono = 50, saturacion = 50){
             //this.listo = false;
             this.x = x; //x actual
             this.y = y; //y actual
             this.velocidad = velocidad;
+            this.id = id;
 
             console.log(hitbox);
             this.hitbox = hitbox;
@@ -254,6 +255,9 @@ export class Entidad{
         
         dibujar(can, ct, tamaño){
             pincel.dibujarData(this.canvasOculto, can, ct, tamaño, this.x, this.y);
+        }
+        dibujar_max(can, ct, tamaño_x, tamaño_y){
+            pincel.dibujarData_total(this.canvasOculto, can, ct, tamaño_x, tamaño_y);
         }
 
         cambiarHitbox(hitbox){

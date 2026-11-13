@@ -30,7 +30,13 @@ let ctx = canvas.getContext("2d");
 let inventario = document.getElementById("Inventario");
 let inv_activo = false;
 
+let equipamiento = document.getElementById("canvas_equipamiento");
+let ctx_robot = equipamiento.getContext("2d");
+let hamster = document.getElementById("canvas_hamster");
+let ctx_hamster = hamster.getContext("2d");
+
 let teclas = {a: false, d: false, s: false, w: false, e: false};
+let entidades_id = 0;
 let direccion = {x : 0, y: 0, z: 0};
 let espacio_x = [];
 let espacio_y = [];
@@ -67,7 +73,7 @@ const s  = saturacion_post;
 
 console.log("h: " + color_post + ", s: " + s + ", v: " + v);
 let color_rgb = calculo.hsvToRgba(color_post, 100, 100);
-let robot1 = new Entidad(100, 100, {x: 8, y: 50, alto: 12, ancho: 19}, 2);
+let robot1 = new Entidad(100, 100, {x: 8, y: 50, alto: 12, ancho: 19}, 2, entidades_id++);
 console.log(robot1);
 for(let i = robot1.x+robot1.hitbox.x; i< robot1.x+robot1.hitbox.x+robot1.hitbox.ancho; i++)
 {
@@ -90,7 +96,7 @@ function loop() {
         {
             if(entidades.length < 2)
             {
-                entidades.push(new Entidad(100, 150, {x: 8, y: 50, alto: 12, ancho: 19}, 1));
+                entidades.push(new Entidad(100, 150, {x: 8, y: 50, alto: 12, ancho: 19}, 1, entidades_id++));
 
                 const aux_esp = entidades.length - 1;
                 for(let i = entidades[aux_esp].x+entidades[aux_esp].hitbox.x; i< entidades[aux_esp].x+entidades[aux_esp].hitbox.x+entidades[aux_esp].hitbox.ancho; i++)
@@ -138,12 +144,29 @@ function loop() {
         
         //console.log(entidades);
     }
+    else{
+        ajustarResolucionCanvas(equipamiento, ctx_robot, false);
+        ctx_robot.clearRect(0, 0, equipamiento.width, equipamiento.height);
+        ctx_robot.fillStyle = "white";
+        ctx_robot.fillRect (0, 0, equipamiento.width, equipamiento.height);
+        robot1.dibujar_max(equipamiento, ctx_robot, equipamiento.width, equipamiento.height);
+    }
     requestAnimationFrame(loop);
 }
 
-function ajustarResolucionCanvas(can, contexto) {
-    const anchoVisual = window.innerWidth -10;
-    const altoVisual = window.innerHeight -10;
+function ajustarResolucionCanvas(can, contexto, bool = true) {
+    let anchoVisual, altoVisual;
+    if(bool)
+    {
+        anchoVisual = window.innerWidth -10;
+        altoVisual = window.innerHeight -10;
+    }
+    else
+    {
+        const rect = can.getBoundingClientRect();
+        anchoVisual = rect.width - 10;
+        altoVisual = rect.height - 10;
+    }
     
     const dpr = window.devicePixelRatio || 1;
     
@@ -156,21 +179,6 @@ function ajustarResolucionCanvas(can, contexto) {
     contexto.scale(dpr, dpr);
     contexto.imageSmoothingEnabled = false; 
 }
-
-/*reordenar_entidades(entidads, dibujables)
-{/*
-    let objetos
-    entidads.forEach((entidad, i) => {
-        for(let l = entidad.x; l < entidad.x + entidad.ancho; l++)
-        {
-            espacio_x[l].push(i);
-        }
-        for(let l = entidad.y; l < entidad.y + entidad.alto; l++)
-        {
-            espacio_y[l].push(i);
-        }
-    });*/
-//}*/
 
 window.addEventListener('wheel', (e) => {
     h += (e.deltaY/3)/8;
@@ -191,7 +199,7 @@ window.addEventListener("keydown", (e) => {
         if(tecla == "e")
         {
             inventario.classList.toggle("activo");
-            inv_activo = !inv_activo;
+            inv_activo = inv_activo ? false : true;
         }
     }
 });

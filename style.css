@@ -97,3 +97,8 @@ input[type="range"]{
     box-sizing: border-box;
     background-color: #ffffff;
 }
+
+#canvas_equipamiento {
+    width: 100%;
+    height: 100%;
+}
