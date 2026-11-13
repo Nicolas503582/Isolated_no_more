@@ -41,17 +41,185 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
             <div id = "Inv_objetos">
                 <div id = "Insumos" class = "objetos">
 
+
+                    <div class="espacio_inv" id="Insumo1">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Insumo2">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Insumo3">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Insumo4">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Insumo5">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+
+
                 </div>
 
                 <div id = "Herramientas" class = "objetos">
+                    
+
+                    <div class="espacio_inv" id="Herramienta1">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Herramienta2">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Herramienta3">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Herramienta4">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Herramienta5">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
                     
                 </div>
                 
                 <div id = "Materiales" class = "objetos">
                     
+                    
+                    <div class="espacio_inv" id="Material1">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Material2">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Material3">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Material4">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Material5">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+
+                    
                 </div>
                 
                 <div id = "Rapido" class = "objetos">
+                    
+                    
+                    <div class="espacio_inv" id="Rapido1">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Rapido2">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Rapido3">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Rapido4">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+                    
+                    <div class="espacio_inv" id="Rapido5">
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="Objeto" class="imagen_Item">
+                    </div>
+
                     
                 </div>
             </div>
@@ -64,18 +232,6 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
     </canvas>
 
     <script type="module" src ="juegojs.php"></script>
-    
-</body>
-</html>
-</script>
-    
-</body>
-</html>
-</script>
-    
-</body>
-</html>
-</script>
-    
+
 </body>
 </html>

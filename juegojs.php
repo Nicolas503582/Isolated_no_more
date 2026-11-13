@@ -41,6 +41,7 @@ let direccion = {x : 0, y: 0, z: 0};
 let espacio_x = [];
 let espacio_y = [];
 let imagenes = {};
+let inventario_objetos = {Insumos: [], Herramientas: [], Materiales: [], Rapido: []};
 
 let entidades = [];
 let entidades_dibujables = [];
@@ -146,7 +147,6 @@ function loop() {
         //console.log(entidades);
     }
     else{
-        ajustarResolucionCanvas(equipamiento, ctx_robot, false);
         ctx_robot.clearRect(0, 0, equipamiento.width, equipamiento.height);
         ctx_robot.fillStyle = "white";
         ctx_robot.fillRect (0, 0, equipamiento.width, equipamiento.height);
@@ -218,6 +218,7 @@ window.addEventListener("keyup", (e) => {
 
 window.addEventListener("resize", function(){
     ajustarResolucionCanvas(canvas, ctx);
+    ajustarResolucionCanvas(equipamiento, ctx_robot, false);
 });
 
 
@@ -332,6 +333,8 @@ inicializarSprites().then((misSprites) => {
 
     robot1.cambiarcolores([`rgb(${color_rgb.r},${color_rgb.g},${color_rgb.b})`, `rgb(${cabeza_rgb.r},${cabeza_rgb.g},${cabeza_rgb.b})`, `rgb(${brazo_rgb.r},${brazo_rgb.g},${brazo_rgb.b})`, `rgb(${torso_rgb.r},${torso_rgb.g},${torso_rgb.b})`, `rgb(${pierna_rgb.r},${pierna_rgb.g},${pierna_rgb.b})`, `rgb(${brazo_rgb.r},${brazo_rgb.g},${brazo_rgb.b})`], [<?php echo $tono?>], [<?php echo $saturacion?>]);
     imagenes = misSprites;
+    
+    ajustarResolucionCanvas(equipamiento, ctx_robot, false);
 
     
     for (let i = 0; i < canvas.width; i++)
