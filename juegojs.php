@@ -31,6 +31,7 @@ let canvas = document.getElementById("juego");
 let ctx = canvas.getContext("2d");
 let inventario = document.getElementById("Inventario");
 let inv_activo = false;
+let craf_activo = false;
 
 let equipamiento = document.getElementById("canvas_equipamiento");
 let ctx_robot = equipamiento.getContext("2d");
@@ -93,7 +94,7 @@ entidades.push(robot1);
 entidades_dibujables.push(robot1);
 
 function loop() {
-    if(!inv_activo)
+    if(!inv_activo && !craf_activo)
     {
         if(aux_entidad >= 30)
         {
@@ -127,6 +128,7 @@ function loop() {
         else
         {
             //categoria, imagen, nombre, descripcion, id, cantidad
+            console.log("aaaa");
             inv.guardarObjetoEnInventario("Insumos", imagenes.cabezaR1_post, "cabeza", "Cabeza robot", "1", 85);
             aux_entidad++;
         }
@@ -150,11 +152,15 @@ function loop() {
         
         //console.log(entidades);
     }
-    else{
+    else if (!craf_activo){
         ctx_robot.clearRect(0, 0, equipamiento.width, equipamiento.height);
         ctx_robot.fillStyle = "white";
         ctx_robot.fillRect (0, 0, equipamiento.width, equipamiento.height);
         robot1.dibujar_max(equipamiento, ctx_robot, equipamiento.width, equipamiento.height);
+    }
+    else
+    {
+        
     }
     requestAnimationFrame(loop);
 }
@@ -192,14 +198,14 @@ function ajustarResolucionCanvas(can, contexto, bool = true) {
     contexto.imageSmoothingEnabled = false; 
 }
 
-window.addEventListener('wheel', (e) => {
+/*window.addEventListener('wheel', (e) => {
     h += (e.deltaY/3)/8;
     while(h < 0 || h > 360)
     {
         if(h > 360) h -=360;
         if(h < 0) h += 360;
     }
-});
+});*/
 
 window.addEventListener("keydown", (e) => {
     const tecla = e.key.toLowerCase();

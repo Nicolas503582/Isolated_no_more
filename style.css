@@ -181,3 +181,6 @@ input[type="range"]{
     flex-direction: column;
     align-items: center;
 }
+.seleccionado{
+    border-color: aqua;
+}

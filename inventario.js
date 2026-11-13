@@ -2,12 +2,15 @@
 export class Inventario {
     constructor() {
         this.inventario_html = document.getElementById("Inv_objetos");
-        this.espacios_inventario = this.inventario_html.getElementsByClassName("espacio_inv");
+        this.espacios_inventario = Array.from(this.inventario_html.getElementsByClassName("espacio_inv"));
         this.inventario_objetos = {Insumos: [], Herramientas: [], Materiales: [], Rapido: []};
-        this.inventario_objetos.Insumos = Array.from(this.espacios_inventario).slice(0, 5);
-        this.inventario_objetos.Herramientas = Array.from(this.espacios_inventario).slice(5, 10);
-        this.inventario_objetos.Materiales = Array.from(this.espacios_inventario).slice(10, 15);
-        this.inventario_objetos.Rapido = Array.from(this.espacios_inventario).slice(15, 20);
+        this.inventario_objetos.Insumos = this.espacios_inventario.slice(0, 5);
+        this.inventario_objetos.Herramientas = this.espacios_inventario.slice(5, 10);
+        this.inventario_objetos.Materiales = this.espacios_inventario.slice(10, 15);
+        this.inventario_objetos.Rapido = this.espacios_inventario.slice(15, 20);
+        this.estaseleccionado = null;
+
+        this.eventos();
     }
 
     guardarObjetoEnInventario(categoria, imagen, nombre, descripcion, id, cantidad) {
@@ -18,16 +21,18 @@ export class Inventario {
         espacios.forEach((espacio) => {
             if(esta) return;
             let idElement = espacio.querySelector(".id_objeto");
-            if (idElement.textContent === id) {
+            if (idElement.textContent == id) {
                 aux = this.aumentarObjetoDeInventario(categoria, id, cantidad);
                 esta = true;
+                console.log("si esta");
             }
         });
         if(!esta){
             espacios.forEach((espacio) => {
                 if(aux) return;
                 let imgElement = espacio.querySelector(".imagen_Item");
-                if (imgElement.src === "" || imgElement.src === window.location.href) 
+                let idElement = espacio.querySelector(".id_objeto");
+                if (idElement.textContent == "") 
                 {
                     aux = true;
                     imgElement.src = imagen.src;
@@ -40,12 +45,12 @@ export class Inventario {
                 nombreElement.textContent = nombre;
                 let descripcionElement = espacio.querySelector(".descripcion");
                 descripcionElement.textContent = descripcion;
-                let idElement = espacio.querySelector(".id_objeto");
                 idElement.textContent = id;
                 let cantidadElement = espacio.querySelector(".cantidad");
                 cantidadElement.textContent = cantidad;
             });
-        }
+        }console.log(this.inventario_objetos.Insumos[0]);
+
         return aux;
     }
     eliminarObjetoDeInventario(categoria, id) {
@@ -53,7 +58,7 @@ export class Inventario {
         let espacios = this.inventario_objetos[categoria];
         espacios.forEach((espacio) => {
             let idElement = espacio.querySelector(".id_objeto");
-            if (idElement.textContent === id) {
+            if (idElement.textContent == id) {
                 let imgElement = espacio.querySelector(".imagen_Item");
                 imgElement.src = "";
                 let nombreElement = espacio.querySelector(".nombre_objeto");
@@ -75,7 +80,7 @@ export class Inventario {
         espacios.forEach((espacio) => {
             if(aux) return;
             let idElement = espacio.querySelector(".id_objeto");
-            if (idElement.textContent === id) {
+            if (idElement.textContent == id) {
                 let cantidadElement = espacio.querySelector(".cantidad");
                 if(parseInt(cantidadElement.textContent) - cantidad == 0){
                     aux = this.eliminarObjetoDeInventario(categoria, id);
@@ -96,12 +101,35 @@ export class Inventario {
         let espacios = this.inventario_objetos[categoria];
         espacios.forEach((espacio) => {
             let idElement = espacio.querySelector(".id_objeto");
-            if (idElement.textContent === id) {
+            if (idElement.textContent == id) {
                 let cantidadElement = espacio.querySelector(".cantidad");
                 cantidadElement.textContent = parseInt(cantidadElement.textContent) + cantidad;
                 aux = true;
             }
         });
         return aux;
+    }
+
+    eventos(){
+        this.espacios_inventario.forEach((espacio, i) => {
+            espacio.addEventListener("click", (e) =>{
+                let anterior = this.espacios_inventario[this.estaseleccionado];
+                if(anterior)
+                {
+                    if(Math.floor(i/5) == Math.floor(this.estaseleccionado / 5))
+                    {
+                        console.log(anterior);
+                        const anterior_html = anterior.innerHTML;
+                        anterior.innerHTML = espacio.innerHTML;
+                        espacio.innerHTML = anterior_html;
+                    }
+                }
+
+                let activo = espacio.querySelector(".seleccionado");
+                activo.textContent = activo.textContent === "true" ? false : true;
+                espacio.classList.toggle('seleccionado');
+                this.estaseleccionado = i;
+            });
+        });
     }
 }
