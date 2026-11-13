@@ -113,23 +113,55 @@ export class Inventario {
     eventos(){
         this.espacios_inventario.forEach((espacio, i) => {
             espacio.addEventListener("click", (e) =>{
+
                 let anterior = this.espacios_inventario[this.estaseleccionado];
                 if(anterior)
                 {
-                    if(Math.floor(i/5) == Math.floor(this.estaseleccionado / 5))
+                    if (i == this.estaseleccionado)
                     {
-                        console.log(anterior);
-                        const anterior_html = anterior.innerHTML;
-                        anterior.innerHTML = espacio.innerHTML;
-                        espacio.innerHTML = anterior_html;
+                        this.des_activar(espacio);
+                        this.estaseleccionado = null;
+                    }
+                    else if(Math.floor(i/5) == Math.floor(this.estaseleccionado / 5))
+                    {
+                        if(anterior.querySelector(".id_objeto").textContent)
+                        {
+                            this.des_activar(anterior);
+                            this.estaseleccionado = null;
+
+                            const anterior_html = anterior.innerHTML;
+                            anterior.innerHTML = espacio.innerHTML;
+                            espacio.innerHTML = anterior_html;
+                        }
+                        else
+                        {
+                            this.des_activar(anterior);
+                            this.des_activar(espacio);
+                            this.estaseleccionado = i;
+                        }
+                    }
+                    else
+                    {
+                        this.des_activar(anterior);
+                        this.des_activar(espacio);
+                        this.estaseleccionado = i;
                     }
                 }
-
-                let activo = espacio.querySelector(".seleccionado");
-                activo.textContent = activo.textContent === "true" ? false : true;
-                espacio.classList.toggle('seleccionado');
-                this.estaseleccionado = i;
+                else
+                {
+                    let activo = espacio.querySelector(".seleccionado");
+                    activo.textContent = activo.textContent === "true" ? false : true;
+                    espacio.classList.toggle('seleccionado');
+                    this.estaseleccionado = i;
+                }
             });
         });
+    }
+
+    des_activar(espacio)
+    {
+        let activo = espacio.querySelector(".seleccionado");
+        activo.textContent = activo.textContent === "true" ? false : true;
+        espacio.classList.toggle('seleccionado');
     }
 }
