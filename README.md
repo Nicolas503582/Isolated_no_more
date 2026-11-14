@@ -12,9 +12,11 @@ Ranchito
 - [ ] Animaciones
 - [ ] Mapa
 - [x] Jerarquia
-- [ ] Inventarío
+- [x] Inventarío
 - [ ] Animales
+- [ ] Cultivos
 - [ ] Partidas
 - [ ] UI
 - [ ] Mejoras
 - [ ] Combate
+- [ ] Otros

@@ -30,6 +30,7 @@ let inv = new Inventario();
 let canvas = document.getElementById("juego");
 let ctx = canvas.getContext("2d");
 let inventario = document.getElementById("Inventario");
+let crafteador = document.getElementById("Crafteador");
 let inv_activo = false;
 let craf_activo = false;
 
@@ -75,10 +76,10 @@ let aux_entidad = 0;
 const v  = tono_post;
 const s  = saturacion_post;
 
-console.log("h: " + color_post + ", s: " + s + ", v: " + v);
+//console.log("h: " + color_post + ", s: " + s + ", v: " + v);
 let color_rgb = calculo.hsvToRgba(color_post, 100, 100);
 let robot1 = new Entidad(100, 100, {x: 8, y: 50, alto: 12, ancho: 19}, 2, entidades_id++);
-console.log(robot1);
+//console.log(robot1);
 for(let i = robot1.x+robot1.hitbox.x; i< robot1.x+robot1.hitbox.x+robot1.hitbox.ancho; i++)
 {
     espacio_x[i] = [0]; 
@@ -94,6 +95,7 @@ entidades.push(robot1);
 entidades_dibujables.push(robot1);
 
 function loop() {
+    console.log(!inv_activo);
     if(!inv_activo && !craf_activo)
     {
         if(aux_entidad >= 30)
@@ -128,7 +130,7 @@ function loop() {
         else
         {
             //categoria, imagen, nombre, descripcion, id, cantidad
-            console.log("aaaa");
+            //console.log("aaaa");
             inv.guardarObjetoEnInventario("Insumos", imagenes.cabezaR1_post, "cabeza", "Cabeza robot", "1", 85);
             aux_entidad++;
         }
@@ -136,14 +138,14 @@ function loop() {
         ctx.fillStyle = "white";
         ctx.fillRect(0,0, canvas.width, canvas.height);
 
-        console.log("5485");
+        //console.log("5485");
         
         direccion.x = teclas.d - teclas.a  + 0;
         direccion.z = teclas.s - teclas.w  + 0;
         robot1.movimiento.moviendo(direccion, espacio_x, espacio_y, 0);
         //movimiento
-        /*console.log("y: " + espacio_y);
-        console.log("x: " + espacio_x);*/
+        /*//console.log("y: " + espacio_y);
+        //console.log("x: " + espacio_x);*/
 
         entidades.forEach(entidad => {
             entidad.dibujar(canvas, ctx, 1);
@@ -219,6 +221,12 @@ window.addEventListener("keydown", (e) => {
             inventario.classList.toggle("activo");
             inv_activo = inv_activo ? false : true;
         }
+        if(tecla == "q")
+        {
+            crafteador.classList.toggle("activo");
+            craf_activo = craf_activo ? false : true;
+        }
+        
     }
 });
 window.addEventListener("keyup", (e) => {
@@ -271,7 +279,7 @@ function cargarImagen(url) {
         const img = new Image();
 
         img.onload = () => {
-            console.log(`✅ Cargada con éxito: ${url}`);
+            //console.log(`✅ Cargada con éxito: ${url}`);
             resolve(img);
         };
 
@@ -319,7 +327,7 @@ Promise.all([
         misSprites[nombreClave] = imagenesGenerales[i];
     });
 
-    console.log("Diccionario completo de sprites listos:", misSprites);
+    //console.log("Diccionario completo de sprites listos:", misSprites);
 
     // Configuración automática de Robot1
 

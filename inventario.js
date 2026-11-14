@@ -24,7 +24,7 @@ export class Inventario {
             if (idElement.textContent == id) {
                 aux = this.aumentarObjetoDeInventario(categoria, id, cantidad);
                 esta = true;
-                console.log("si esta");
+                 //console.log("si esta");
             }
         });
         if(!esta){
@@ -49,7 +49,8 @@ export class Inventario {
                 let cantidadElement = espacio.querySelector(".cantidad");
                 cantidadElement.textContent = cantidad;
             });
-        }console.log(this.inventario_objetos.Insumos[0]);
+        }
+        //console.log(this.inventario_objetos.Insumos[0]);
 
         return aux;
     }

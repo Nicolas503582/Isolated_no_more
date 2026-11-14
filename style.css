@@ -73,7 +73,6 @@ input[type="range"]{
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
 }
-
 #Inventario.activo {
     display: grid;
     place-items: center;
@@ -200,23 +199,41 @@ input[type="range"]{
 
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
+/* ===== VENTANA PRINCIPAL ===== */
 
 #Crafteador {
-    width: 770px;
-    height: 380px;
-    box-sizing: border-box;
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+}
 
-    padding: 12px;
+/* Se activa el crafteador */
+#Crafteador.activo {
+    display: grid;
+    place-items: center;
+}
+
+/* Panel blanco central */
+#panel_crafteador {
+    width: min(90vw, 1100px);
+    height: min(80vh, 510px);
+
+    box-sizing: border-box;
+    padding: 14px;
 
     display: grid;
-    grid-template-columns: 210px 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
 
     background: white;
     border: 4px solid black;
 }
-
-/* ===== LADO IZQUIERDO ===== */
+/* ===== PANEL IZQUIERDO ===== */
 
 #crafteos {
     border: 4px solid black;
@@ -227,40 +244,44 @@ input[type="range"]{
     gap: 12px;
 
     overflow-y: auto;
+    min-width: 0;
+    min-height: 0;
 }
 
-/* Cada receta */
+/* RECETAS */
 
 .crafteo {
     width: 100%;
     min-height: 65px;
+    flex-shrink: 0;
+
     box-sizing: border-box;
 
     display: flex;
     align-items: center;
     justify-content: space-around;
 
-    border: 2px solid black;
+    border: 3px solid black;
     background: white;
 }
 
-/* Precio y resultado */
+/* PRECIO Y RESULTADO */
 
 .precio,
 .resultado {
-    width: 38px;
-    height: 38px;
+    width: 42px;
+    height: 42px;
     flex-shrink: 0;
 
     border: 3px solid black;
     background: white;
 }
 
-/* Flecha */
+/* FLECHA */
 
 .flecha {
-    width: 45px;
-    height: 35px;
+    width: 55px;
+    height: 40px;
 
     display: flex;
     align-items: center;
@@ -269,11 +290,11 @@ input[type="range"]{
 
 .flecha::before {
     content: "➜";
-    font-size: 35px;
+    font-size: 38px;
     color: black;
 }
 
-/* ===== LADO DERECHO ===== */
+/* ===== PANEL DERECHO ===== */
 
 #lado_derecho {
     display: grid;
@@ -284,7 +305,7 @@ input[type="range"]{
     min-height: 0;
 }
 
-/* Paneles de inventario */
+/* INVENTARIOS */
 
 .Inventario_materiales,
 .Inventario_rapido {
@@ -295,9 +316,61 @@ input[type="range"]{
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 10px;
 
-    align-items: stretch;
+    min-width: 0;
+    min-height: 0;
+
+    background: white;
+}
+
+/* ESPACIOS */
+
+.espacio_inv {
+    position: relative;
 
     min-width: 0;
     min-height: 0;
+
+    border: 2px solid black;
     background: white;
+
+    box-sizing: border-box;
+}
+
+/* IMÁGENES */
+
+.espacio_inv .imagen_Item {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+
+    image-rendering: pixelated;
+}
+
+/* CANTIDAD */
+
+.espacio_inv .cantidad {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+
+    margin: 0;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* INFORMACIÓN INTERNA */
+
+.espacio_inv .nombre_objeto,
+.espacio_inv .descripcion,
+.espacio_inv .id_objeto,
+.espacio_inv .seleccionado {
+    display: none;
+}
+
+/* SELECCIÓN */
+
+.espacio_inv.seleccionado {
+    outline: 3px solid black;
+    outline-offset: -5px;
+    background: #dedede;
 }
