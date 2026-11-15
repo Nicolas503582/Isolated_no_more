@@ -1,3 +1,6 @@
+import { Objetos } from "./objetos.js";
+
+export { Objetos } from "./objetos.js";
 
 export class Inventario {
     constructor() {
@@ -10,10 +13,21 @@ export class Inventario {
         this.inventario_objetos.Rapido = this.espacios_inventario.slice(15, 20);
         this.estaseleccionado = null;
 
+        //Crafteo
+
+        this.crafteador_html = document.getElementById("Crafteador");
+        this.espacios_crafteador = Array.from(this.crafteador_html.getElementsByClassName("espacio_inv"));
+        this.crafteador_objetos = {Materiales: [], Rapido: []};
+        this.crafteador_objetos.Materiales = this.espacios_crafteador.slice(0, 5);
+        this.crafteador_objetos.Rapido = this.espacios_crafteador.slice(5, 10);
+        this.estaseleccionado = null;
+
         this.eventos();
+
+        
     }
 
-    guardarObjetoEnInventario(categoria, imagen, nombre, descripcion, id, cantidad) {
+    guardarObjetoEnInventario(categoria, id, cantidad) {
         let espacios = this.inventario_objetos[categoria];
         let aux = false; //(para verificar si se guardo el objeto o no, por si no hay espacios libres)
         let esta = false; //(para verificar si el objeto ya esta en el inventario)
@@ -35,16 +49,16 @@ export class Inventario {
                 if (idElement.textContent == "") 
                 {
                     aux = true;
-                    imgElement.src = imagen.src;
+                    imgElement.src = Objetos[id].src;
                 }
                 else
                 {
                     return;
                 }
                 let nombreElement = espacio.querySelector(".nombre_objeto");
-                nombreElement.textContent = nombre;
+                nombreElement.textContent = Objetos[id].nombre;
                 let descripcionElement = espacio.querySelector(".descripcion");
-                descripcionElement.textContent = descripcion;
+                descripcionElement.textContent = Objetos[id].descripcion;
                 idElement.textContent = id;
                 let cantidadElement = espacio.querySelector(".cantidad");
                 cantidadElement.textContent = cantidad;
@@ -52,6 +66,7 @@ export class Inventario {
         }
         //console.log(this.inventario_objetos.Insumos[0]);
 
+        this.sincronizarInventarios(categoria);
         return aux;
     }
     eliminarObjetoDeInventario(categoria, id) {
@@ -72,6 +87,8 @@ export class Inventario {
                 aux = true;
             }
         });
+        
+        this.sincronizarInventarios(categoria);
         return aux;
     }
 
@@ -95,6 +112,10 @@ export class Inventario {
                 aux = true;
             }
         });
+
+        
+        
+        this.sincronizarInventarios(categoria);
         return aux;
     }
     aumentarObjetoDeInventario(categoria, id, cantidad) {
@@ -108,6 +129,8 @@ export class Inventario {
                 aux = true;
             }
         });
+
+        this.sincronizarInventarios(categoria);
         return aux;
     }
 
@@ -115,6 +138,7 @@ export class Inventario {
         this.espacios_inventario.forEach((espacio, i) => {
             espacio.addEventListener("click", (e) =>{
 
+                const categorias = ["Insumos", "Herramientas", "Materiales", "Rapido"];
                 let anterior = this.espacios_inventario[this.estaseleccionado];
                 if(anterior)
                 {
@@ -133,6 +157,7 @@ export class Inventario {
                             const anterior_html = anterior.innerHTML;
                             anterior.innerHTML = espacio.innerHTML;
                             espacio.innerHTML = anterior_html;
+                            this.sincronizarInventarios(categorias[Math.floor(i/5)]);
                         }
                         else
                         {
@@ -164,5 +189,16 @@ export class Inventario {
         let activo = espacio.querySelector(".seleccionado");
         activo.textContent = activo.textContent === "true" ? false : true;
         espacio.classList.toggle('seleccionado');
+    }
+
+    sincronizarInventarios(categoria) {
+        if (categoria !== "Materiales" && categoria !== "Rapido") return;
+
+        let inventario = this.inventario_objetos[categoria];
+        let crafteador = this.crafteador_objetos[categoria];
+
+        inventario.forEach((espacio, i) => {
+            crafteador[i].innerHTML = espacio.innerHTML;
+        });
     }
 }

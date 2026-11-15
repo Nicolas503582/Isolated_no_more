@@ -269,6 +269,10 @@ input[type="range"]{
 
 .precio,
 .resultado {
+    display: flex;
+}
+
+.objeto{
     width: 42px;
     height: 42px;
     flex-shrink: 0;
@@ -373,4 +377,19 @@ input[type="range"]{
     outline: 3px solid black;
     outline-offset: -5px;
     background: #dedede;
+}
+
+/* Imagen del objeto */
+.imagen_Item {
+    width: 85%;
+    height: 85%;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+/* Información del objeto */
+.id_objeto,
+.nombre_objeto,
+.cantidad {
+    display: none;
 }

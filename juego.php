@@ -249,10 +249,15 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
 
     <div id = "Crafteador">
         <div id = "panel_crafteador">
-            <div id="crafteos">
+            <div id="crafteos"> <!--
                 <div class="crafteo">
                     <div class="precio">
-
+                        <div class="objeto">
+                            <p class="objeto_id"></p>
+                            <p class="objeto_nombre"></p>
+                            <p class="objeto_cantidad"></p>
+                            <img src="" alt="" class="imagen_objeto">
+                        </div>
                     </div>
 
                     <div class="flecha">
@@ -262,7 +267,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                     <div class="resultado">
 
                     </div>
-                </div>
+                </div> -->
             </div>
             <div id="lado_derecho">
                 <div class="Inventario_materiales">
@@ -362,6 +367,8 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
     </canvas>
 
     <script type="module" src ="juegojs.php"></script>
+
+
 
 </body>
 </html>

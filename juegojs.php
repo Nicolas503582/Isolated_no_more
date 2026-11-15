@@ -23,14 +23,33 @@ header("Content-Type: application/javascript");
 import { Entidad } from "./entidades.js";
 import { calculos } from "./general.js";
 import { Inventario } from "./inventario.js";
+import { Crafteador } from "./crafteo.js";
 
 const calculo = new calculos();
 let inv = new Inventario();
+let craf = new Crafteador();
 
 let canvas = document.getElementById("juego");
 let ctx = canvas.getContext("2d");
+
 let inventario = document.getElementById("Inventario");
+
+let inventario_html = document.getElementById("Inv_objetos");
+let espacios_inventario = Array.from(inventario_html.getElementsByClassName("espacio_inv"));
+let inventario_objetos = {Insumos: [], Herramientas: [], Materiales: [], Rapido: []};
+inventario_objetos.Insumos = espacios_inventario.slice(0, 5);
+inventario_objetos.Herramientas = espacios_inventario.slice(5, 10);
+inventario_objetos.Materiales = espacios_inventario.slice(10, 15);
+inventario_objetos.Rapido = espacios_inventario.slice(15, 20);
+
 let crafteador = document.getElementById("Crafteador");
+
+let crafteador_html = document.getElementById("Crafteador");
+let espacios_crafteador = Array.from(crafteador_html.getElementsByClassName("espacio_inv"));
+let crafteador_objetos = {Materiales: [], Rapido: []};
+crafteador_objetos.Materiales = espacios_crafteador.slice(0, 5);
+crafteador_objetos.Rapido = espacios_crafteador.slice(5, 10);
+
 let inv_activo = false;
 let craf_activo = false;
 
@@ -45,7 +64,6 @@ let direccion = {x : 0, y: 0, z: 0};
 let espacio_x = [];
 let espacio_y = [];
 let imagenes = {};
-let inventario_objetos = {Insumos: [], Herramientas: [], Materiales: [], Rapido: []};
 
 let entidades = [];
 let entidades_dibujables = [];
@@ -95,7 +113,7 @@ entidades.push(robot1);
 entidades_dibujables.push(robot1);
 
 function loop() {
-    console.log(!inv_activo);
+   //console.log(!inv_activo);
     if(!inv_activo && !craf_activo)
     {
         if(aux_entidad >= 30)
@@ -131,7 +149,7 @@ function loop() {
         {
             //categoria, imagen, nombre, descripcion, id, cantidad
             //console.log("aaaa");
-            inv.guardarObjetoEnInventario("Insumos", imagenes.cabezaR1_post, "cabeza", "Cabeza robot", "1", 85);
+            inv.guardarObjetoEnInventario("Materiales", 1, 85);
             aux_entidad++;
         }
         ajustarResolucionCanvas(canvas, ctx);
@@ -216,12 +234,12 @@ window.addEventListener("keydown", (e) => {
             teclas[clave] = false;
         });*/
         teclas[tecla] = true;
-        if(tecla == "e")
+        if(tecla == "e" && !craf_activo)
         {
             inventario.classList.toggle("activo");
             inv_activo = inv_activo ? false : true;
         }
-        if(tecla == "q")
+        if(tecla == "q" && !inv_activo)
         {
             crafteador.classList.toggle("activo");
             craf_activo = craf_activo ? false : true;
@@ -295,7 +313,7 @@ function cargarImagen(url) {
 async function inicializarSprites() {
     const spritesCargados = {};
 
-    console.log("=== Iniciando carga secuencial de imágenes ===");
+   //console.log("=== Iniciando carga secuencial de imágenes ===");
 
     for (const url of imagenesRobot) {
         try {
@@ -310,7 +328,7 @@ async function inicializarSprites() {
         }
     }
 
-    console.log("=== ¡Todas las imágenes de los 3 robots han sido cargadas! ===");
+   //console.log("=== ¡Todas las imágenes de los 3 robots han sido cargadas! ===");
 
     return spritesCargados;
 }
