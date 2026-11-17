@@ -24,6 +24,7 @@ import { Entidad } from "./entidades.js";
 import { calculos } from "./general.js";
 import { Inventario } from "./inventario.js";
 import { Crafteador } from "./crafteo.js";
+import { Construccion } from "./construccion.js";
 
 const calculo = new calculos();
 let inv = new Inventario();
@@ -113,7 +114,8 @@ entidades.push(robot1);
 entidades_dibujables.push(robot1);
 
 function loop() {
-   //console.log(!inv_activo);
+   console.log(robot1.x + "    " + robot1.y);
+
     if(!inv_activo && !craf_activo)
     {
         if(aux_entidad >= 30)
@@ -259,6 +261,33 @@ window.addEventListener("resize", function(){
 
 
 ajustarResolucionCanvas(canvas, ctx);
+
+//evento personalizado
+document.addEventListener('construir', (e) => {
+    const propiedades = e.detail;
+    const construccion = new Construccion(100, 100, {x: 8, y: 50, alto: 12, ancho: 19}, 2, entidades_id++);
+    entidades.push(construccion);
+    actualizar_espacio(construccion);
+    console.log("aaaaaaaaa");
+});
+
+function actualizar_espacio(entidad){
+    const x = entidad.x + entidad.hitbox.x;
+    const y = entidad.y + entidad.hitbox.y;
+    const ancho = entidad.hitbox.ancho;
+    const alto = entidad.hitbox.alto;
+    const id = entidad.id;
+    for(let i = x; i< x + ancho; i++)
+    {
+        espacio_x[i].push(id);
+    }
+    for(let i = y; i< y + alto; i++)
+    {
+        espacio_y[i].push(id);
+    }
+    console.log("nbbbbbbbbbbbbb");
+    
+}
 
 const nombresBaseImagenes = [
     "antebrazo_der",

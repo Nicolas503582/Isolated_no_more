@@ -1,6 +1,6 @@
 import { Objetos } from "./objetos.js";
-
-export { Objetos } from "./objetos.js";
+import { Construccion} from "./constructor.js";
+const cons = new Construccion();
 
 export class Inventario {
     constructor() {
@@ -199,6 +199,10 @@ export class Inventario {
                 this.id_select_inv += teclas[tecla];
                 this.pintar_seleccionado();
             }
+            if(tecla == "arrowdown")
+            {
+                cons.construir(this.transformar("Rapido", this.id_select_inv));
+            }
         });
     }
     pintar_seleccionado()
@@ -219,6 +223,17 @@ export class Inventario {
         let activo = espacio.querySelector(".seleccionado");
         activo.textContent = activo.textContent === "true" ? false : true;
         espacio.classList.toggle('seleccionado');
+    }
+    transformar(categoria, id)
+    {
+        let objetivo = this.inventario_objetos[categoria][id];
+
+        let id_objeto = objetivo.querySelector(".id_objeto");
+        if(id_objeto.textContent == "")
+        {
+            return false;
+        }
+        return id_objeto.textContent;
     }
 
     sincronizarInventarios(categoria) {
