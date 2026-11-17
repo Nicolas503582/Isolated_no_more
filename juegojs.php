@@ -23,13 +23,34 @@ header("Content-Type: application/javascript");
 import { Entidad } from "./entidades.js";
 import { calculos } from "./general.js";
 import { Inventario } from "./inventario.js";
+import { Crafteador } from "./crafteo.js";
+import { Construccion } from "./construccion.js";
 
 const calculo = new calculos();
 let inv = new Inventario();
+let craf = new Crafteador();
 
 let canvas = document.getElementById("juego");
 let ctx = canvas.getContext("2d");
+
 let inventario = document.getElementById("Inventario");
+
+let inventario_html = document.getElementById("Inv_objetos");
+let espacios_inventario = Array.from(inventario_html.getElementsByClassName("espacio_inv"));
+let inventario_objetos = {Insumos: [], Herramientas: [], Materiales: [], Rapido: []};
+inventario_objetos.Insumos = espacios_inventario.slice(0, 5);
+inventario_objetos.Herramientas = espacios_inventario.slice(5, 10);
+inventario_objetos.Materiales = espacios_inventario.slice(10, 15);
+inventario_objetos.Rapido = espacios_inventario.slice(15, 20);
+
+let crafteador = document.getElementById("Crafteador");
+
+let crafteador_html = document.getElementById("Crafteador");
+let espacios_crafteador = Array.from(crafteador_html.getElementsByClassName("espacio_inv"));
+let crafteador_objetos = {Materiales: [], Rapido: []};
+crafteador_objetos.Materiales = espacios_crafteador.slice(0, 5);
+crafteador_objetos.Rapido = espacios_crafteador.slice(5, 10);
+
 let inv_activo = false;
 let craf_activo = false;
 
@@ -44,7 +65,6 @@ let direccion = {x : 0, y: 0, z: 0};
 let espacio_x = [];
 let espacio_y = [];
 let imagenes = {};
-let inventario_objetos = {Insumos: [], Herramientas: [], Materiales: [], Rapido: []};
 
 let entidades = [];
 let entidades_dibujables = [];
@@ -75,10 +95,10 @@ let aux_entidad = 0;
 const v  = tono_post;
 const s  = saturacion_post;
 
-console.log("h: " + color_post + ", s: " + s + ", v: " + v);
+//console.log("h: " + color_post + ", s: " + s + ", v: " + v);
 let color_rgb = calculo.hsvToRgba(color_post, 100, 100);
 let robot1 = new Entidad(100, 100, {x: 8, y: 50, alto: 12, ancho: 19}, 2, entidades_id++);
-console.log(robot1);
+//console.log(robot1);
 for(let i = robot1.x+robot1.hitbox.x; i< robot1.x+robot1.hitbox.x+robot1.hitbox.ancho; i++)
 {
     espacio_x[i] = [0]; 
@@ -94,6 +114,8 @@ entidades.push(robot1);
 entidades_dibujables.push(robot1);
 
 function loop() {
+   console.log(robot1.x + "    " + robot1.y);
+
     if(!inv_activo && !craf_activo)
     {
         if(aux_entidad >= 30)
@@ -128,22 +150,22 @@ function loop() {
         else
         {
             //categoria, imagen, nombre, descripcion, id, cantidad
-            console.log("aaaa");
-            inv.guardarObjetoEnInventario("Insumos", imagenes.cabezaR1_post, "cabeza", "Cabeza robot", "1", 85);
+            //console.log("aaaa");
+            inv.guardarObjetoEnInventario("Materiales", 1, 85);
             aux_entidad++;
         }
         ajustarResolucionCanvas(canvas, ctx);
         ctx.fillStyle = "white";
         ctx.fillRect(0,0, canvas.width, canvas.height);
 
-        console.log("5485");
+        //console.log("5485");
         
         direccion.x = teclas.d - teclas.a  + 0;
         direccion.z = teclas.s - teclas.w  + 0;
         robot1.movimiento.moviendo(direccion, espacio_x, espacio_y, 0);
         //movimiento
-        /*console.log("y: " + espacio_y);
-        console.log("x: " + espacio_x);*/
+        /*//console.log("y: " + espacio_y);
+        //console.log("x: " + espacio_x);*/
 
         entidades.forEach(entidad => {
             entidad.dibujar(canvas, ctx, 1);
@@ -214,11 +236,17 @@ window.addEventListener("keydown", (e) => {
             teclas[clave] = false;
         });*/
         teclas[tecla] = true;
-        if(tecla == "e")
+        if(tecla == "e" && !craf_activo)
         {
             inventario.classList.toggle("activo");
             inv_activo = inv_activo ? false : true;
         }
+        if(tecla == "q" && !inv_activo)
+        {
+            crafteador.classList.toggle("activo");
+            craf_activo = craf_activo ? false : true;
+        }
+        
     }
 });
 window.addEventListener("keyup", (e) => {
@@ -233,6 +261,33 @@ window.addEventListener("resize", function(){
 
 
 ajustarResolucionCanvas(canvas, ctx);
+
+//evento personalizado
+document.addEventListener('construir', (e) => {
+    const propiedades = e.detail;
+    const construccion = new Construccion(100, 100, {x: 8, y: 50, alto: 12, ancho: 19}, 2, entidades_id++);
+    entidades.push(construccion);
+    actualizar_espacio(construccion);
+    console.log("aaaaaaaaa");
+});
+
+function actualizar_espacio(entidad){
+    const x = entidad.x + entidad.hitbox.x;
+    const y = entidad.y + entidad.hitbox.y;
+    const ancho = entidad.hitbox.ancho;
+    const alto = entidad.hitbox.alto;
+    const id = entidad.id;
+    for(let i = x; i< x + ancho; i++)
+    {
+        espacio_x[i].push(id);
+    }
+    for(let i = y; i< y + alto; i++)
+    {
+        espacio_y[i].push(id);
+    }
+    console.log("nbbbbbbbbbbbbb");
+    
+}
 
 const nombresBaseImagenes = [
     "antebrazo_der",
@@ -271,7 +326,7 @@ function cargarImagen(url) {
         const img = new Image();
 
         img.onload = () => {
-            console.log(`✅ Cargada con éxito: ${url}`);
+            //console.log(`✅ Cargada con éxito: ${url}`);
             resolve(img);
         };
 
@@ -287,7 +342,7 @@ function cargarImagen(url) {
 async function inicializarSprites() {
     const spritesCargados = {};
 
-    console.log("=== Iniciando carga secuencial de imágenes ===");
+   //console.log("=== Iniciando carga secuencial de imágenes ===");
 
     for (const url of imagenesRobot) {
         try {
@@ -302,7 +357,7 @@ async function inicializarSprites() {
         }
     }
 
-    console.log("=== ¡Todas las imágenes de los 3 robots han sido cargadas! ===");
+   //console.log("=== ¡Todas las imágenes de los 3 robots han sido cargadas! ===");
 
     return spritesCargados;
 }
@@ -319,7 +374,7 @@ Promise.all([
         misSprites[nombreClave] = imagenesGenerales[i];
     });
 
-    console.log("Diccionario completo de sprites listos:", misSprites);
+    //console.log("Diccionario completo de sprites listos:", misSprites);
 
     // Configuración automática de Robot1
 

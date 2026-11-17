@@ -13,7 +13,7 @@ export class Entidad{
             this.velocidad = velocidad;
             this.id = id;
 
-            console.log(hitbox);
+           //console.log(hitbox);
             this.hitbox = hitbox;
 
             this.imagen = new Image();

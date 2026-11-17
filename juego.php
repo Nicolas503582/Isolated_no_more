@@ -248,110 +248,171 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
     </div>
 
     <div id = "Crafteador">
-        <div id="crafteos">
-            <div class="crafteo">
-                <div class="precio">
+        <div id = "panel_crafteador">
+            <div id="crafteos"> <!--
+                <div class="crafteo">
+                    <div class="precio">
+                        <div class="objeto">
+                            <p class="objeto_id"></p>
+                            <p class="objeto_nombre"></p>
+                            <p class="objeto_cantidad"></p>
+                            <img src="" alt="" class="imagen_objeto">
+                        </div>
+                    </div>
+
+                    <div class="flecha">
+
+                    </div>
+
+                    <div class="resultado">
+
+                    </div>
+                </div> -->
+            </div>
+            <div id="lado_derecho">
+                <div class="Inventario_materiales">
+                    
+                        <div class="espacio_inv" id="Material_inv_5">
+                            <p class="seleccionado"> false</p>
+                            <p class="id_objeto"></p>
+                            <p class="nombre_objeto"></p>
+                            <p class="cantidad"></p>
+                            <p class="descripcion"></p>
+                            <img src="" alt="" class="imagen_Item">
+                        </div>
+                        <div class="espacio_inv" id="Material_inv_5">
+                            <p class="seleccionado"> false</p>
+                            <p class="id_objeto"></p>
+                            <p class="nombre_objeto"></p>
+                            <p class="cantidad"></p>
+                            <p class="descripcion"></p>
+                            <img src="" alt="" class="imagen_Item">
+                        </div>
+                        <div class="espacio_inv" id="Material_inv_5">
+                            <p class="seleccionado"> false</p>
+                            <p class="id_objeto"></p>
+                            <p class="nombre_objeto"></p>
+                            <p class="cantidad"></p>
+                            <p class="descripcion"></p>
+                            <img src="" alt="" class="imagen_Item">
+                        </div>
+                        <div class="espacio_inv" id="Material_inv_5">
+                            <p class="seleccionado"> false</p>
+                            <p class="id_objeto"></p>
+                            <p class="nombre_objeto"></p>
+                            <p class="cantidad"></p>
+                            <p class="descripcion"></p>
+                            <img src="" alt="" class="imagen_Item">
+                        </div>
+                        <div class="espacio_inv" id="Material_inv_5">
+                            <p class="seleccionado"> false</p>
+                            <p class="id_objeto"></p>
+                            <p class="nombre_objeto"></p>
+                            <p class="cantidad"></p>
+                            <p class="descripcion"></p>
+                            <img src="" alt="" class="imagen_Item">
+                        </div>
 
                 </div>
-
-                <div class="flecha">
-
-                </div>
-
-                <div class="resultado">
+                <div class="Inventario_rapido">
+                    
+                        <div class="espacio_inv" id="Rapido_inv_1">
+                            <p class="seleccionado"> false</p>
+                            <p class="id_objeto"></p>
+                            <p class="nombre_objeto"></p>
+                            <p class="cantidad"></p>
+                            <p class="descripcion"></p>
+                            <img src="" alt="" class="imagen_Item">
+                        </div>
+                        <div class="espacio_inv" id="Rapido_inv_2">
+                            <p class="seleccionado"> false</p>
+                            <p class="id_objeto"></p>
+                            <p class="nombre_objeto"></p>
+                            <p class="cantidad"></p>
+                            <p class="descripcion"></p>
+                            <img src="" alt="" class="imagen_Item">
+                        </div>
+                        <div class="espacio_inv" id="Rapido_inv_3">
+                            <p class="seleccionado"> false</p>
+                            <p class="id_objeto"></p>
+                            <p class="nombre_objeto"></p>
+                            <p class="cantidad"></p>
+                            <p class="descripcion"></p>
+                            <img src="" alt="" class="imagen_Item">
+                        </div>
+                        <div class="espacio_inv" id="Rapido_inv_4">
+                            <p class="seleccionado"> false</p>
+                            <p class="id_objeto"></p>
+                            <p class="nombre_objeto"></p>
+                            <p class="cantidad"></p>
+                            <p class="descripcion"></p>
+                            <img src="" alt="" class="imagen_Item">
+                        </div>
+                        <div class="espacio_inv" id="Rapido_inv_5">
+                            <p class="seleccionado"> false</p>
+                            <p class="id_objeto"></p>
+                            <p class="nombre_objeto"></p>
+                            <p class="cantidad"></p>
+                            <p class="descripcion"></p>
+                            <img src="" alt="" class="imagen_Item">
+                        </div>
 
                 </div>
             </div>
         </div>
-        <div id="lado_derecho">
-            <div class="Inventario_materiales">
-                
-                    <div class="espacio_inv" id="Material_inv_5">
-                        <p class="seleccionado"> false</p>
-                        <p class="id_objeto"></p>
-                        <p class="nombre_objeto"></p>
-                        <p class="cantidad"></p>
-                        <p class="descripcion"></p>
-                        <img src="" alt="" class="imagen_Item">
-                    </div>
-                    <div class="espacio_inv" id="Material_inv_5">
-                        <p class="seleccionado"> false</p>
-                        <p class="id_objeto"></p>
-                        <p class="nombre_objeto"></p>
-                        <p class="cantidad"></p>
-                        <p class="descripcion"></p>
-                        <img src="" alt="" class="imagen_Item">
-                    </div>
-                    <div class="espacio_inv" id="Material_inv_5">
-                        <p class="seleccionado"> false</p>
-                        <p class="id_objeto"></p>
-                        <p class="nombre_objeto"></p>
-                        <p class="cantidad"></p>
-                        <p class="descripcion"></p>
-                        <img src="" alt="" class="imagen_Item">
-                    </div>
-                    <div class="espacio_inv" id="Material_inv_5">
-                        <p class="seleccionado"> false</p>
-                        <p class="id_objeto"></p>
-                        <p class="nombre_objeto"></p>
-                        <p class="cantidad"></p>
-                        <p class="descripcion"></p>
-                        <img src="" alt="" class="imagen_Item">
-                    </div>
-                    <div class="espacio_inv" id="Material_inv_5">
-                        <p class="seleccionado"> false</p>
-                        <p class="id_objeto"></p>
-                        <p class="nombre_objeto"></p>
-                        <p class="cantidad"></p>
-                        <p class="descripcion"></p>
-                        <img src="" alt="" class="imagen_Item">
-                    </div>
+    </div>
 
+    <div id="Inventario_rapido">
+        
+        <div id = "mini_Rapido" class = "objetos">
+            
+            
+            <div class="espacio_inv" id="mini_rapido1">
+                <p class="seleccionado"> false</p>
+                <p class="id_objeto"></p>
+                <p class="nombre_objeto"></p>
+                <p class="cantidad"></p>
+                <p class="descripcion"></p>
+                <img src="" alt="" class="imagen_Item">
             </div>
-            <div class="Inventario_rapido">
-                
-                    <div class="espacio_inv" id="Rapido_inv_5">
-                        <p class="seleccionado"> false</p>
-                        <p class="id_objeto"></p>
-                        <p class="nombre_objeto"></p>
-                        <p class="cantidad"></p>
-                        <p class="descripcion"></p>
-                        <img src="" alt="" class="imagen_Item">
-                    </div>
-                    <div class="espacio_inv" id="Rapido_inv_5">
-                        <p class="seleccionado"> false</p>
-                        <p class="id_objeto"></p>
-                        <p class="nombre_objeto"></p>
-                        <p class="cantidad"></p>
-                        <p class="descripcion"></p>
-                        <img src="" alt="" class="imagen_Item">
-                    </div>
-                    <div class="espacio_inv" id="Rapido_inv_5">
-                        <p class="seleccionado"> false</p>
-                        <p class="id_objeto"></p>
-                        <p class="nombre_objeto"></p>
-                        <p class="cantidad"></p>
-                        <p class="descripcion"></p>
-                        <img src="" alt="" class="imagen_Item">
-                    </div>
-                    <div class="espacio_inv" id="Rapido_inv_5">
-                        <p class="seleccionado"> false</p>
-                        <p class="id_objeto"></p>
-                        <p class="nombre_objeto"></p>
-                        <p class="cantidad"></p>
-                        <p class="descripcion"></p>
-                        <img src="" alt="" class="imagen_Item">
-                    </div>
-                    <div class="espacio_inv" id="Rapido_inv_5">
-                        <p class="seleccionado"> false</p>
-                        <p class="id_objeto"></p>
-                        <p class="nombre_objeto"></p>
-                        <p class="cantidad"></p>
-                        <p class="descripcion"></p>
-                        <img src="" alt="" class="imagen_Item">
-                    </div>
+            
+            <div class="espacio_inv" id="mini_rapido2">
+                <p class="seleccionado"> false</p>
+                <p class="id_objeto"></p>
+                <p class="nombre_objeto"></p>
+                <p class="cantidad"></p>
+                <p class="descripcion"></p>
+                <img src="" alt="" class="imagen_Item">
+            </div>
+            
+            <div class="espacio_inv" id="mini_rapido3">
+                <p class="seleccionado"> false</p>
+                <p class="id_objeto"></p>
+                <p class="nombre_objeto"></p>
+                <p class="cantidad"></p>
+                <p class="descripcion"></p>
+                <img src="" alt="" class="imagen_Item">
+            </div>
+            
+            <div class="espacio_inv" id="mini_rapido4">
+                <p class="seleccionado"> false</p>
+                <p class="id_objeto"></p>
+                <p class="nombre_objeto"></p>
+                <p class="cantidad"></p>
+                <p class="descripcion"></p>
+                <img src="" alt="" class="imagen_Item">
+            </div>
+            
+            <div class="espacio_inv" id="mini_rapido5">
+                <p class="seleccionado"> false</p>
+                <p class="id_objeto"></p>
+                <p class="nombre_objeto"></p>
+                <p class="cantidad"></p>
+                <p class="descripcion"></p>
+                <img src="" alt="" class="imagen_Item">
+            </div>
 
-            </div>
+            
         </div>
     </div>
 
@@ -360,6 +421,8 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
     </canvas>
 
     <script type="module" src ="juegojs.php"></script>
+
+
 
 </body>
 </html>
