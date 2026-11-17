@@ -20,7 +20,14 @@ export class Inventario {
         this.crafteador_objetos = {Materiales: [], Rapido: []};
         this.crafteador_objetos.Materiales = this.espacios_crafteador.slice(0, 5);
         this.crafteador_objetos.Rapido = this.espacios_crafteador.slice(5, 10);
-        this.estaseleccionado = null;
+        this.estaseleccionado = null;   
+         
+        this.Rapido = document.getElementById("mini_Rapido");
+        this.rapidos = Array.from(this.Rapido.getElementsByClassName("espacio_inv"));
+        
+        this.id_select_inv = 0;
+
+        this.pintar_seleccionado();
 
         this.eventos();
 
@@ -182,6 +189,29 @@ export class Inventario {
                 }
             });
         });
+
+        
+
+        window.addEventListener("keydown", (e) => {
+            const tecla = e.key.toLowerCase();
+            const teclas = {"arrowleft": -1, "arrowright": 1};
+            if(tecla in teclas){
+                this.id_select_inv += teclas[tecla];
+                this.pintar_seleccionado();
+            }
+        });
+    }
+    pintar_seleccionado()
+    {
+        for(let i = 0; i < this.rapidos.length; i++)
+        {
+            if(i != this.id_select_inv){
+                this.rapidos[i].classList.remove("seleccionado");
+            }
+            else{
+                this.rapidos[i].classList.add("seleccionado");
+            }
+        }
     }
 
     des_activar(espacio)
@@ -196,9 +226,17 @@ export class Inventario {
 
         let inventario = this.inventario_objetos[categoria];
         let crafteador = this.crafteador_objetos[categoria];
+        let rapidos = this.rapidos;
 
         inventario.forEach((espacio, i) => {
             crafteador[i].innerHTML = espacio.innerHTML;
         });
+
+        if(categoria === "Rapido")
+        {
+            inventario.forEach((espacio, i) => {
+                rapidos[i].innerHTML = espacio.innerHTML;
+            });
+        }
     }
 }

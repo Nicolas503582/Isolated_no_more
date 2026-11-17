@@ -316,7 +316,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                 </div>
                 <div class="Inventario_rapido">
                     
-                        <div class="espacio_inv" id="Rapido_inv_5">
+                        <div class="espacio_inv" id="Rapido_inv_1">
                             <p class="seleccionado"> false</p>
                             <p class="id_objeto"></p>
                             <p class="nombre_objeto"></p>
@@ -324,7 +324,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                             <p class="descripcion"></p>
                             <img src="" alt="" class="imagen_Item">
                         </div>
-                        <div class="espacio_inv" id="Rapido_inv_5">
+                        <div class="espacio_inv" id="Rapido_inv_2">
                             <p class="seleccionado"> false</p>
                             <p class="id_objeto"></p>
                             <p class="nombre_objeto"></p>
@@ -332,7 +332,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                             <p class="descripcion"></p>
                             <img src="" alt="" class="imagen_Item">
                         </div>
-                        <div class="espacio_inv" id="Rapido_inv_5">
+                        <div class="espacio_inv" id="Rapido_inv_3">
                             <p class="seleccionado"> false</p>
                             <p class="id_objeto"></p>
                             <p class="nombre_objeto"></p>
@@ -340,7 +340,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                             <p class="descripcion"></p>
                             <img src="" alt="" class="imagen_Item">
                         </div>
-                        <div class="espacio_inv" id="Rapido_inv_5">
+                        <div class="espacio_inv" id="Rapido_inv_4">
                             <p class="seleccionado"> false</p>
                             <p class="id_objeto"></p>
                             <p class="nombre_objeto"></p>
@@ -359,6 +359,60 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
 
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="Inventario_rapido">
+        
+        <div id = "mini_Rapido" class = "objetos">
+            
+            
+            <div class="espacio_inv" id="mini_rapido1">
+                <p class="seleccionado"> false</p>
+                <p class="id_objeto"></p>
+                <p class="nombre_objeto"></p>
+                <p class="cantidad"></p>
+                <p class="descripcion"></p>
+                <img src="" alt="" class="imagen_Item">
+            </div>
+            
+            <div class="espacio_inv" id="mini_rapido2">
+                <p class="seleccionado"> false</p>
+                <p class="id_objeto"></p>
+                <p class="nombre_objeto"></p>
+                <p class="cantidad"></p>
+                <p class="descripcion"></p>
+                <img src="" alt="" class="imagen_Item">
+            </div>
+            
+            <div class="espacio_inv" id="mini_rapido3">
+                <p class="seleccionado"> false</p>
+                <p class="id_objeto"></p>
+                <p class="nombre_objeto"></p>
+                <p class="cantidad"></p>
+                <p class="descripcion"></p>
+                <img src="" alt="" class="imagen_Item">
+            </div>
+            
+            <div class="espacio_inv" id="mini_rapido4">
+                <p class="seleccionado"> false</p>
+                <p class="id_objeto"></p>
+                <p class="nombre_objeto"></p>
+                <p class="cantidad"></p>
+                <p class="descripcion"></p>
+                <img src="" alt="" class="imagen_Item">
+            </div>
+            
+            <div class="espacio_inv" id="mini_rapido5">
+                <p class="seleccionado"> false</p>
+                <p class="id_objeto"></p>
+                <p class="nombre_objeto"></p>
+                <p class="cantidad"></p>
+                <p class="descripcion"></p>
+                <img src="" alt="" class="imagen_Item">
+            </div>
+
+            
         </div>
     </div>
 
