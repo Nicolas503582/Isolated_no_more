@@ -26,6 +26,24 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+
+
+    <!--
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Acordate que tenes que combinar los combios de ambas compus!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    -->
+    <div id="UI">
+        <div>
+
+        </div>
+        <div id="tiempo">
+            <div id="reloj">
+                <p id="hora">00</p>
+                <p id="minuto">00</p>
+            </div>
+        </div>
+    </div>
+
     <div id = "Inventario">
         <div id = "Inventario_contenido">
             <div id = "Imagenes_inventario">

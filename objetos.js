@@ -4,6 +4,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -11,6 +12,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -18,6 +20,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -25,6 +28,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -32,6 +36,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -39,6 +44,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -46,6 +52,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -53,6 +60,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -60,13 +68,21 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
         id: 9,
-        nombre: "cabeza",
-        categoria: "",
-        src: "./robot1.png",
+        nombre: "parcela",
+        categoria: "cons",
+        hitbox: {
+            x: 0,
+            y: 11,
+            ancho: 20,
+            alto: 25
+        },
+        src: "./verde.png",
+        tipo: "parcela_cultivos",
         descripcion: "Es una cabeza"
     },
     {
@@ -80,6 +96,7 @@ export const Objetos = [
             alto: 25
         },
         src: "./robot2.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -87,6 +104,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot2.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -94,6 +112,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -101,6 +120,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -108,6 +128,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -115,6 +136,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -122,6 +144,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -129,6 +152,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -136,6 +160,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -143,6 +168,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     },
     {
@@ -150,6 +176,7 @@ export const Objetos = [
         nombre: "cabeza",
         categoria: "",
         src: "./robot1.png",
+        tipo: "",
         descripcion: "Es una cabeza"
     }
 ];

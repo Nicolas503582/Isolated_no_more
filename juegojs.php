@@ -25,6 +25,7 @@ import { calculos } from "./general.js";
 import { Inventario } from "./inventario.js";
 import { Crafteador } from "./crafteo.js";
 import { Construccion } from "./construccion.js";
+import { Objetos } from "./objetos.js";
 
 const calculo = new calculos();
 let inv = new Inventario();
@@ -59,12 +60,23 @@ let ctx_robot = equipamiento.getContext("2d");
 /*let hamster = document.getElementById("canvas_hamster");
 let ctx_hamster = hamster.getContext("2d");*/
 
+let hora_html = document.getElementById("hora");
+let minuto_html = document.getElementById("minuto");
+let hora_text = "00";
+let minuto_text = "00";
+
 let teclas = {a: false, d: false, s: false, w: false, e: false};
 let entidades_id = 0;
 let direccion = {x : 0, y: 0, z: 0};
 let espacio_x = [];
 let espacio_y = [];
 let imagenes = {};
+
+let dias = 0;
+let horas = 0;
+let minutos = 0;
+let time = 0;
+let time_del = 0;
 
 let entidades = [];
 let entidades_dibujables = [];
@@ -114,7 +126,7 @@ entidades.push(robot1);
 entidades_dibujables.push(robot1);
 
 function loop() {
-   console.log(robot1.x + "    " + robot1.y);
+   //console.log(robot1.x + "    " + robot1.y);
 
     if(!inv_activo && !craf_activo)
     {
@@ -183,6 +195,48 @@ function loop() {
     else
     {
         
+    }
+    time++;
+    if(time >= 150)
+    {
+        minutos++;
+        if(minutos >= 60)
+        {
+            minutos = 0;
+            horas++;
+            if(horas >= 24)
+            {
+                horas = 0;
+                dias++;
+            }
+            if(horas < 10)
+            {
+                hora_text = "0" + horas;
+            }
+            else
+            {
+                hora_text = horas;
+            }
+        }
+        time = 0;
+        if(minutos < 10)
+        {
+            minuto_text = "0" + minutos;
+        }
+        else
+        {
+            minuto_text = minutos;
+        }
+        hora_html.textContent = hora_text;
+        minuto_html.textContent = minuto_text;
+        time_del++;
+        if(time_del >= 5)
+        {
+            const evento = new CustomEvent('5_minutos', {
+                detail: "pasaron 5 minutos"
+            });
+            time_del = 0;
+        }
     }
     requestAnimationFrame(loop);
 }
@@ -264,8 +318,9 @@ ajustarResolucionCanvas(canvas, ctx);
 
 //evento personalizado
 document.addEventListener('construir', (e) => {
+
     const propiedades = e.detail;
-    const construccion = new Construccion(100, 100, {x: 8, y: 50, alto: 12, ancho: 19}, 2, entidades_id++);
+    const construccion = new Construccion(100, 100, Objetos[propiedades.id].hitbox, entidades_id++);
     entidades.push(construccion);
     actualizar_espacio(construccion);
     console.log("aaaaaaaaa");

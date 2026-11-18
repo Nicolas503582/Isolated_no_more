@@ -12,6 +12,17 @@ export const Recetas = [
  
     },
     {
+        id: 7,
+        nombre: "parcela",
+        materiales: [
+            { id: 1, cantidad: 100 }
+        ],
+        resultado: {
+            id: 9,
+            cantidad: 1
+        }
+    },
+    {
         id: 1,
         nombre: "cabe",
         materiales: [

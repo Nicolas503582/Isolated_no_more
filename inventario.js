@@ -196,7 +196,18 @@ export class Inventario {
             const tecla = e.key.toLowerCase();
             const teclas = {"arrowleft": -1, "arrowright": 1};
             if(tecla in teclas){
-                this.id_select_inv += teclas[tecla];
+                if(this.id_select_inv + teclas[tecla] > 4)
+                {
+                    this.id_select_inv = 0;
+                }
+                else if(this.id_select_inv + teclas[tecla] < 0)
+                {
+                    this.id_select_inv = 4;
+                }
+                else
+                {
+                    this.id_select_inv += teclas[tecla];
+                }
                 this.pintar_seleccionado();
             }
             if(tecla == "arrowdown")
