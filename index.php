@@ -19,6 +19,6 @@
         </div>
     </nav>
     <h1>Welcome to My Game</h1>
-
+    <a href="jugar.php">Jugar</a>
 </body>
 </html>

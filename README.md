@@ -10,15 +10,16 @@ Ranchito
 - [x] Movimiento
 - [x] Colisiones
 - [x] Construccion_basica
-- [ ] Animaciones //Cami - implementacio
+- [ ] Animaciones //Cami - implementacion
 - [ ] Mapa  //Cami - implementacion
 - [x] Jerarquia
 - [x] Inventarío
-- [ ] Animales //basico
-- [ ] construccion de parcelas //necesario
-- [ ] Cultivos //necesario
-- [ ] Partidas //necesario
-- [ ] UI //proceso
+- [ ] Animales basico //obligatorio
+- [ ] Animales avanzados //no obligatorio
+- [ ] construccion de parcelas //obligatorio
+- [ ] Cultivos //obligatorio
+- [ ] Partidas //obligatorio
+- [ ] UI //proceso - (casi)
 - [ ] Mejoras //no obligatorio
 - [ ] Combate //no obligatorio
 - [ ] Otros //no obligatorio
