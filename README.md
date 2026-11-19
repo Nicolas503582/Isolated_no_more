@@ -10,8 +10,8 @@ Ranchito
 - [x] Movimiento
 - [x] Colisiones
 - [x] Construccion_basica
-- [ ] Animaciones //Cami
-- [ ] Mapa  //Cami
+- [ ] Animaciones //Cami - implementacio
+- [ ] Mapa  //Cami - implementacion
 - [x] Jerarquia
 - [x] Inventarío
 - [ ] Animales //basico

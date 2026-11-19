@@ -33,8 +33,25 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Acordate que tenes que combinar los combios de ambas compus!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     -->
     <div id="UI">
-        <div>
+        <div id="jugador">
+            <div id="imagen">
+                <canvas id="cara_robot">
 
+                </canvas>
+            </div>
+            <div id="stats">
+                <div id="vida">
+
+                </div>
+                <div id="energia">
+                    <div id="combustible">
+
+                    </div>
+                    <div id="hambre">
+
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="tiempo">
             <div id="reloj">
