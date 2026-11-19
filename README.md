@@ -9,15 +9,16 @@ Ranchito
 - [x] Personalización
 - [x] Movimiento
 - [x] Colisiones
-- [x] Construccion
-- [ ] Animaciones
-- [ ] Mapa
+- [x] Construccion_basica
+- [ ] Animaciones //Cami
+- [ ] Mapa  //Cami
 - [x] Jerarquia
 - [x] Inventarío
-- [ ] Animales
-- [ ] Cultivos
-- [ ] Partidas
-- [ ] UI
-- [ ] Mejoras
-- [ ] Combate
-- [ ] Otros
+- [ ] Animales //basico
+- [ ] construccion de parcelas //necesario
+- [ ] Cultivos //necesario
+- [ ] Partidas //necesario
+- [ ] UI //proceso
+- [ ] Mejoras //no obligatorio
+- [ ] Combate //no obligatorio
+- [ ] Otros //no obligatorio
