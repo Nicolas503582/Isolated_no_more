@@ -34,6 +34,9 @@ let craf = new Crafteador();
 let canvas = document.getElementById("juego");
 let ctx = canvas.getContext("2d");
 
+let Cara_UI = document.getElementById("cara_robot");
+let ctx_UI_cara = Cara_UI.getContext("2d");
+
 let inventario = document.getElementById("Inventario");
 
 let inventario_html = document.getElementById("Inv_objetos");
@@ -235,6 +238,8 @@ function loop() {
             const evento = new CustomEvent('5_minutos', {
                 detail: "pasaron 5 minutos"
             });
+            
+            document.dispatchEvent(evento);
             time_del = 0;
         }
     }
@@ -320,7 +325,7 @@ ajustarResolucionCanvas(canvas, ctx);
 document.addEventListener('construir', (e) => {
 
     const propiedades = e.detail;
-    const construccion = new Construccion(robot1.x + (-15 + 2 *15 * robot1.direccion.x), robot1.y + 30 * robot1.direccion.y, Objetos[propiedades.id].hitbox, entidades_id++, imagenesExtra[propiedades.id]);
+    const construccion = new Construccion(robot1.x + (-15 + 2 *15 * robot1.direccion.x) + robot1.hitbox.x, robot1.y + 30 * robot1.direccion.y + robot1.hitbox.y, Objetos[propiedades.id].hitbox, entidades_id++, imagenesExtra[propiedades.id]);
     entidades.push(construccion);
     actualizar_espacio(construccion);
     console.log("aaaaaaaaa");
@@ -490,6 +495,10 @@ Promise.all([
     });
 
     // Iniciar juego únicamente cuando todas las imágenes estén cargadas
+    //ctx_UI_cara.
+    ctx_UI_cara.clearRect(0,0,900,900);
+    robot1.dibujar_max(Cara_UI, ctx_UI_cara, Cara_UI.width, Cara_UI.height*3);
+
     loop();
 
 }).catch(error => {

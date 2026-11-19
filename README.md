@@ -6,19 +6,21 @@ Ranchito
  En desarrollo.
 
 ## Contenido
+- [ ] Animaciones //Cami - implementacion
+- [ ] Mapa  //Cami - implementacion
 - [x] Personalización
 - [x] Movimiento
 - [x] Colisiones
 - [x] Construccion_basica
-- [ ] Animaciones //Cami
-- [ ] Mapa  //Cami
 - [x] Jerarquia
 - [x] Inventarío
-- [ ] Animales //basico
-- [ ] construccion de parcelas //necesario
-- [ ] Cultivos //necesario
-- [ ] Partidas //necesario
-- [ ] UI //proceso
+- [ ] Animales basico //obligatorio (comenzando)
+- [ ] Animales avanzados //no obligatorio
+- [ ] construccion de parcelas //obligatorio
+- [ ] Cultivos //obligatorio
+- [ ] Partidas //obligatorio
+- [ ] Conexion DB //obligatorio
+- [ ] UI //proceso - (casi)
 - [ ] Mejoras //no obligatorio
 - [ ] Combate //no obligatorio
 - [ ] Otros //no obligatorio
