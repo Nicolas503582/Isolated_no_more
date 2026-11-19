@@ -389,8 +389,7 @@ input[type="range"]{
 
 /* Información del objeto */
 .id_objeto,
-.nombre_objeto,
-.cantidad {
+.nombre_objeto{
     display: none;
 }
 
