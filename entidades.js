@@ -40,6 +40,8 @@ export class Entidad{
             this.saturacion_viejo = 0;
             this.saturacion = saturacion;
 
+            this.direccion = {x:0, y:0};
+
             this.movimiento = new movimiento(this);
 
             this.start(this.claves, this.urls);

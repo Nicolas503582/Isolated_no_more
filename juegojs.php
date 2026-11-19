@@ -320,7 +320,7 @@ ajustarResolucionCanvas(canvas, ctx);
 document.addEventListener('construir', (e) => {
 
     const propiedades = e.detail;
-    const construccion = new Construccion(100, 100, Objetos[propiedades.id].hitbox, entidades_id++, imagenesExtra[propiedades.id]);
+    const construccion = new Construccion(robot1.x + (-15 + 2 *15 * robot1.direccion.x), robot1.y + 30 * robot1.direccion.y, Objetos[propiedades.id].hitbox, entidades_id++, imagenesExtra[propiedades.id]);
     entidades.push(construccion);
     actualizar_espacio(construccion);
     console.log("aaaaaaaaa");

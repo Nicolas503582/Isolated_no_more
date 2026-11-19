@@ -14,6 +14,31 @@ export class movimiento {
             this.movicion();
             this.afectarHitbox(espacio_x, espacio_y, id);
         }
+        let aux = (this.movimiento.x == 0) + "" + (this.movimiento.z == 0);
+        switch (aux)
+        {
+            case "falsetrue":
+                this.entidad.direccion = {y: this.movimiento.z, x: this.movimiento.x};
+            break;
+
+            case "falsefalse":
+                this.entidad.direccion = {y: this.movimiento.z, x: this.movimiento.x};
+            break;
+
+            case "truefalse":
+                this.entidad.direccion = {y: this.movimiento.z, x: this.movimiento.x};
+            break;
+        }
+        
+        console.log(aux);
+        /*if(this.movimiento.x != 0 || this.entidad.direccion.y != 0)
+        {
+            this.entidad.direccion.y = this.movimiento.x;
+        }
+        if(this.entidad.direccion.x != 0 || this.movimiento.y != 0)
+        {
+            this.entidad.direccion.y = this.movimiento.y;
+        }*/
     }
 
     mover(direccion, salto) {

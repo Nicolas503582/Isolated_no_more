@@ -9,6 +9,7 @@ Ranchito
 - [x] Personalización
 - [x] Movimiento
 - [x] Colisiones
+- [x] Construccion
 - [ ] Animaciones
 - [ ] Mapa
 - [x] Jerarquia
