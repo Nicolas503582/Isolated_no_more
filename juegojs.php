@@ -197,7 +197,7 @@ function loop() {
         
     }
     time++;
-    if(time >= 150)
+    if(time >= 60)
     {
         minutos++;
         if(minutos >= 60)
@@ -320,7 +320,7 @@ ajustarResolucionCanvas(canvas, ctx);
 document.addEventListener('construir', (e) => {
 
     const propiedades = e.detail;
-    const construccion = new Construccion(100, 100, Objetos[propiedades.id].hitbox, entidades_id++);
+    const construccion = new Construccion(100, 100, Objetos[propiedades.id].hitbox, entidades_id++, imagenesExtra[propiedades.id]);
     entidades.push(construccion);
     actualizar_espacio(construccion);
     console.log("aaaaaaaaa");
@@ -343,7 +343,6 @@ function actualizar_espacio(entidad){
     console.log("nbbbbbbbbbbbbb");
     
 }
-
 const nombresBaseImagenes = [
     "antebrazo_der",
     "antebrazo_izq",
@@ -373,15 +372,15 @@ for (let i = 1; i <= 3; i++) {
     }
 }
 
-const rutasGenerales = [
-];
+// Agregá acá las rutas de las imágenes que irán a la lista
+const rutasGenerales = ["./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png"];
+let imagenesExtra = [];
 
 function cargarImagen(url) {
     return new Promise((resolve, reject) => {
         const img = new Image();
 
         img.onload = () => {
-            //console.log(`✅ Cargada con éxito: ${url}`);
             resolve(img);
         };
 
@@ -397,42 +396,32 @@ function cargarImagen(url) {
 async function inicializarSprites() {
     const spritesCargados = {};
 
-   //console.log("=== Iniciando carga secuencial de imágenes ===");
-
     for (const url of imagenesRobot) {
         try {
             const imgObjeto = await cargarImagen(url);
-
             const nombreClave = url.split('/').pop().replace('.png', '');
-
             spritesCargados[nombreClave] = imgObjeto;
-
         } catch (error) {
             console.warn("Saltando imagen debido al error.");
         }
     }
 
-   //console.log("=== ¡Todas las imágenes de los 3 robots han sido cargadas! ===");
-
     return spritesCargados;
 }
 
+// Carga en paralelo: el objeto de robots y la lista de imágenes generales
 Promise.all([
     inicializarSprites(),
     Promise.all(rutasGenerales.map(cargarImagen))
 ]).then(([spritesRobots, imagenesGenerales]) => {
 
+    // 1. Primer objeto: diccionario exclusivo con los sprites de los robots
     const misSprites = { ...spritesRobots };
 
-    rutasGenerales.forEach((ruta, i) => {
-        const nombreClave = ruta.split('/').pop().replace('.png', '');
-        misSprites[nombreClave] = imagenesGenerales[i];
-    });
-
-    //console.log("Diccionario completo de sprites listos:", misSprites);
+    // 2. Segundo elemento: lista (Array) con los objetos Image de rutasGenerales en el mismo orden
+    const listaImagenesGenerales = [...imagenesGenerales];
 
     // Configuración automática de Robot1
-
     const nom_cabeza = "cabezaR" + cabeza + "_post";
 
     const nom_brazo = {
@@ -476,7 +465,9 @@ Promise.all([
         [<?php echo $saturacion?>]
     );
 
+    // Asignación a variables globales (si las usás fuera del .then)
     imagenes = misSprites;
+    imagenesExtra = listaImagenesGenerales;
 
     ajustarResolucionCanvas(equipamiento, ctx_robot, false);
 
