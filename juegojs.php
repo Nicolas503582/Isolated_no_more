@@ -15,6 +15,7 @@ $torso = $_SESSION["id_torso"];
 $brazo = $_SESSION["id_brazo"];
 $pierna = $_SESSION["id_pierna"];
 
+
 header("Content-Type: application/javascript");
 
 ?>
