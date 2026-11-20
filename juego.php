@@ -43,14 +43,14 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
                 <div id="vida">
 
                 </div>
-                <div id="energia">
                     <div id="combustible">
 
                     </div>
                     <div id="hambre">
 
                     </div>
-                </div>
+                <!---<div id="energia">
+                </div>-->
             </div>
         </div>
         <div id="tiempo">
@@ -280,7 +280,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
             </div>
 
         </div>
-        <button type="button" id="Guardar_partida">Guardar Partida</button>
+        <button type="button" id="guardar_partido">Guardar Partida</button>
     </div>
 
     <div id = "Crafteador">

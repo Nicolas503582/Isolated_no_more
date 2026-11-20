@@ -30,7 +30,7 @@ export class movimiento {
             break;
         }
         
-        console.log(aux);
+       //console.log(aux);
         /*if(this.movimiento.x != 0 || this.entidad.direccion.y != 0)
         {
             this.entidad.direccion.y = this.movimiento.x;

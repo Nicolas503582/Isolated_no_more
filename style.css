@@ -198,6 +198,7 @@ input[type="range"]{
 }
 
 
+
 /* ===== CONTENEDOR PRINCIPAL ===== */
 /* ===== VENTANA PRINCIPAL ===== */
 
@@ -217,6 +218,24 @@ input[type="range"]{
     display: grid;
     place-items: center;
 }
+
+/*
+#Inventario_contenido {
+    display: grid;
+    width: 90vw;
+    max-width: 1100px;
+    height: 80vh;
+    max-height: 650px;
+    
+    grid-template-columns: minmax(0, 1fr) minmax(0, 4fr);
+    gap: 20px;
+    padding: 15px;
+    box-sizing: border-box;
+    
+    background-color: #ffffff;
+    border: 4px solid #000000;
+}
+*/
 
 /* Panel blanco central */
 #panel_crafteador {
@@ -470,8 +489,8 @@ input[type="range"]{
     display: flex;
     justify-content: space-between; /* Empuja el primer div a la izquierda y el segundo a la derecha */
     align-items: flex-start;       /* Alinea ambos elementos en la parte superior */
-    width: 100%;
-    padding: 20px;
+    height: 100vh;
+    width: 100vw;
     box-sizing: border-box;        /* Evita que el padding desborde la pantalla */
     position: fixed;               /* Fija la UI por encima del juego */
     top: 0;
@@ -520,8 +539,8 @@ input[type="range"]{
 
 #jugador {
     position: relative;
-    width: 360px;
-    height: 125px;         /* semitransparente: 1 = opaco, 0 = invisible */
+    width: 30%;
+    height: 20%;         /* semitransparente: 1 = opaco, 0 = invisible */
 }
 
 /* Círculo de la izquierda */
@@ -529,8 +548,8 @@ input[type="range"]{
     position: absolute;
     left: 0;
     top: 0;
-    width: 120px;
-    height: 120px;
+    width: 30%;
+    height: 100%;
     box-sizing: border-box;
     border: 3px solid #000;
     border-radius: 50%;
@@ -554,8 +573,8 @@ input[type="range"]{
     position: absolute;
     left: 40px;
     top: 3px;
-    width: 300px;
-    height: 115px;
+    width: 100%;
+    height: 100%;
     box-sizing: border-box;
     border: 3px solid #000;
     background: #fff;
@@ -581,6 +600,19 @@ input[type="range"]{
     flex: 2;
     border: 3px solid #000;
     background: #fff;
+    display: flex;         
+    padding: 2%;
+    gap: 2%;
+    align-items: stretch;  
+    overflow: hidden;      
+}
+
+#vida img {
+    flex: 1;               
+    min-width: 0;          
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
 }
 
 /* Contenedor de las dos barras finas */
@@ -608,7 +640,12 @@ input[type="range"]{
 
     margin: 0;
     font-size: 10px;
-    font-weight: bold;
-    color: white;
-    text-shadow: 1px 1px 2px black;
+    color: black;
+    text-shadow: 1px 1px 2px gray;
 }
+
+/*.rayito{
+    width: 10px;
+    height: 10px;
+    object-fit: cover;
+}*/
