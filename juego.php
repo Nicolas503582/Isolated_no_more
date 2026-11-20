@@ -280,6 +280,7 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
             </div>
 
         </div>
+        <button type="button" id="Guardar_partida">Guardar Partida</button>
     </div>
 
     <div id = "Crafteador">

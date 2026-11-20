@@ -28,6 +28,8 @@ import { Crafteador } from "./crafteo.js";
 import { Construccion } from "./construccion.js";
 import { Objetos } from "./objetos.js";
 
+let Guardar = document.getElementById("Guardar_partido");
+
 const calculo = new calculos();
 let inv = new Inventario();
 let craf = new Crafteador();
@@ -504,4 +506,18 @@ Promise.all([
 
 }).catch(error => {
     console.error("Error al inicializar las imágenes:", error);
+});
+
+Guardar.addEventListener('click', (e) => {
+    const datosJugador = {
+        idUsuario: "user_8842",
+        nivel: 15,
+        oro: 350.5
+    };
+
+    // 2. Lo conviertes a texto JSON
+    const jsonParaEnviar = JSON.stringify(datosJugador);
+
+    // Resultado: '{"idUsuario":"user_8842","nivel":15,"oro":350.5}'
+    console.log(jsonParaEnviar);
 });
