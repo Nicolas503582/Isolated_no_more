@@ -28,6 +28,9 @@ import { Crafteador } from "./crafteo.js";
 import { Construccion } from "./construccion.js";
 import { Objetos } from "./objetos.js";
 
+let Guardar = document.getElementById("guardar_partido");
+let vida_html = document.getElementById("vida");
+
 const calculo = new calculos();
 let inv = new Inventario();
 let craf = new Crafteador();
@@ -69,7 +72,7 @@ let minuto_html = document.getElementById("minuto");
 let hora_text = "00";
 let minuto_text = "00";
 
-let teclas = {a: false, d: false, s: false, w: false, e: false};
+let teclas = {a: false, d: false, s: false, w: false, e: false, q: false, j: false};
 let entidades_id = 0;
 let direccion = {x : 0, y: 0, z: 0};
 let espacio_x = [];
@@ -295,7 +298,6 @@ window.addEventListener("keydown", (e) => {
         /*Object.keys(teclas).forEach(clave =>{
             teclas[clave] = false;
         });*/
-        teclas[tecla] = true;
         if(tecla == "e" && !craf_activo)
         {
             inventario.classList.toggle("activo");
@@ -306,6 +308,17 @@ window.addEventListener("keydown", (e) => {
             crafteador.classList.toggle("activo");
             craf_activo = craf_activo ? false : true;
         }
+        
+        if(tecla == "j" && !teclas[tecla])
+        {  
+            let vidas = Array.from(document.getElementsByClassName("rayito"));
+            if(robot1.vida.actual >=0)
+            {
+                vidas[robot1.vida.actual].src = "./rayo_rojo.png";
+                robot1.vida.actual -=1;
+            }
+        }
+        teclas[tecla] = true;
         
     }
 });
@@ -329,7 +342,7 @@ document.addEventListener('construir', (e) => {
     const construccion = new Construccion(robot1.x + (-15 + 2 *15 * robot1.direccion.x) + robot1.hitbox.x, robot1.y + 30 * robot1.direccion.y + robot1.hitbox.y, Objetos[propiedades.id].hitbox, entidades_id++, imagenesExtra[propiedades.id]);
     entidades.push(construccion);
     actualizar_espacio(construccion);
-    console.log("aaaaaaaaa");
+   //console.log("aaaaaaaaa");
 });
 
 function actualizar_espacio(entidad){
@@ -346,7 +359,7 @@ function actualizar_espacio(entidad){
     {
         espacio_y[i].push(id);
     }
-    console.log("nbbbbbbbbbbbbb");
+   //console.log("nbbbbbbbbbbbbb");
     
 }
 const nombresBaseImagenes = [
@@ -500,8 +513,43 @@ Promise.all([
     ctx_UI_cara.clearRect(0,0,900,900);
     robot1.dibujar_max(Cara_UI, ctx_UI_cara, Cara_UI.width, Cara_UI.height*3);
 
+    for(let i = 0; i <= robot1.vida.max; i++)
+    {
+        let rayito = document.createElement("img");
+        rayito.classList.add("rayito");
+        rayito.src = "./rayo_amarillo.png";
+        vida_html.appendChild(rayito);
+        /*
+            let nueva_receta = document.createElement("div");
+            objeto.appendChild(id);
+            id.textContent = receta.resultado.id;
+            id.classList.add("id_objeto");
+        */
+    }
     loop();
 
 }).catch(error => {
     console.error("Error al inicializar las imágenes:", error);
+});
+
+
+Guardar.addEventListener("click", () => {
+    const mundo = {
+        entidades: entidades,
+        entidades_adibujar: entidades_dibujables,
+        inventario: inventario
+    };
+
+    const datos = {
+        hora: hora_html.textContent,
+        Entidades_adibujar: minuto_html.textContent
+    };
+
+    // 2. Lo conviertes a texto JSON
+    const datosjson = JSON.stringify(datos);
+    const mundojson = JSON.stringify(mundo);
+
+    console.log(mundojson);
+    console.log("");
+    console.log(datosjson);
 });
