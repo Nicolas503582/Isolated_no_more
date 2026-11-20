@@ -394,6 +394,7 @@ input[type="range"]{
 }
 
 
+
 #Inventario_rapido {
     position: fixed;
     bottom: 15px;
@@ -595,4 +596,19 @@ input[type="range"]{
     flex: 1;
     border: 2px solid #000;
     background: #fff;
+}
+
+
+.espacio_inv .cantidad {
+    display: block;
+
+    position: absolute;
+    right: 3px;
+    bottom: 2px;
+
+    margin: 0;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 2px black;
 }
