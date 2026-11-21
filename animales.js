@@ -61,7 +61,7 @@ export class Mente_animal{
     }
 
     caminar(){
-
+        //Necesito usar un algoritmo para esto No se como se hace
     }
 
     ejecutar(){
