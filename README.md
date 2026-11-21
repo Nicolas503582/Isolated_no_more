@@ -19,8 +19,8 @@ Ranchito
 - [ ] construccion de parcelas //obligatorio    ////// Necesito que la construccion mas basica funcione a la perfeccion, especificamente para las parcelas voy a tener que poder abrir un mini menú donde pueda poner las semillas
 - [ ] Construccion de corrales //obligatorio    ////// Necesito que lo principal de las parcelas(construcion basica) y que los corrales/casas de animales tengan un menú con los animales en su interior
 - [ ] Cultivos //obligatorio                    ////// Debo aprovechar los eventos personalizados para que cada x tiempo elcultivo crezca y así por si mismo debería ir cambiando en el inventario de su parcela correspondiente
-- [ ] Partidas //obligatorio
-- [ ] Conexion DB //obligatorio
+- [ ] Conexion DB //obligatorio                 ////// Para poder guardar partidas
+- [ ] Partidas //obligatorio                    ////// Hay que saber como expresar los datos de las partidas a la hora de guardarlas
 - [ ] UI //proceso - (casi)
 - [ ] Mejoras //no obligatorio
 - [ ] Combate //no obligatorio
