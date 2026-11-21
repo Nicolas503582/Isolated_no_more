@@ -21,7 +21,7 @@ Ranchito
 - [ ] Cultivos //obligatorio                    ////// Debo aprovechar los eventos personalizados para que cada x tiempo elcultivo crezca y así por si mismo debería ir cambiando en el inventario de su parcela correspondiente
 - [ ] Conexion DB //obligatorio                 ////// Para poder guardar partidas
 - [ ] Partidas //obligatorio                    ////// Hay que saber como expresar los datos de las partidas a la hora de guardarlas
-- [ ] UI //proceso - (casi)
+- [ ] UI //proceso - (casi)                     ////// Falta la energia y colores
 - [ ] Mejoras //no obligatorio
 - [ ] Combate //no obligatorio
 - [ ] Pantalla de inicio //obligatorio - Cami
