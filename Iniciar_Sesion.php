@@ -12,7 +12,7 @@ if ($error) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,10 +21,10 @@ if ($error) {
             <h2>Logo</h2>
         </div>
         <div class="menu">
-            <a href="#" class = "nav-link">Home</a>
+            <a href="#" class = "nav-link">Inicio</a>
             <a href="#" class = "nav-link">About</a>
             <a href="#" class = "nav-link">Contact</a>
-            <a href="Iniciar_Sesion.php" class = "nav-link">Login</a>
+            <a href="registro.html" class = "nav-link">Registrate</a>
         </div>
     </nav>
 
@@ -32,13 +32,18 @@ if ($error) {
         <div class="login-container">
             <h1>Login</h1>
             <form action="back.php" method="post" class="login-form">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <label for="repeat_password">Repeat Password:</label>
-                <input type="password" id="repeat_password" name="repeat_password" required>
+
+                <input type="hidden" name="accion" value="login">
+
+                <label for="mail">E-mail:</label>
+                <input type="email" id="mail" name="mail" required>
+
+                <label for="clave">Clave:</label>
+                <input type="password" id="clave" name="clave" required>
+
                 <button type="submit">Login</button>
+                <p>¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a></p>
+
             </form>
 
         </div>

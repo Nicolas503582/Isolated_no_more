@@ -24,4 +24,5 @@ Ranchito
 - [ ] UI //proceso - (casi)
 - [ ] Mejoras //no obligatorio
 - [ ] Combate //no obligatorio
+- [ ] Pantalla de inicio //obligatorio - Cami
 - [ ] Otros //no obligatorio
