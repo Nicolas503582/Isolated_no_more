@@ -72,7 +72,7 @@ let minuto_html = document.getElementById("minuto");
 let hora_text = "00";
 let minuto_text = "00";
 
-let teclas = {a: false, d: false, s: false, w: false, e: false, q: false, j: false};
+let teclas = {a: false, d: false, s: false, w: false, e: false, q: false, j: false, shift: false};
 let entidades_id = 0;
 let direccion = {x : 0, y: 0, z: 0};
 let espacio_x = [];
@@ -318,6 +318,10 @@ window.addEventListener("keydown", (e) => {
                 robot1.vida.actual -=1;
             }
         }
+        if(tecla == "shift" && !teclas[tecla])
+        {
+            robot1.velocidad +=5;
+        }
         teclas[tecla] = true;
         
     }
@@ -325,6 +329,10 @@ window.addEventListener("keydown", (e) => {
 window.addEventListener("keyup", (e) => {
     const tecla = e.key.toLowerCase();
     teclas[tecla] = false;
+    if(tecla == "shift")
+    {
+        robot1.velocidad -=5;
+    }
 });
 
 window.addEventListener("resize", function(){
@@ -337,12 +345,10 @@ ajustarResolucionCanvas(canvas, ctx);
 
 //evento personalizado
 document.addEventListener('construir', (e) => {
-
     const propiedades = e.detail;
-    const construccion = new Construccion(robot1.x + (-15 + 2 *15 * robot1.direccion.x) + robot1.hitbox.x, robot1.y + 30 * robot1.direccion.y + robot1.hitbox.y, Objetos[propiedades.id].hitbox, entidades_id++, imagenesExtra[propiedades.id]);
+    const construccion = new Construccion(robot1.x + (-20 + 2 *20 * robot1.direccion.x) + robot1.hitbox.x, robot1.y + (-15 + 2 *20 * robot1.direccion.y), Objetos[propiedades.id].hitbox, entidades_id++, imagenesExtra[propiedades.id]);//Tengo que cambiar esta linea, para que se construya a distinta distancia según el tamaño de la construccion
     entidades.push(construccion);
     actualizar_espacio(construccion);
-   //console.log("aaaaaaaaa");
 });
 
 function actualizar_espacio(entidad){
@@ -359,7 +365,6 @@ function actualizar_espacio(entidad){
     {
         espacio_y[i].push(id);
     }
-   //console.log("nbbbbbbbbbbbbb");
     
 }
 const nombresBaseImagenes = [
