@@ -44,6 +44,8 @@ let ctx_UI_cara = Cara_UI.getContext("2d");
 let inventario = document.getElementById("Inventario");
 
 let inventario_html = document.getElementById("Inv_objetos");
+let ingreso_inv = document.getElementById("ingreso_inv");
+let inv_de_construccion_activo = false;
 let espacios_inventario = Array.from(inventario_html.getElementsByClassName("espacio_inv"));
 let inventario_objetos = {Insumos: [], Herramientas: [], Materiales: [], Rapido: []};
 inventario_objetos.Insumos = espacios_inventario.slice(0, 5);
@@ -72,7 +74,7 @@ let minuto_html = document.getElementById("minuto");
 let hora_text = "00";
 let minuto_text = "00";
 
-let teclas = {a: false, d: false, s: false, w: false, e: false, q: false, j: false, shift: false};
+let teclas = {a: false, d: false, s: false, w: false, e: false, q: false, j: false, shift: false, r: false};
 let entidades_id = 0;
 let direccion = {x : 0, y: 0, z: 0};
 let espacio_x = [];
@@ -135,7 +137,7 @@ entidades_dibujables.push(robot1);
 function loop() {
    //console.log(robot1.x + "    " + robot1.y);
 
-    if(!inv_activo && !craf_activo)
+    if(!inv_activo && !craf_activo && !inv_de_construccion_activo)
     {
         if(aux_entidad >= 30)
         {
@@ -193,11 +195,15 @@ function loop() {
         
         //console.log(entidades);
     }
-    else if (!craf_activo){
+    else if (!craf_activo && !inv_de_construccion_activo){
         ctx_robot.clearRect(0, 0, equipamiento.width, equipamiento.height);
         ctx_robot.fillStyle = "white";
         ctx_robot.fillRect (0, 0, equipamiento.width, equipamiento.height);
         robot1.dibujar_max(equipamiento, ctx_robot, equipamiento.width, equipamiento.height);
+    }
+    else if(!inv_de_construccion_activo)
+    {
+        
     }
     else
     {
@@ -295,15 +301,12 @@ function ajustarResolucionCanvas(can, contexto, bool = true) {
 window.addEventListener("keydown", (e) => {
     const tecla = e.key.toLowerCase();
     if(tecla in teclas){
-        /*Object.keys(teclas).forEach(clave =>{
-            teclas[clave] = false;
-        });*/
-        if(tecla == "e" && !craf_activo)
+        if(tecla == "e" && !craf_activo && !inv_de_construccion_activo)
         {
             inventario.classList.toggle("activo");
             inv_activo = inv_activo ? false : true;
         }
-        if(tecla == "q" && !inv_activo)
+        if(tecla == "q" && !inv_activo && !inv_de_construccion_activo)
         {
             crafteador.classList.toggle("activo");
             craf_activo = craf_activo ? false : true;
@@ -321,6 +324,12 @@ window.addEventListener("keydown", (e) => {
         if(tecla == "shift" && !teclas[tecla])
         {
             robot1.velocidad +=5;
+        }
+        if(tecla == "r" && !inv_activo && !craf_activo)
+        {
+            console.log(inv_de_construccion_activo);
+            inv_de_construccion_activo = inv_de_construccion_activo ? false : true;
+            ingreso_inv.classList.toggle("visible");
         }
         teclas[tecla] = true;
         

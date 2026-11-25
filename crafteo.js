@@ -22,6 +22,15 @@ export class Crafteador {
         this.inventario_objetos.Materiales = this.espacios_inventario.slice(10, 15);
         this.inventario_objetos.Rapido = this.espacios_inventario.slice(15, 20);
         this.estaseleccionado = null;
+
+        // Inventario secundario (espejo)
+        const casillas = (id) =>
+            Array.from(document.getElementById(id).getElementsByClassName("espacio_inv"));
+
+        this.secundario_objetos = {
+            Materiales: casillas("Materiales_secundario"),
+            Rapido: casillas("Rapido_secundario")
+        };
          
         this.Rapido = document.getElementById("mini_Rapido");
         this.rapidos = Array.from(this.Rapido.getElementsByClassName("espacio_inv"));
@@ -357,14 +366,15 @@ export class Crafteador {
 
         let inventario = this.inventario_objetos[categoria];
         let crafteador = this.crafteador_objetos[categoria];
+        let secundario = this.secundario_objetos[categoria];
         let rapidos = this.rapidos;
 
         crafteador.forEach((espacio, i) => {
             inventario[i].innerHTML = espacio.innerHTML;
+            secundario[i].innerHTML = espacio.innerHTML;
         });
 
-        if(categoria === "Rapido")
-        {
+        if (categoria === "Rapido") {
             inventario.forEach((espacio, i) => {
                 rapidos[i].innerHTML = espacio.innerHTML;
             });

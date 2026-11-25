@@ -1,7 +1,10 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; 
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 canvas{
     width: 150px;
@@ -100,7 +103,8 @@ input[type="range"]{
     gap: 15px;
     height: 100%;
 }
-#Inv_objetos {
+#Inv_objetos,
+#Inv_objetos_secundario {
     display: grid;
     grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3fr);
     gap: 15px;
@@ -666,3 +670,273 @@ input[type="range"]{
     height: 10px;
     object-fit: cover;
 }*/
+
+
+#inventari_de_objetos {
+    width: 100%;
+    max-width: 450px;
+    height: 45vh;
+    max-height: 400px;
+    padding: 12px;
+
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
+    gap: 10px;
+
+    background: #8b6542;
+    border: 4px solid #63452e;
+    border-radius: 12px;
+
+    box-shadow:
+        inset 0 0 0 2px #bd9363,
+        0 4px 8px #0005;
+    box-sizing: border-box;
+}
+
+#inventari_de_objetos .espacio {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+
+    background: #d5c49b;
+    border: 3px solid #a48a60;
+    border-radius: 8px;
+
+    box-shadow:
+        inset 2px 2px 5px #0002,
+        0 2px 3px #0003;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    cursor: pointer;
+
+    transition: 0.15s;
+}
+
+#inventari_de_objetos .espacio:hover {
+    background: #e8d9b2;
+    border-color: #f1d58c;
+    transform: scale(1.05);
+}
+
+#inventari_de_objetos {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 1000;
+}
+
+
+
+
+
+
+
+#inventari_de_construcciones {
+    width: 100%;
+    max-width: 450px;
+    padding: 12px;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+
+    background: #8b6542;
+    border: 4px solid #63452e;
+    border-radius: 12px;
+
+    box-shadow:
+        inset 0 0 0 2px #bd9363,
+        0 4px 8px #0005;
+}
+
+#inventari_de_construcciones .espacio {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+
+    background: #d5c49b;
+    border: 3px solid #a48a60;
+    border-radius: 8px;
+
+    box-shadow:
+        inset 2px 2px 5px #0002,
+        0 2px 3px #0003;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    cursor: pointer;
+
+    transition: 0.15s;
+}
+
+#inventari_de_construcciones .espacio:hover {
+    background: #e8d9b2;
+    border-color: #f1d58c;
+    transform: scale(1.05);
+}
+
+#inventari_de_construcciones {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 1000;
+}
+
+/* ===== Contenedor general (overlay) ===== */
+/* ===== Contenedor general (overlay) ===== */
+#ingreso_inv {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    padding: 16px;
+    box-sizing: border-box;
+    overflow: auto;
+
+    background: #000a;
+    backdrop-filter: blur(2px);
+
+    /* Oculto por defecto, con fundido */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s, visibility 0.2s;
+}
+
+#ingreso_inv.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Los hijos dejan de estar fijos y se acomodan dentro del contenedor */
+#ingreso_inv #inventari_de_objetos,
+#ingreso_inv #inventari_de_construcciones {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 450px;
+    height: auto;
+    max-height: none;
+}
+
+/* ===== Inventario de objetos: 4 filas (Insumos, Herramientas, Materiales, Rápido) ===== */
+#ingreso_inv #Inv_objetos_secundario {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+#ingreso_inv .objetos {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    padding: 6px;
+    background: #0002;
+    border-radius: 8px;
+}
+
+/* La fila de acceso rápido se distingue un poco */
+#ingreso_inv #Rapido_secundario {
+    background: #0004;
+    border-top: 2px dashed #bd9363;
+}
+
+/* ===== Casillas de objetos (en tu HTML la clase es espacio_inv) ===== */
+#ingreso_inv .espacio_inv {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #d5c49b;
+    border: 3px solid #a48a60;
+    border-radius: 8px;
+    box-shadow:
+        inset 2px 2px 5px #0002,
+        0 2px 3px #0003;
+    box-sizing: border-box;
+
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+#ingreso_inv .espacio_inv:hover {
+    background: #e8d9b2;
+    border-color: #f1d58c;
+    transform: scale(1.05);
+}
+
+/* Casilla seleccionada (agrega la clase .activo con JS) */
+#ingreso_inv .espacio_inv.activo {
+    border-color: #f1d58c;
+    box-shadow: 0 0 0 3px #f1d58c, 0 0 10px #f1d58c;
+}
+
+/* Datos internos: se ocultan, solo se ven la imagen y la cantidad */
+#ingreso_inv .espacio_inv p {
+    margin: 0;
+}
+
+#ingreso_inv .espacio_inv .seleccionado,
+#ingreso_inv .espacio_inv .id_objeto,
+#ingreso_inv .espacio_inv .nombre_objeto,
+#ingreso_inv .espacio_inv .descripcion {
+    display: none;
+}
+
+#ingreso_inv .espacio_inv .imagen_Item {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    image-rendering: pixelated;
+    pointer-events: none;
+}
+
+/* Imagen vacía: no mostrar el ícono roto */
+#ingreso_inv .espacio_inv .imagen_Item[src=""] {
+    display: none;
+}
+
+#ingreso_inv .espacio_inv .cantidad {
+    position: absolute;
+    right: 4px;
+    bottom: 2px;
+    font: bold 12px/1 sans-serif;
+    color: #fff;
+    text-shadow: 1px 1px 0 #000;
+}
+
+#ingreso_inv .espacio_inv .cantidad:empty {
+    display: none;
+}
+
+/* ===== Celular ===== */
+@media (max-width: 600px) {
+    #ingreso_inv {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+}
+#ingreso_inv .espacio_inv.seleccionado {
+    border-color: #f1d58c;
+    box-shadow: 0 0 0 3px #f1d58c, 0 0 10px #f1d58c;
+}

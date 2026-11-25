@@ -21,6 +21,37 @@ export class Inventario {
         this.crafteador_objetos.Materiales = this.espacios_crafteador.slice(0, 5);
         this.crafteador_objetos.Rapido = this.espacios_crafteador.slice(5, 10);
         this.estaseleccionado = null;   
+
+        // Inventario de construcciones
+        const contConstr = document.getElementById("inventari_de_construcciones");
+        contConstr.innerHTML = "";
+        for (let k = 0; k < 8; k++) {
+            const slot = document.createElement("div");
+            slot.className = "espacio espacio_inv";
+            slot.innerHTML = `
+                <p class="seleccionado">false</p>
+                <p class="id_objeto"></p>
+                <p class="nombre_objeto"></p>
+                <p class="cantidad"></p>
+                <p class="descripcion"></p>
+                <img src="" alt="" class="imagen_Item">`;
+            contConstr.appendChild(slot);
+        }
+        this.espacios_construccion = Array.from(contConstr.getElementsByClassName("espacio_inv"));
+        this.construccion_seleccionada = null;
+
+        // Inventario secundario (espejo del principal)
+        const casillas = (id) =>
+            Array.from(document.getElementById(id).getElementsByClassName("espacio_inv"));
+
+        this.secundario_objetos = {
+            Insumos: casillas("Insumos_secundario"),
+            Herramientas: casillas("Herramientas_secundario"),
+            Materiales: casillas("Materiales_secundario"),
+            Rapido: casillas("Rapido_secundario")
+        };
+        // Lista plana del secundario, en el mismo orden que espacios_inventario (0-19)
+        this.espacios_secundario = Object.values(this.secundario_objetos).flat();
          
         this.Rapido = document.getElementById("mini_Rapido");
         this.rapidos = Array.from(this.Rapido.getElementsByClassName("espacio_inv"));
@@ -143,54 +174,14 @@ export class Inventario {
 
     eventos(){
         this.espacios_inventario.forEach((espacio, i) => {
-            espacio.addEventListener("click", (e) =>{
-
-                const categorias = ["Insumos", "Herramientas", "Materiales", "Rapido"];
-                let anterior = this.espacios_inventario[this.estaseleccionado];
-                if(anterior)
-                {
-                    if (i == this.estaseleccionado)
-                    {
-                        this.des_activar(espacio);
-                        this.estaseleccionado = null;
-                    }
-                    else if(Math.floor(i/5) == Math.floor(this.estaseleccionado / 5))
-                    {
-                        if(anterior.querySelector(".id_objeto").textContent)
-                        {
-                            this.des_activar(anterior);
-                            this.estaseleccionado = null;
-
-                            const anterior_html = anterior.innerHTML;
-                            anterior.innerHTML = espacio.innerHTML;
-                            espacio.innerHTML = anterior_html;
-                            this.sincronizarInventarios(categorias[Math.floor(i/5)]);
-                        }
-                        else
-                        {
-                            this.des_activar(anterior);
-                            this.des_activar(espacio);
-                            this.estaseleccionado = i;
-                        }
-                    }
-                    else
-                    {
-                        this.des_activar(anterior);
-                        this.des_activar(espacio);
-                        this.estaseleccionado = i;
-                    }
-                }
-                else
-                {
-                    let activo = espacio.querySelector(".seleccionado");
-                    activo.textContent = activo.textContent === "true" ? false : true;
-                    espacio.classList.toggle('seleccionado');
-                    this.estaseleccionado = i;
-                }
-            });
+            espacio.addEventListener("click", () => this.clickEspacio(i));
         });
-
-        
+        this.espacios_secundario.forEach((espacio, i) => {
+            espacio.addEventListener("click", () => this.clickEspacio(i));
+        });
+        this.espacios_construccion.forEach((espacio, j) => {
+            espacio.addEventListener("click", () => this.clickConstruccion(j));
+        });
 
         window.addEventListener("keydown", (e) => {
             const tecla = e.key.toLowerCase();
@@ -229,11 +220,63 @@ export class Inventario {
         }
     }
 
-    des_activar(espacio)
-    {
-        let activo = espacio.querySelector(".seleccionado");
-        activo.textContent = activo.textContent === "true" ? false : true;
-        espacio.classList.toggle('seleccionado');
+    clickEspacio(i) {
+                // Hay una casilla de construcción seleccionada
+        if (this.construccion_seleccionada !== null) {
+            const j = this.construccion_seleccionada;
+            this.marcarConstruccion(j, false);
+            this.construccion_seleccionada = null;
+            if (i >= 15) {                       // solo Rápido recibe objetos de construcción
+                this.intercambiarConConstruccion(i, j);
+                return;
+            }
+        }
+        const categorias = ["Insumos", "Herramientas", "Materiales", "Rapido"];
+        const espacio = this.espacios_inventario[i];
+        const anterior = this.espacios_inventario[this.estaseleccionado];
+
+        if (anterior) {
+            if (i == this.estaseleccionado) {
+                this.des_activar(espacio);
+                this.estaseleccionado = null;
+            }
+            else if (Math.floor(i / 5) == Math.floor(this.estaseleccionado / 5)) {
+                if (anterior.querySelector(".id_objeto").textContent) {
+                    this.des_activar(anterior);
+                    this.estaseleccionado = null;
+
+                    const anterior_html = anterior.innerHTML;
+                    anterior.innerHTML = espacio.innerHTML;
+                    espacio.innerHTML = anterior_html;
+                    this.sincronizarInventarios(categorias[Math.floor(i / 5)]);
+                }
+                else {
+                    this.des_activar(anterior);
+                    this.des_activar(espacio);
+                    this.estaseleccionado = i;
+                }
+            }
+            else {
+                this.des_activar(anterior);
+                this.des_activar(espacio);
+                this.estaseleccionado = i;
+            }
+        }
+        else {
+            this.des_activar(espacio);
+            this.estaseleccionado = i;
+        }
+    }
+
+    // Marca o desmarca la casilla en el principal y en su espejo del secundario
+    des_activar(espacio) {
+        const i = this.espacios_inventario.indexOf(espacio);
+        const marcar = espacio.querySelector(".seleccionado").textContent.trim() !== "true";
+
+        [this.espacios_inventario[i], this.espacios_secundario[i]].forEach((e) => {
+            e.querySelector(".seleccionado").textContent = marcar ? "true" : "false";
+            e.classList.toggle("seleccionado", marcar);
+        });
     }
     transformar(categoria, id)
     {
@@ -248,9 +291,17 @@ export class Inventario {
     }
 
     sincronizarInventarios(categoria) {
+        let inventario = this.inventario_objetos[categoria];
+
+        // Secundario: refleja las 4 categorías
+        let secundario = this.secundario_objetos[categoria];
+        inventario.forEach((espacio, i) => {
+            secundario[i].innerHTML = espacio.innerHTML;
+        });
+
+        // Crafteador y mini rápido: solo Materiales y Rápido (como antes)
         if (categoria !== "Materiales" && categoria !== "Rapido") return;
 
-        let inventario = this.inventario_objetos[categoria];
         let crafteador = this.crafteador_objetos[categoria];
         let rapidos = this.rapidos;
 
@@ -258,11 +309,59 @@ export class Inventario {
             crafteador[i].innerHTML = espacio.innerHTML;
         });
 
-        if(categoria === "Rapido")
-        {
+        if (categoria === "Rapido") {
             inventario.forEach((espacio, i) => {
                 rapidos[i].innerHTML = espacio.innerHTML;
             });
+        }
+    }
+
+
+    marcarConstruccion(j, marcar) {
+        const e = this.espacios_construccion[j];
+        e.querySelector(".seleccionado").textContent = marcar ? "true" : "false";
+        e.classList.toggle("seleccionado", marcar);
+    }
+
+    // i: índice 15-19 (Rápido) del principal, j: casilla de construcción
+    intercambiarConConstruccion(i, j) {
+        const rapido = this.espacios_inventario[i];
+        const slot = this.espacios_construccion[j];
+        const tmp = rapido.innerHTML;
+        rapido.innerHTML = slot.innerHTML;
+        slot.innerHTML = tmp;
+        this.sincronizarInventarios("Rapido");
+    }
+
+    clickConstruccion(j) {
+        const sel = this.estaseleccionado;
+
+        // Hay un objeto de Rápido seleccionado: se mueve a esta casilla
+        if (sel !== null && sel >= 15) {
+            const rapido = this.espacios_inventario[sel];
+            if (rapido.querySelector(".id_objeto").textContent) {
+                this.des_activar(rapido);
+                this.estaseleccionado = null;
+                this.intercambiarConConstruccion(sel, j);
+                return;
+            }
+        }
+
+        // Cualquier otra selección del principal se cancela
+        if (sel !== null) {
+            this.des_activar(this.espacios_inventario[sel]);
+            this.estaseleccionado = null;
+        }
+
+        // Seleccionar o deseleccionar la casilla de construcción (solo si tiene objeto)
+        const previa = this.construccion_seleccionada;
+        if (previa !== null) {
+            this.marcarConstruccion(previa, false);
+            this.construccion_seleccionada = null;
+        }
+        if (previa !== j && this.espacios_construccion[j].querySelector(".id_objeto").textContent) {
+            this.marcarConstruccion(j, true);
+            this.construccion_seleccionada = j;
         }
     }
 }
