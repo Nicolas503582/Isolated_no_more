@@ -26,12 +26,12 @@ export class Entidad{
             this.canvasOculto = document.createElement('canvas');
             this.canvasOculto.width = 1;
             this.canvasOculto.height = 1;
-            this.ctxOculto = this.canvasOculto.getContext('2d');
+            this.ctxOculto = this.canvasOculto.getContext('2d', {willReadFrequently: true});
 
             this.canvasAux = document.createElement('canvas');
             this.canvasAux.width = 1;
             this.canvasAux.height = 1;
-            this.ctxAux = this.canvasAux.getContext('2d');
+            this.ctxAux = this.canvasAux.getContext('2d', {willReadFrequently: true});
             this.canvases = [];
             this.ctxs = [];
 
@@ -44,6 +44,9 @@ export class Entidad{
             this.direccion = {x:0, y:0};
 
             this.movimiento = new movimiento(this);
+
+            
+            this.tipo = "entidad";
 
             this.start(this.claves, this.urls);
         }
@@ -231,7 +234,7 @@ export class Entidad{
             this.canvases[i] = document.createElement('canvas');
             this.canvases[i].width = img_aux.naturalWidth || img_aux.width;
             this.canvases[i].height = img_aux.naturalHeight || img_aux.height;
-            this.ctxs[i] = this.canvases[i].getContext('2d');
+            this.ctxs[i] = this.canvases[i].getContext('2d', {willReadFrequently: true});
             this.canvasOculto.width = img_aux.naturalWidth || img_aux.width;
             this.canvasOculto.height = img_aux.naturalHeight || img_aux.height;
         }

@@ -20,7 +20,7 @@ header("Content-Type: application/javascript");
 
 ?>
 
-
+import { Parcela } from "./parcelas.js";
 import { Entidad } from "./entidades.js";
 import { calculos } from "./general.js";
 import { Inventario } from "./inventario.js";
@@ -36,7 +36,7 @@ let inv = new Inventario();
 let craf = new Crafteador();
 
 let canvas = document.getElementById("juego");
-let ctx = canvas.getContext("2d");
+let ctx = canvas.getContext("2d", {willReadFrequently: true});
 
 let Cara_UI = document.getElementById("cara_robot");
 let ctx_UI_cara = Cara_UI.getContext("2d");
@@ -327,10 +327,44 @@ window.addEventListener("keydown", (e) => {
         }
         if(tecla == "r" && !inv_activo && !craf_activo)
         {
-            console.log(inv_de_construccion_activo);
-            inv_de_construccion_activo = inv_de_construccion_activo ? false : true;
-            ingreso_inv.classList.toggle("visible");
+            const rango = 90;
+
+            // Centro del jugador
+            const jugador_x = robot1.x + robot1.hitbox.x + robot1.hitbox.ancho / 2;
+            const jugador_y = robot1.y + robot1.hitbox.y + robot1.hitbox.alto / 2;
+
+            let encontrado = -1;
+
+            entidades.forEach(entidad => {
+
+                if(entidad.id == robot1.id) return;
+
+                if(entidad.tipo != "corral" && entidad.tipo != "parcela") return;
+
+                // Centro de la hitbox de la entidad
+                const entidad_x = entidad.x + entidad.hitbox.x + entidad.hitbox.ancho / 2;
+                const entidad_y = entidad.y + entidad.hitbox.y + entidad.hitbox.alto / 2;
+
+                // Distancia entre los centros
+                const dx = jugador_x - entidad_x;
+                const dy = jugador_y - entidad_y;
+
+                const distancia = Math.sqrt(dx * dx + dy * dy);
+
+                if(distancia <= rango)
+                {
+                    encontrado = entidad.id;
+                }
+            });
+
+            if(encontrado != -1)
+            {
+                inv_de_construccion_activo = inv_de_construccion_activo? false: true;
+                ingreso_inv.classList.toggle("visible");
+                console.log(inv_de_construccion_activo);
+            }
         }
+
         teclas[tecla] = true;
         
     }
@@ -355,9 +389,18 @@ ajustarResolucionCanvas(canvas, ctx);
 //evento personalizado
 document.addEventListener('construir', (e) => {
     const propiedades = e.detail;
-    const construccion = new Construccion(robot1.x + (-20 + 2 *20 * robot1.direccion.x) + robot1.hitbox.x, robot1.y + (-15 + 2 *20 * robot1.direccion.y), Objetos[propiedades.id].hitbox, entidades_id++, imagenesExtra[propiedades.id]);//Tengo que cambiar esta linea, para que se construya a distinta distancia según el tamaño de la construccion
-    entidades.push(construccion);
-    actualizar_espacio(construccion);
+    if(propiedades.tipo == "parcela_cultivos")
+    {
+        const construccion = new Parcela(robot1.x + (-20 + 2 *20 * robot1.direccion.x) + robot1.hitbox.x, robot1.y + (-15 + 2 *20 * robot1.direccion.y), Objetos[propiedades.id].hitbox, entidades_id++, imagenesExtra[propiedades.id]);//Tengo que cambiar esta linea, para que se construya a distinta distancia según el tamaño de la construccion
+        entidades.push(construccion);
+        actualizar_espacio(construccion);
+    }
+    else
+    {
+        const construccion = new Construccion(robot1.x + (-20 + 2 *20 * robot1.direccion.x) + robot1.hitbox.x, robot1.y + (-15 + 2 *20 * robot1.direccion.y), Objetos[propiedades.id].hitbox, entidades_id++, imagenesExtra[propiedades.id]);//Tengo que cambiar esta linea, para que se construya a distinta distancia según el tamaño de la construccion
+        entidades.push(construccion);
+       actualizar_espacio(construccion);
+    }
 });
 
 function actualizar_espacio(entidad){
@@ -513,7 +556,7 @@ Promise.all([
     }
 
     entidades.forEach((entidad, i) => {
-        for (let l = entidad.x; l < entidad.x + entidad.ancho; l++) {
+        for (let l = entidad.x; l < entidad.x + entidad.hitbox.ancho; l++) {
             espacio_x[l].push(i);
         }
 

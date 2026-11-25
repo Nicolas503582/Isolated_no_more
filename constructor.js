@@ -11,7 +11,7 @@ export class Construccion{
         if (objeto.categoria == "cons")
         {
             const evento = new CustomEvent('construir', {
-                detail: { id: objeto.id, hitbox: objeto.hitbox }
+                detail: { id: objeto.id, hitbox: objeto.hitbox, tipo: objeto.tipo }
             });
 
             document.dispatchEvent(evento);
