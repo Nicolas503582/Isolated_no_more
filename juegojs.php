@@ -85,6 +85,8 @@ let direccion = {x : 0, y: 0, z: 0};
 let espacio_x = [];
 let espacio_y = [];
 let imagenes = {};
+let imagenesExtra = [];
+const rutasGenerales = ["./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png"];
 
 let dias = 0;
 let horas = 0;
@@ -339,9 +341,31 @@ function loop() {
 
         //console.log("5485");
         
-        direccion.x = teclas.d - teclas.a  + 0;
-        direccion.z = teclas.s - teclas.w  + 0;
-        robot1.movimiento.moviendo(direccion, espacio_x, espacio_y, 0);
+        direccion.x = teclas.d - teclas.a;
+direccion.z = teclas.s - teclas.w;
+
+// Determinar hacia dónde mira el robot.
+if (direccion.x > 0) {
+    robot1.cambiarDireccionRobot("derecha");
+}
+else if (direccion.x < 0) {
+    robot1.cambiarDireccionRobot("izquierda");
+}
+else if (direccion.z > 0) {
+    robot1.cambiarDireccionRobot("frente");
+}
+else if (direccion.z < 0) {
+    robot1.cambiarDireccionRobot("atras");
+}
+
+// Mover al robot.
+robot1.movimiento.moviendo(
+    direccion,
+    espacio_x,
+    espacio_y,
+    0
+);
+robot1.actualizarAnimacion();
         //movimiento
         /*//console.log("y: " + espacio_y);
         //console.log("x: " + espacio_x);*/
@@ -598,12 +622,12 @@ function ajustarResolucionCanvas(can, contexto, bool = true) {
 window.addEventListener("keydown", (e) => {
     const tecla = e.key.toLowerCase();
     if(tecla in teclas){
-        if(tecla == "e" && !craf_activo && !inv_de_construccion_activo)
+        if(tecla == "e" && !teclas[tecla]  && !craf_activo && !inv_de_construccion_activo)
         {
             inventario.classList.toggle("activo");
             inv_activo = inv_activo ? false : true;
         }
-        if(tecla == "q" && !inv_activo && !inv_de_construccion_activo)
+        if(tecla == "q" && !teclas[tecla]  && !inv_activo && !inv_de_construccion_activo)
         {
             crafteador.classList.toggle("activo");
             craf_activo = craf_activo ? false : true;
@@ -621,6 +645,7 @@ window.addEventListener("keydown", (e) => {
         if(tecla == "shift" && !teclas[tecla])
         {
             robot1.velocidad +=5;
+            robot1.animacionPiernas.velocidad -=2;
         }
         if (tecla == "r" && !teclas[tecla] && !inv_activo && !craf_activo) {
 
@@ -688,6 +713,7 @@ window.addEventListener("keydown", (e) => {
         }
 
         teclas[tecla] = true;
+        console.log(teclas[tecla]);
         
     }
 });
@@ -696,6 +722,7 @@ window.addEventListener("keyup", (e) => {
     teclas[tecla] = false;
     if(tecla == "shift")
     {
+        robot1.animacionPiernas.velocidad += 2;
         robot1.velocidad -=5;
     }
 });
@@ -1252,70 +1279,223 @@ function actualizar_espacio(entidad) {
     }
 }
 
-const nombresBaseImagenes = [
-    "antebrazo_der",
-    "antebrazo_izq",
-    "brazo_der_suelto",
-    "brazo_der",
-    "brazo_izq_suelto",
-    "brazo_izq",
-    "cabeza_post",
-    "pierna_der",
-    "pierna_izq",
-    "torso"
-];
 
-const imagenesRobot = [];
+const rutasRobot = {
+    frente: {
+        cabeza: `cabezaR${cabeza}_post.png`,
+        torso: `torsoR${torso}.png`,
 
-for (let i = 1; i <= 3; i++) {
-    for (const nombre of nombresBaseImagenes) {
-        let nombreConId;
+        brazos: [
+            `brazoR${brazo}_izq.png`,
+            `brazoR${brazo}_der.png`
+        ],
 
-        if (nombre.includes('_')) {
-            nombreConId = nombre.replace('_', `R${i}_`);
-        } else {
-            nombreConId = `${nombre}R${i}`;
-        }
+        antebrazos: [
+            `antebrazoR${brazo}_izq.png`,
+            `antebrazoR${brazo}_der.png`
+        ],
 
-        imagenesRobot.push(`./Robot${i}/${nombreConId}.png`);
+        piernas: [
+            `piernaR${pierna}_izq.png`,
+            `piernaR${pierna}_der.png`
+        ]
+    },
+
+    derecha: {
+        carpeta: "perfil_der/"
+    },
+
+    izquierda: {
+        carpeta: "perfil_izq/"
+    },
+
+    atras: {
+        cabeza: `cabezaR${cabeza}_ant.png`,
+        torso: `torsoR${torso}.png`,
+
+        brazos: [
+            `brazoR${brazo}_izq.png`,
+            `brazoR${brazo}_der.png`
+        ],
+
+        antebrazos: [
+            `antebrazoR${brazo}_izq.png`,
+            `antebrazoR${brazo}_der.png`
+        ],
+
+        piernas: [
+            `piernaR${pierna}_izq_ant.png`,
+            `piernaR${pierna}_der_ant.png`
+        ]
     }
+};
+
+
+async function cargarSpritesDireccion(direccion) {
+
+    const cargarParte = async (id, archivo, perfil = "") => {
+        const ruta = `./Robot${id}/${perfil}${archivo}`;
+        return await cargarImagen(ruta);
+    };
+
+    // =========================================
+    // PERFILES
+    // =========================================
+
+    if (direccion === "derecha" || direccion === "izquierda") {
+
+        const perfil = direccion === "derecha"
+            ? "perfil_der/"
+            : "perfil_izq/";
+
+        const [
+            cabezaImg,
+            torsoImg,
+            brazoIzq,
+            brazoDer,
+            antebrazoIzq,
+            antebrazoDer,
+            piernaIzq,
+            piernaDer,
+            piernaIzqCaminar,
+            piernaDerCaminar
+        ] = await Promise.all([
+
+            cargarParte(cabeza, "cabeza.png", perfil),
+            cargarParte(torso, "torso.png", perfil),
+
+            cargarParte(brazo, "brazo_izq.png", perfil),
+            cargarParte(brazo, "brazo_der.png", perfil),
+
+            cargarParte(brazo, "antebrazo_izq.png", perfil),
+            cargarParte(brazo, "antebrazo_der.png", perfil),
+
+            cargarParte(pierna, "pierna_izq.png", perfil),
+            cargarParte(pierna, "pierna_der.png", perfil),
+
+            cargarParte(pierna, "pierna_izq_caminar.png", perfil),
+            cargarParte(pierna, "pierna_der_caminar.png", perfil)
+        ]);
+
+        return {
+            cabeza: cabezaImg,
+            torso: torsoImg,
+
+            brazos: [brazoIzq, brazoDer],
+            antebrazos: [antebrazoIzq, antebrazoDer],
+
+            piernas: [piernaIzq, piernaDer],
+
+            piernasCaminar: [
+                piernaIzqCaminar,
+                piernaDerCaminar
+            ]
+        };
+    }
+
+    // =========================================
+    // FRENTE Y ATRÁS
+    // =========================================
+
+    const atras = direccion === "atras";
+
+    const [
+        cabezaImg,
+        torsoImg,
+        brazoIzq,
+        brazoDer,
+        antebrazoIzq,
+        antebrazoDer,
+        piernaIzq,
+        piernaDer,
+        piernaIzqCaminar,
+        piernaDerCaminar
+    ] = await Promise.all([
+
+        cargarParte(
+            cabeza,
+            `cabezaR${cabeza}_${atras ? "ant" : "post"}.png`
+        ),
+
+        cargarParte(torso, `torsoR${torso}.png`),
+
+        cargarParte(brazo, `brazoR${brazo}_izq.png`),
+        cargarParte(brazo, `brazoR${brazo}_der.png`),
+
+        cargarParte(brazo, `antebrazoR${brazo}_izq.png`),
+        cargarParte(brazo, `antebrazoR${brazo}_der.png`),
+
+        cargarParte(
+            pierna,
+            `piernaR${pierna}_izq${atras ? "_ant" : ""}.png`
+        ),
+
+        cargarParte(
+            pierna,
+            `piernaR${pierna}_der${atras ? "_ant" : ""}.png`
+        ),
+
+        cargarParte(
+            pierna,
+            `piernaR${pierna}_izq${atras ? "_ant" : ""}_caminar.png`
+        ),
+
+        cargarParte(
+            pierna,
+            `piernaR${pierna}_der${atras ? "_ant" : ""}_caminar.png`
+        )
+    ]);
+
+    return {
+        cabeza: cabezaImg,
+        torso: torsoImg,
+
+        brazos: [brazoIzq, brazoDer],
+        antebrazos: [antebrazoIzq, antebrazoDer],
+
+        piernas: [piernaIzq, piernaDer],
+
+        piernasCaminar: [
+            piernaIzqCaminar,
+            piernaDerCaminar
+        ]
+    };
 }
 
-// Agregá acá las rutas de las imágenes que irán a la lista
-const rutasGenerales = ["./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png", "./verde.png"];
-let imagenesExtra = [];
 
-function cargarImagen(url) {
-    return new Promise((resolve, reject) => {
-        const img = new Image();
 
-        img.onload = () => {
-            resolve(img);
-        };
-
-        img.onerror = () => {
-            console.error(`❌ Error al cargar la imagen: ${url}`);
-            reject(new Error(`No se pudo cargar: ${url}`));
-        };
-
-        img.src = url;
-    });
-}
 
 async function inicializarSprites() {
-    const spritesCargados = {};
 
-    for (const url of imagenesRobot) {
-        try {
-            const imgObjeto = await cargarImagen(url);
-            const nombreClave = url.split('/').pop().replace('.png', '');
-            spritesCargados[nombreClave] = imgObjeto;
-        } catch (error) {
-            console.warn("Saltando imagen debido al error.");
-        }
+    const sprites = {};
+
+    for (const direccion of Object.keys(rutasRobot)) {
+        sprites[direccion] = await cargarSpritesDireccion(direccion);
     }
 
-    return spritesCargados;
+    return sprites;
+}
+
+// ======================================================
+// CARGADOR GENERAL DE IMÁGENES
+// ======================================================
+
+function cargarImagen(ruta) {
+
+    return new Promise((resolve, reject) => {
+
+        const imagen = new Image();
+
+        imagen.onload = () => {
+            resolve(imagen);
+        };
+
+        imagen.onerror = () => {
+            reject(new Error("No se pudo cargar la imagen: " + ruta));
+        };
+
+        imagen.src = ruta;
+    });
 }
 
 // Carga en paralelo: el objeto de robots y la lista de imágenes generales
@@ -1332,48 +1512,24 @@ Promise.all([
     const listaImagenesGenerales = [...imagenesGenerales];
 
     // Configuración automática de Robot1
-    const nom_cabeza = "cabezaR" + cabeza + "_post";
+    // Guardamos todos los sprites del robot.
+robot1.spritesDirecciones = spritesRobots;
 
-    const nom_brazo = {
-        izq: "brazoR" + brazo + "_izq",
-        der: "brazoR" + brazo + "_der"
-    };
+// Configuración inicial de colores.
+robot1.coloresRobot = [
+    `rgb(${color_rgb.r},${color_rgb.g},${color_rgb.b})`,
+    `rgb(${cabeza_rgb.r},${cabeza_rgb.g},${cabeza_rgb.b})`,
+    `rgb(${brazo_rgb.r},${brazo_rgb.g},${brazo_rgb.b})`,
+    `rgb(${pierna_rgb.r},${pierna_rgb.g},${pierna_rgb.b})`,
+    `rgb(${torso_rgb.r},${torso_rgb.g},${torso_rgb.b})`,
+    `rgb(${brazo_rgb.r},${brazo_rgb.g},${brazo_rgb.b})`
+];
 
-    const nom_pierna = {
-        izq: "piernaR" + pierna + "_izq",
-        der: "piernaR" + pierna + "_der"
-    };
+robot1.tonosRobot = [<?php echo $tono?>];
+robot1.saturacionesRobot = [<?php echo $saturacion?>];
 
-    const nom_antebrazo = {
-        izq: "ante" + nom_brazo.izq,
-        der: "ante" + nom_brazo.der
-    };
-
-    const nom_torso = "torsoR" + torso;
-
-    robot1.guardarimagenes(
-        ["cabeza", "brazo", "pierna", "torso", "antebrazo"],
-        [
-            misSprites[nom_cabeza],
-            [misSprites[nom_brazo.izq], misSprites[nom_brazo.der]],
-            [misSprites[nom_pierna.der], misSprites[nom_pierna.izq]],
-            misSprites[nom_torso],
-            [misSprites[nom_antebrazo.izq], misSprites[nom_antebrazo.der]]
-        ]
-    );
-
-    robot1.cambiarcolores(
-        [
-            `rgb(${color_rgb.r},${color_rgb.g},${color_rgb.b})`,
-            `rgb(${cabeza_rgb.r},${cabeza_rgb.g},${cabeza_rgb.b})`,
-            `rgb(${brazo_rgb.r},${brazo_rgb.g},${brazo_rgb.b})`,
-            `rgb(${torso_rgb.r},${torso_rgb.g},${torso_rgb.b})`,
-            `rgb(${pierna_rgb.r},${pierna_rgb.g},${pierna_rgb.b})`,
-            `rgb(${brazo_rgb.r},${brazo_rgb.g},${brazo_rgb.b})`
-        ],
-        [<?php echo $tono?>],
-        [<?php echo $saturacion?>]
-    );
+// Dirección inicial.
+robot1.cambiarDireccionRobot("frente");
 
     // Asignación a variables globales (si las usás fuera del .then)
     imagenes = misSprites;
