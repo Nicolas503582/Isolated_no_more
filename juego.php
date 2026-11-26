@@ -60,6 +60,191 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
         </div>
     </div>
 
+    <div id="ingreso_inv">
+        <div id="inventari_de_objetos">
+            <div id="Inv_objetos_secundario">
+                <div id="Insumos_secundario" class="objetos">
+                    <div class="espacio_inv" id="Insumo_secundario1">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Insumo_secundario2">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Insumo_secundario3">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Insumo_secundario4">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Insumo_secundario5">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                </div>
+
+                <div id="Herramientas_secundario" class="objetos">
+                    <div class="espacio_inv" id="Herramienta_secundario1">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Herramienta_secundario2">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Herramienta_secundario3">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Herramienta_secundario4">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Herramienta_secundario5">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                </div>
+
+                <div id="Materiales_secundario" class="objetos">
+                    <div class="espacio_inv" id="Material_secundario1">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Material_secundario2">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Material_secundario3">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Material_secundario4">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Material_secundario5">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                </div>
+
+                <div id="Rapido_secundario" class="objetos">
+                    <div class="espacio_inv" id="Rapido_secundario1">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Rapido_secundario2">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Rapido_secundario3">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Rapido_secundario4">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                    <div class="espacio_inv" id="Rapido_secundario5">
+                        <p class="seleccionado"> false</p>
+                        <p class="id_objeto"></p>
+                        <p class="nombre_objeto"></p>
+                        <p class="cantidad"></p>
+                        <p class="descripcion"></p>
+                        <img src="" alt="" class="imagen_Item">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div id="inventari_de_construcciones">
+            <div class="espacio"></div>
+        </div>
+            
+    </div>
+
+
     <div id = "Inventario">
         <div id = "Inventario_contenido">
             <div id = "Imagenes_inventario">
