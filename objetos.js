@@ -58,7 +58,10 @@ export const Objetos = [
     {
         id: 7,
         nombre: "cabeza",
-        categoria: "",
+        categoria: "cultivo",
+        etapas: [{src: "./robot1.png"}, {src: "./robot2.png"}, {src: "./robot3.png"}],
+        cosecha: { 4: 1 },
+        tiempo: 25,
         src: "./robot1.png",
         tipo: "",
         descripcion: "Es una cabeza"
@@ -78,11 +81,11 @@ export const Objetos = [
         hitbox: {
             x: 0,
             y: 11,
-            ancho: 20,
-            alto: 25
+            ancho: 80,
+            alto: 45
         },
         src: "./verde.png",
-        tipo: "parcela_cultivos",
+        tipo: "corral",
         descripcion: "Es una cabeza"
     },
     {
@@ -125,11 +128,18 @@ export const Objetos = [
     },
     {
         id: 14,
-        nombre: "cabeza",
-        categoria: "",
-        src: "./robot1.png",
-        tipo: "",
-        descripcion: "Es una cabeza"
+        nombre: "Gallina",
+        categoria: "animal",
+        src: "./perdiurita.png",
+        tiempoProduccion: 10,
+        alimento: {
+            id: 3,
+            cantidad: 1
+        },
+        produce: {
+            id: 21,
+            cantidad: 1
+        }
     },
     {
         id: 15,
@@ -141,19 +151,34 @@ export const Objetos = [
     },
     {
         id: 16,
-        nombre: "cabeza",
-        categoria: "",
-        src: "./robot1.png",
-        tipo: "",
-        descripcion: "Es una cabeza"
+        nombre: "Arbol",
+        categoria: "fuente_recurso",
+        src: "./rayo_rojo.png",
+
+        hitbox: {
+            x: 10,
+            y: 30,
+            ancho: 25,
+            alto: 15
+        },
+
+        tiempoRecoleccion: 30000,
+
+        drops: [
+            { id: 14, cantidad: 3 }
+        ]
     },
     {
         id: 17,
-        nombre: "cabeza",
-        categoria: "",
-        src: "./robot1.png",
-        tipo: "",
-        descripcion: "Es una cabeza"
+        nombre: "Piedra",
+        categoria: "fuente_recurso",
+        src: "./imagenes/piedra.png",
+
+        tiempoRecoleccion: 0,
+
+        drops: [
+            { id: 2, cantidad: 2 }
+        ]
     },
     {
         id: 18,

@@ -6,7 +6,7 @@ export const Recetas = [
             { id: 1, cantidad: 1 }
         ],
         resultado: {
-            id: 10,
+            id: 14,
             cantidad: 1
         }
  

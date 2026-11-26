@@ -8,6 +8,7 @@ export class Construccion{
         this.hitbox = hitbox;
         this.id = id;
         this.imagen = imagen;
+        this.tipo = "construccion";
     }
 
     dibujar(canvas, ctx, tamaño){
