@@ -3,34 +3,164 @@ export class movimiento {
     constructor(entidad) {
         this.entidad = entidad;
         this.movimiento = {x: 0, y: 0, z: 0};
-        //direccion {x=0, z=0};
+
+        // Dimensiones del mundo.
+        this.limites = null;
+        this.alSalirMapa = null;
+        this.cambiandoMapa = false;
+        this.salidaBloqueada = null;
+    }
+
+    limitarMovimiento() {
+        if (!this.limites) return;
+
+        const hitbox = this.entidad.hitbox;
+
+        // Márgenes proporcionales, redondeados a píxeles enteros.
+        const margenIzquierdo = Math.ceil(this.limites.ancho * 0.0035);
+        const margenSuperior = Math.ceil(this.limites.alto * 0.031);
+
+        // Límites de posición de la entidad.
+        const minX = margenIzquierdo - hitbox.x;
+        const minY = margenSuperior - hitbox.y;
+
+        const maxX = Math.floor(
+            this.limites.ancho - hitbox.x - hitbox.ancho
+        );
+
+        const maxY = Math.floor(
+            this.limites.alto - hitbox.y - hitbox.alto
+        );
+
+        // Posición deseada.
+        const destinoX = this.entidad.x + this.movimiento.x;
+        const destinoY = this.entidad.y + this.movimiento.z;
+
+        // Limitar movimiento.
+        const nuevaX = Math.max(minX, Math.min(destinoX, maxX));
+        const nuevaY = Math.max(minY, Math.min(destinoY, maxY));
+
+        this.movimiento.x = nuevaX - this.entidad.x;
+        this.movimiento.z = nuevaY - this.entidad.y;
+    }
+
+    comprobarSalidaMapa() {
+        if (
+            !this.limites ||
+            typeof this.alSalirMapa !== "function" ||
+            this.cambiandoMapa
+        ) return false;
+
+        const hitbox = this.entidad.hitbox;
+
+        const x = this.entidad.x + hitbox.x + this.movimiento.x;
+        const y = this.entidad.y + hitbox.y + this.movimiento.z;
+
+        // Tolerancia para detectar que estamos intentando salir.
+        const tolerancia = 2;
+        const toleranciaSuperior = 70;
+        const distanciaDesbloqueo = 10;
+
+        // Desbloquear cuando el personaje se aleja del borde de entrada.
+        switch (this.salidaBloqueada) {
+            case "arriba":
+                if (y >= toleranciaSuperior + distanciaDesbloqueo) {
+                    this.salidaBloqueada = null;
+                }
+                break;
+
+            case "abajo":
+                if (y + hitbox.alto <= this.limites.alto - tolerancia - distanciaDesbloqueo) {
+                    this.salidaBloqueada = null;
+                }
+                break;
+
+            case "izquierda":
+                if (x >= tolerancia + distanciaDesbloqueo) {
+                    this.salidaBloqueada = null;
+                }
+                break;
+
+            case "derecha":
+                if (x + hitbox.ancho <= this.limites.ancho - tolerancia - distanciaDesbloqueo) {
+                    this.salidaBloqueada = null;
+                }
+                break;
+        }
+
+        let direccionSalida = null;
+
+        if (x < tolerancia && this.salidaBloqueada !== "izquierda") {
+            direccionSalida = "izquierda";
+        }
+        else if (
+            x + hitbox.ancho > this.limites.ancho - tolerancia &&
+            this.salidaBloqueada !== "derecha"
+        ) {
+            direccionSalida = "derecha";
+        }
+        else if (y < toleranciaSuperior && this.salidaBloqueada !== "arriba") {
+            direccionSalida = "arriba";
+        }
+        else if (
+            y + hitbox.alto > this.limites.alto - tolerancia &&
+            this.salidaBloqueada !== "abajo"
+        ) {
+            direccionSalida = "abajo";
+        }
+
+        if (!direccionSalida) return false;
+
+        this.cambiandoMapa = true;
+
+        let cambio = false;
+
+        try {
+            cambio = this.alSalirMapa(direccionSalida);
+        } finally {
+            this.cambiandoMapa = false;
+        }
+
+        if (!cambio) return false;
+
+        this.movimiento.x = 0;
+        this.movimiento.z = 0;
+
+        return true;
     }
 
     moviendo(direccion, espacio_x, espacio_y, id = this.entidad.id, salto = false)
     {
         this.mover(direccion, salto);
 
+        if (this.comprobarSalidaMapa()) {
+            return;
+        }
+
+        this.limitarMovimiento();
+
         if(this.comprobar(espacio_x, espacio_y, id))
         {
             this.movicion();
             this.afectarHitbox(espacio_x, espacio_y, id);
         }
-        let aux = (this.movimiento.x == 0) + "" + (this.movimiento.z == 0);
-        switch (aux)
-        {
-            case "falsetrue":
-                this.entidad.direccion = {y: this.movimiento.z, x: this.movimiento.x};
-            break;
 
-            case "falsefalse":
-                this.entidad.direccion = {y: this.movimiento.z, x: this.movimiento.x};
-            break;
+            let aux = (this.movimiento.x == 0) + "" + (this.movimiento.z == 0);
 
-            case "truefalse":
-                this.entidad.direccion = {y: this.movimiento.z, x: this.movimiento.x};
-            break;
+            switch (aux)
+            {
+                case "falsetrue":
+                case "falsefalse":
+                case "truefalse":
+                    this.entidad.direccion = {
+                        y: this.movimiento.z,
+                        x: this.movimiento.x
+                    };
+                break;
+            }
+    
+        // El resto de tu método queda igual.
         }
-    }
 
     mover(direccion, salto) {
         this.caminar(direccion);

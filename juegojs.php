@@ -106,10 +106,141 @@ let torso_color = <?php echo $color_torso;?>;
 let pierna = <?php echo $pierna;?>;
 let pierna_color = <?php echo $color_pierna;?>;
 
-const mapa = {
-    ancho: 2000,
-    alto: 1500
+const mapas = {
+    bosque: {
+        fondo: "./mapa/monte.png",
+
+        conexiones: {
+            derecha: "bosque2",
+            izquierda: null,
+            arriba: null,
+            abajo: "bosque4"
+        },
+
+        entidades: [
+            { tipo: "recurso", x: 300, y: 200, idObjeto: 16 },
+            // Más árboles, rocas, etc.
+        ],
+
+        instancias: []
+    },
+
+    bosque2: {
+        fondo: "./mapa/monte.png",
+
+        conexiones: {
+            derecha: "bosque3",
+            izquierda: "bosque",
+            arriba: null,
+            abajo: "bosque5"
+        },
+
+        entidades: [
+            { tipo: "recurso", x: 250, y: 300, idObjeto: 16 }
+        ],
+
+        instancias: []
+    },
+
+    bosque3: {
+        fondo: "./mapa/monte.png",
+
+        conexiones: {
+            derecha: null,
+            izquierda: "bosque2",
+            arriba: null,
+            abajo: "bosque6"
+        },
+
+        entidades: [],
+
+        instancias: []
+    },
+
+    bosque4: {
+        fondo: "./mapa/monte.png",
+
+        conexiones: {
+            derecha: "bosque5",
+            izquierda: null,
+            arriba: "bosque",
+            abajo: null
+        },
+
+        entidades: [],
+        instancias: []
+    },
+
+    bosque5: {
+        fondo: "./mapa/monte.png",
+
+        conexiones: {
+            derecha: "bosque6",
+            izquierda: "bosque4",
+            arriba: "bosque2",
+            abajo: null
+        },
+
+        entidades: [],
+        instancias: []
+    },
+
+    bosque6: {
+        fondo: "./mapa/monte.png",
+
+        conexiones: {
+            derecha: null,
+            izquierda: "bosque5",
+            arriba: "bosque3",
+            abajo: null
+        },
+
+        entidades: [],
+        instancias: []
+    }
 };
+
+let mapaActual = null;
+let mapa = {
+    ancho: 0,
+    alto: 0
+};
+let fondoActual = null;
+
+async function inicializarMapas() {
+
+    for (const [id, datos] of Object.entries(mapas)) {
+
+        // Cargar el fondo.
+        const imagen = await cargarImagen(datos.fondo);
+
+        datos.imagen = imagen;
+
+        // Crear las entidades permanentes una sola vez.
+        datos.instancias = datos.entidades.map(datosEntidad => {
+
+            if (datosEntidad.tipo === "recurso") {
+
+                const objeto = Objetos.find(
+                    o => o.id === datosEntidad.idObjeto
+                );
+
+                if (!objeto) return null;
+
+                return new FuenteRecurso(
+                    datosEntidad.x,
+                    datosEntidad.y,
+                    entidades_id++,
+                    objeto
+                );
+            }
+
+            return null;
+        }).filter(entidad => entidad !== null);
+    }
+
+    cambiarMapa("bosque", "inicio");
+}
 
 let camara = {
     x: 0,
@@ -133,7 +264,17 @@ const s  = saturacion_post;
 
 //console.log("h: " + color_post + ", s: " + s + ", v: " + v);
 let color_rgb = calculo.hsvToRgba(color_post, 100, 100);
-let robot1 = new Entidad(100, 100, {x: 8, y: 50, alto: 12, ancho: 19}, 2, entidades_id++);
+let robot1 = new Entidad(
+    100,
+    100,
+    {x: 8, y: 50, alto: 12, ancho: 19},
+    2,
+    entidades_id++
+);
+
+// El movimiento conoce los límites del mundo.
+robot1.movimiento.limites = mapa;
+
 //console.log(robot1);
 for(let i = robot1.x+robot1.hitbox.x; i< robot1.x+robot1.hitbox.x+robot1.hitbox.ancho; i++)
 {
@@ -207,25 +348,34 @@ function loop() {
 
         entidades.forEach(entidad => {
             if (entidad.tipo === "animal" && entidad.domesticado) {
-                entidad.movimiento.moverAleatorio(espacio_x, espacio_y);
+
+                entidad.movimiento.limites = mapa;
+
+                entidad.movimiento.moverAleatorio(
+                    espacio_x,
+                    espacio_y
+                );
             }
         });
 
         actualizarCamara();
 
-        jerarquia();
-
         ctx.save();
 
-        // Desplazamos el mundo según la cámara
         ctx.translate(-camara.x, -camara.y);
 
+        // Dibujar mapa
+        if (fondoActual && fondoActual.complete && fondoActual.naturalWidth > 0) {
+            ctx.drawImage(fondoActual, 0, 0);
+        }
+
+        // Dibujar entidades
         entidades.forEach(entidad => {
-            if (entidad.tipo === "animal") {
-                entidad.dibujar(canvas, ctx, 0.5);
-            } else {
-                entidad.dibujar(canvas, ctx, 1);
-            }
+            entidad.dibujar(
+                canvas,
+                ctx,
+                entidad.tipo === "animal" ? 0.5 : 1
+            );
         });
 
         ctx.restore();
@@ -331,32 +481,109 @@ function jerarquia() {
     });
 }
 
+function cambiarMapa(idMapa, direccionEntrada) {
 
+    console.log("Cambiando mapa:", {
+        anterior: mapaActual,
+        nuevo: idMapa,
+        entrada: direccionEntrada
+    });
+    const nuevoMapa = mapas[idMapa];
+
+    if (!nuevoMapa) return;
+
+    // Guardar las entidades del mapa que estamos abandonando.
+    if (mapaActual) {
+        mapaActual.instancias = entidades.filter(
+            entidad => entidad !== robot1
+        );
+    }
+
+    mapaActual = nuevoMapa;
+    fondoActual = nuevoMapa.imagen;
+
+    // Actualizar dimensiones.
+    mapa.ancho = fondoActual.naturalWidth;
+    mapa.alto = fondoActual.naturalHeight;
+
+    // Colocar al jugador en el extremo opuesto.
+
+    const margen = 5;
+
+switch (direccionEntrada) {
+    case "izquierda":
+        robot1.x = margen - robot1.hitbox.x;
+        break;
+
+    case "derecha":
+        robot1.x = mapa.ancho - robot1.hitbox.ancho
+            - robot1.hitbox.x - margen;
+        break;
+
+    case "arriba":
+        robot1.y = margen - robot1.hitbox.y + 80;
+        break;
+
+    case "abajo":
+        robot1.y = mapa.alto - robot1.hitbox.alto
+            - robot1.hitbox.y - margen;
+        break;
+}
+
+    // Eliminar las entidades del mapa anterior de las listas activas.
+    entidades = entidades.filter(entidad =>
+        entidad === robot1
+    );
+
+    // Agregar las entidades del nuevo mapa.
+    entidades.push(...mapaActual.instancias);
+
+    // Reiniciar las matrices de colisión.
+    espacio_x = Array.from(
+        { length: mapa.ancho },
+        () => []
+    );
+
+    espacio_y = Array.from(
+        { length: mapa.alto },
+        () => []
+    );
+
+    // Registrar todas las entidades del mapa actual.
+    entidades.forEach(entidad => {
+        actualizar_espacio(entidad);
+    });
+
+    // Actualizar la cámara.
+    actualizarCamara();
+}
 
 function ajustarResolucionCanvas(can, contexto, bool = true) {
     let anchoVisual, altoVisual;
-    if(bool)
-    {
-        anchoVisual = window.innerWidth -10;
-        altoVisual = window.innerHeight -10;
+
+    if (bool) {
+        anchoVisual = window.innerWidth - 10;
+        altoVisual = window.innerHeight - 10;
     }
-    else
-    {
+    else {
         const rect = can.getBoundingClientRect();
+
         anchoVisual = rect.width - 10;
         altoVisual = rect.height - 10;
     }
-    
+
     const dpr = window.devicePixelRatio || 1;
-    
-    can.width = anchoVisual * dpr;
-    can.height = altoVisual * dpr;
-    
+
     can.style.width = anchoVisual + "px";
     can.style.height = altoVisual + "px";
-    
-    contexto.scale(dpr, dpr);
-    contexto.imageSmoothingEnabled = false; 
+
+    can.width = Math.round(anchoVisual * dpr);
+    can.height = Math.round(altoVisual * dpr);
+
+    // Evita acumular escalados cuando se cambia el tamaño.
+    contexto.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    contexto.imageSmoothingEnabled = false;
 }
 
 /*window.addEventListener('wheel', (e) => {
@@ -698,18 +925,28 @@ function eliminarEntidad(entidad) {
 }
 
 function quitar_espacio(entidad) {
-    const x = entidad.x + entidad.hitbox.x;
-    const y = entidad.y + entidad.hitbox.y;
+    const x = Math.floor(entidad.x + entidad.hitbox.x);
+    const y = Math.floor(entidad.y + entidad.hitbox.y);
+
     const ancho = entidad.hitbox.ancho;
     const alto = entidad.hitbox.alto;
+
     const id = entidad.id;
 
     for (let i = x; i < x + ancho; i++) {
-        espacio_x[i] = espacio_x[i].filter(espacio => espacio !== id);
+        if (!espacio_x[i]) continue;
+
+        espacio_x[i] = espacio_x[i].filter(
+            espacio => espacio !== id
+        );
     }
 
     for (let i = y; i < y + alto; i++) {
-        espacio_y[i] = espacio_y[i].filter(espacio => espacio !== id);
+        if (!espacio_y[i]) continue;
+
+        espacio_y[i] = espacio_y[i].filter(
+            espacio => espacio !== id
+        );
     }
 }
 
@@ -943,7 +1180,30 @@ contenedorParcelas.addEventListener("click", (e) => {
     }
 });
 
+robot1.movimiento.alSalirMapa = (direccionSalida) => {
+    const idNuevoMapa = mapaActual.conexiones[direccionSalida];
 
+    console.log("Intentando conectar:", {
+        mapaActual: Object.keys(mapas).find(
+            id => mapas[id] === mapaActual
+        ),
+        direccionSalida,
+        destino: idNuevoMapa
+    });
+
+    if (!idNuevoMapa) return false;
+
+    const entradas = {
+        izquierda: "derecha",
+        derecha: "izquierda",
+        arriba: "abajo",
+        abajo: "arriba"
+    };
+
+    cambiarMapa(idNuevoMapa, entradas[direccionSalida]);
+
+    return true;
+};
 ajustarResolucionCanvas(canvas, ctx);
 
 //evento personalizado
@@ -970,22 +1230,28 @@ document.addEventListener('construir', (e) => {
     }
 });
 
-function actualizar_espacio(entidad){
-    const x = entidad.x + entidad.hitbox.x;
-    const y = entidad.y + entidad.hitbox.y;
+function actualizar_espacio(entidad) {
+    const x = Math.floor(entidad.x + entidad.hitbox.x);
+    const y = Math.floor(entidad.y + entidad.hitbox.y);
+
     const ancho = entidad.hitbox.ancho;
     const alto = entidad.hitbox.alto;
+
     const id = entidad.id;
-    for(let i = x; i< x + ancho; i++)
-    {
+
+    for (let i = x; i < x + ancho; i++) {
+        if (!espacio_x[i]) espacio_x[i] = [];
+
         espacio_x[i].push(id);
     }
-    for(let i = y; i< y + alto; i++)
-    {
+
+    for (let i = y; i < y + alto; i++) {
+        if (!espacio_y[i]) espacio_y[i] = [];
+
         espacio_y[i].push(id);
     }
-    
 }
+
 const nombresBaseImagenes = [
     "antebrazo_der",
     "antebrazo_izq",
@@ -1055,7 +1321,8 @@ async function inicializarSprites() {
 // Carga en paralelo: el objeto de robots y la lista de imágenes generales
 Promise.all([
     inicializarSprites(),
-    Promise.all(rutasGenerales.map(cargarImagen))
+    Promise.all(rutasGenerales.map(cargarImagen)),
+    inicializarMapas()
 ]).then(([spritesRobots, imagenesGenerales]) => {
 
     // 1. Primer objeto: diccionario exclusivo con los sprites de los robots
@@ -1114,22 +1381,16 @@ Promise.all([
 
     ajustarResolucionCanvas(equipamiento, ctx_robot, false);
 
-    for (let i = 0; i < canvas.width; i++) {
+    for (let i = 0; i < mapa.ancho; i++) {
         espacio_x[i] = [];
     }
 
-    for (let i = 0; i < canvas.height; i++) {
+    for (let i = 0; i < mapa.alto; i++) {
         espacio_y[i] = [];
     }
 
-    entidades.forEach((entidad, i) => {
-        for (let l = entidad.x; l < entidad.x + entidad.hitbox.ancho; l++) {
-            espacio_x[l].push(i);
-        }
-
-        for (let l = entidad.y; l < entidad.y + entidad.alto; l++) {
-            espacio_y[l].push(i);
-        }
+    entidades.forEach(entidad => {
+        actualizar_espacio(entidad);
     });
 
     // Iniciar juego únicamente cuando todas las imágenes estén cargadas
