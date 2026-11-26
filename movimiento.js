@@ -129,38 +129,64 @@ export class movimiento {
         return true;
     }
 
-    moviendo(direccion, espacio_x, espacio_y, id = this.entidad.id, salto = false)
-    {
-        this.mover(direccion, salto);
-
-        if (this.comprobarSalidaMapa()) {
-            return;
-        }
-
-        this.limitarMovimiento();
-
-        if(this.comprobar(espacio_x, espacio_y, id))
-        {
-            this.movicion();
-            this.afectarHitbox(espacio_x, espacio_y, id);
-        }
-
-            let aux = (this.movimiento.x == 0) + "" + (this.movimiento.z == 0);
-
-            switch (aux)
-            {
-                case "falsetrue":
-                case "falsefalse":
-                case "truefalse":
-                    this.entidad.direccion = {
-                        y: this.movimiento.z,
-                        x: this.movimiento.x
-                    };
-                break;
-            }
     
-        // El resto de tu método queda igual.
-        }
+moviendo(direccion, espacio_x, espacio_y, id = this.entidad.id, salto = false)
+{
+    const xAnterior = this.entidad.x;
+    const yAnterior = this.entidad.y;
+
+    this.mover(direccion, salto);
+
+    if (this.comprobarSalidaMapa()) {
+
+        this.entidad.setCaminando(false);
+
+        return;
+    }
+
+    this.limitarMovimiento();
+
+    if (this.comprobar(espacio_x, espacio_y, id))
+    {
+        this.movicion();
+
+        this.afectarHitbox(
+            espacio_x,
+            espacio_y,
+            id
+        );
+    }
+
+    let aux =
+        (this.movimiento.x == 0) +
+        "" +
+        (this.movimiento.z == 0);
+
+    switch (aux)
+    {
+        case "falsetrue":
+        case "falsefalse":
+        case "truefalse":
+
+            this.entidad.direccion = {
+                y: this.movimiento.z,
+                x: this.movimiento.x
+            };
+
+        break;
+    }
+
+    // =========================================
+    // ANIMACIÓN
+    // =========================================
+
+    const seMovio =
+        this.entidad.x !== xAnterior ||
+        this.entidad.y !== yAnterior;
+
+    this.entidad.setCaminando(seMovio);
+}
+
 
     mover(direccion, salto) {
         this.caminar(direccion);

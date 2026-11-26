@@ -130,7 +130,7 @@ export const Objetos = [
         id: 14,
         nombre: "Gallina",
         categoria: "animal",
-        src: "./perdiurita.png",
+        src: "./normalita.png",
         tiempoProduccion: 10,
         alimento: {
             id: 3,
