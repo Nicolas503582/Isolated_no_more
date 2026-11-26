@@ -9,6 +9,7 @@ export class movimiento {
     moviendo(direccion, espacio_x, espacio_y, id = this.entidad.id, salto = false)
     {
         this.mover(direccion, salto);
+
         if(this.comprobar(espacio_x, espacio_y, id))
         {
             this.movicion();
@@ -29,16 +30,6 @@ export class movimiento {
                 this.entidad.direccion = {y: this.movimiento.z, x: this.movimiento.x};
             break;
         }
-        
-       //console.log(aux);
-        /*if(this.movimiento.x != 0 || this.entidad.direccion.y != 0)
-        {
-            this.entidad.direccion.y = this.movimiento.x;
-        }
-        if(this.entidad.direccion.x != 0 || this.movimiento.y != 0)
-        {
-            this.entidad.direccion.y = this.movimiento.y;
-        }*/
     }
 
     mover(direccion, salto) {
@@ -122,5 +113,101 @@ export class movimiento {
         {
             espacio_y[i].push(id);
         }
+    }
+}
+
+export class movimientoCorral extends movimiento {
+    constructor(entidad, idPermitido) {
+        super(entidad);
+
+        this.idPermitido = idPermitido;
+
+        this.direcciones = [
+            { x: 1, z: 0, y: 0},
+            { x: -1, z: 0, y: 0 },
+            { x: 0, z: 1, y: 0 },
+            { x: 0, z: -1, y: 0 }
+        ];
+
+        this.direccionAleatoria = this.elegirDireccion();
+    }
+
+    mover(direccion) {
+        this.caminar(direccion);
+        this.movimiento.y = 0;
+    }
+
+    elegirDireccion() {
+        const indice = Math.floor(Math.random() * this.direcciones.length);
+        return this.direcciones[indice];
+    }
+
+    moverAleatorio(espacio_x, espacio_y) {
+        const xAnterior = this.entidad.x;
+        const yAnterior = this.entidad.y;
+
+
+        this.moviendo(
+            this.direccionAleatoria,
+            espacio_x,
+            espacio_y,
+            this.entidad.id
+        );
+
+
+        if (
+            this.entidad.x === xAnterior &&
+            this.entidad.y === yAnterior
+        ) {
+            this.direccionAleatoria = this.elegirDireccion();
+        }
+
+        console.groupEnd();
+    }
+
+    comprobar(x, y, id) {
+
+        console.log("Posición:", {
+            x: this.entidad.x,
+            y: this.entidad.y
+        });
+
+        // Comprobar eje X
+        const inicioX = this.entidad.x + this.entidad.hitbox.x + this.movimiento.x;
+        const finalX = inicioX + this.entidad.hitbox.ancho;
+
+
+        for (let i = inicioX; i < finalX; i++) {
+
+            if (!x[i] || !x[i].includes(this.idPermitido)) {
+                console.warn("BLOQUEADO EN X: no pertenece al corral", i);
+                console.groupEnd();
+                return false;
+            }
+
+            if (x[i].some(espacio => espacio !== id && espacio !== this.idPermitido)) {
+                
+                return false;
+            }
+        }
+
+        // Comprobar eje Y
+        const inicioY = this.entidad.y + this.entidad.hitbox.y + this.movimiento.z;
+        const finalY = inicioY + this.entidad.hitbox.alto;
+;
+
+        for (let i = inicioY; i < finalY; i++) {
+
+            if (!y[i] || !y[i].includes(this.idPermitido)) {
+                return false;
+            }
+
+            if (y[i].some(espacio => espacio !== id && espacio !== this.idPermitido)) {
+                return false;
+            }
+        }
+
+
+        return true;
     }
 }

@@ -264,92 +264,84 @@ export class Crafteador {
             });
         });
 
+        
         Array.from(this.recetario.getElementsByClassName("crafteo")).forEach(crafteo => {
-            crafteo.addEventListener("click", (e) => {
-               //console.log"se ejecuta el evento");
-                let resultado = crafteo.querySelector(".resultado");
-                let id_resultado = resultado.querySelector(".id_objeto");
-                let cantidad_resultado = resultado.querySelector(".cantidad");
-                let espacio_libre = false;
+            crafteo.addEventListener("click", () => {
+
+                const resultado = crafteo.querySelector(".resultado");
+                const idResultado = Number(resultado.querySelector(".id_objeto").textContent);
+                const cantidadResultado = Number(resultado.querySelector(".cantidad").textContent);
+
+                // Comprobar si hay espacio para el resultado.
+                let espacioLibre = false;
+
                 this.crafteador_objetos.Rapido.forEach(objeto => {
-                    if(!espacio_libre)
-                    {
-                        const id_objeto = objeto.querySelector(".id_objeto");
-                        if(id_objeto.textContent == "" || id_objeto.textContent == id_resultado)
-                        {
-                            espacio_libre = true;    
-                        }
+                    const idObjeto = objeto.querySelector(".id_objeto").textContent;
+
+                    if (idObjeto === "" || Number(idObjeto) === idResultado) {
+                        espacioLibre = true;
                     }
                 });
-                if(!espacio_libre)
-                {
-                   //console.log"No hay espacio suficiente");
+
+                if (!espacioLibre) {
+                    console.log("No hay espacio suficiente en el inventario rápido.");
+                    return;
                 }
-                else
-                {
-                    const precio = crafteo.querySelector(".precio");
-                    let necesario = [];
-                    let puede = true;
-                    Array.from(precio.getElementsByClassName("objeto")).forEach(objeto =>{
-                        const id = objeto.querySelector(".id_objeto");
-                        const cantidad = objeto.querySelector(".cantidad");
-                        let aux = false;
-                        
-                        this.crafteador_objetos.Materiales.forEach(Material =>{
 
-                            /*console.log("necesito: ");
-                            console.log(objeto);
-                            console.log("Tengo: ");
-                            console.log(Material);*/
-                            const id_objeto = Material.querySelector(".id_objeto");
-                            const cantidad_objeto = Material.querySelector(".cantidad");
+                // Comprobar los materiales necesarios.
+                const precio = crafteo.querySelector(".precio");
+                const necesario = [];
+                let puede = true;
 
-                           //console.log"id_necesario: " + id.textContent + ", id_material: " + id_objeto.textContent);
-                           //console.log"cantidad_necesario: " + cantidad.textContent + ", cantidad_material: " + cantidad_objeto.textContent);
-                           //console.log);
-                            if(id_objeto.textContent == id.textContent && cantidad_objeto.textContent >= cantidad.textContent)
-                            {
-                                aux = true;
-                            }
-                        });
-                    
-                        necesario.push({"id": id.textContent, "cantidad": cantidad.textContent, "esta": aux});
+                Array.from(precio.getElementsByClassName("objeto")).forEach(objeto => {
+
+                    const id = Number(objeto.querySelector(".id_objeto").textContent);
+                    const cantidad = Number(objeto.querySelector(".cantidad").textContent);
+
+                    let cantidadDisponible = 0;
+
+                    this.crafteador_objetos.Materiales.forEach(material => {
+
+                        const idMaterial = Number(material.querySelector(".id_objeto").textContent);
+                        const cantidadMaterial = Number(material.querySelector(".cantidad").textContent);
+
+                        if (idMaterial === id) {
+                            cantidadDisponible += cantidadMaterial;
+                        }
                     });
 
-                    for(let i = 0; i < necesario.length; i++)
-                    {
-                        if(!necesario[i].esta)
-                        {
-                            puede = false;
-                           //console.log"No tiene lo necesario");
-                        }
+                    if (cantidadDisponible < cantidad) {
+                        puede = false;
                     }
 
+                    necesario.push({ id, cantidad });
+                });
 
-                    if(puede)
-                    {
-                        
-                       //console.log"Haciendo la compra");
-                       //console.lognecesario);
-                        necesario.forEach(objeto => {
-                            const id = objeto.id;
-                            const cantidad = objeto.cantidad;
-
-                            this.crafteador_objetos.Materiales.forEach(objeto =>{
-                                const id_objeto = objeto.querySelector(".id_objeto");
-
-                                if(id_objeto == id)
-                                {
-                                    this.reducirObjetoDeInventario("Materiales", id, cantidad);
-                                }
-                            });
-                        });
-
-                        this.guardarObjetoEnInventario("Rapido", id_resultado.textContent, cantidad_resultado.textContent); 
-                    }
+                if (!puede) {
+                    console.log("No tenés los materiales necesarios.");
+                    return;
                 }
+
+                // Descontar los materiales.
+                necesario.forEach(material => {
+                    this.reducirObjetoDeInventario(
+                        "Materiales",
+                        material.id,
+                        material.cantidad
+                    );
+                });
+
+                // Entregar el resultado.
+                this.guardarObjetoEnInventario(
+                    "Rapido",
+                    idResultado,
+                    cantidadResultado
+                );
+
+                console.log("Crafteo realizado correctamente.");
             });
         });
+
 
         
     }

@@ -239,8 +239,9 @@ $_SESSION["id_pierna"] = $_POST["pierna"] ?? 0;
 
         
         <div id="inventari_de_construcciones">
-            <div class="espacio"></div>
+            
         </div>
+        <button id="regar_todo">Regar todo</button>
             
     </div>
 

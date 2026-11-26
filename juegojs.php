@@ -20,13 +20,17 @@ header("Content-Type: application/javascript");
 
 ?>
 
+import { Animal } from "./animales.js";
 import { Parcela } from "./parcelas.js";
+import { Corral } from "./corrales.js";
 import { Entidad } from "./entidades.js";
 import { calculos } from "./general.js";
 import { Inventario } from "./inventario.js";
 import { Crafteador } from "./crafteo.js";
 import { Construccion } from "./construccion.js";
 import { Objetos } from "./objetos.js";
+import { FuenteRecurso } from "./fuentes_recursos.js";
+
 
 let Guardar = document.getElementById("guardar_partido");
 let vida_html = document.getElementById("vida");
@@ -46,6 +50,7 @@ let inventario = document.getElementById("Inventario");
 let inventario_html = document.getElementById("Inv_objetos");
 let ingreso_inv = document.getElementById("ingreso_inv");
 let inv_de_construccion_activo = false;
+let parcelaAbierta = null;
 let espacios_inventario = Array.from(inventario_html.getElementsByClassName("espacio_inv"));
 let inventario_objetos = {Insumos: [], Herramientas: [], Materiales: [], Rapido: []};
 inventario_objetos.Insumos = espacios_inventario.slice(0, 5);
@@ -101,6 +106,16 @@ let torso_color = <?php echo $color_torso;?>;
 let pierna = <?php echo $pierna;?>;
 let pierna_color = <?php echo $color_pierna;?>;
 
+const mapa = {
+    ancho: 2000,
+    alto: 1500
+};
+
+let camara = {
+    x: 0,
+    y: 0
+};
+
 brazo += 1;
 cabeza += 1;
 torso += 1;
@@ -134,39 +149,41 @@ let h = 0;
 entidades.push(robot1);
 entidades_dibujables.push(robot1);
 
+// Buscar los datos del árbol
+
 function loop() {
-   //console.log(robot1.x + "    " + robot1.y);
+  //console.log(entidades);
 
     if(!inv_activo && !craf_activo && !inv_de_construccion_activo)
     {
         if(aux_entidad >= 30)
         {
-            if(entidades.length < 2)
-            {
-                entidades.push(new Entidad(100, 150, {x: 8, y: 50, alto: 12, ancho: 19}, 1, entidades_id++));
+            if (aux_entidad >= 30) {
 
-                const aux_esp = entidades.length - 1;
-                for(let i = entidades[aux_esp].x+entidades[aux_esp].hitbox.x; i< entidades[aux_esp].x+entidades[aux_esp].hitbox.x+entidades[aux_esp].hitbox.ancho; i++)
-                {
-                    espacio_x[i] = [aux_esp]; 
-                }
-                for(let i = entidades[aux_esp].y+entidades[aux_esp].hitbox.y; i< entidades[aux_esp].y+entidades[aux_esp].hitbox.y+entidades[aux_esp].hitbox.alto; i++)
-                {
-                    espacio_y[i] = [aux_esp]; 
+                if (entidades.filter(e => e.tipo === "animal" && !e.domesticado).length < 5) {
+
+                    const datosAnimal = Objetos.find(objeto =>
+                        objeto.categoria === "animal"
+                    );
+
+                    if (datosAnimal) {
+
+                        const animal = new Animal(
+                            100,
+                            150,
+                            entidades_id++,
+                            datosAnimal
+                        );
+
+                        entidades.push(animal);
+
+                        actualizar_espacio(animal);
+                    }
+
                 }
 
-                entidades[(entidades.length - 1)].guardarimagenes(["cabeza", "brazo", "pierna", "torso", "antebrazo"], 
-                [
-                    imagenes.cabezaR1_post, 
-                    [imagenes.brazoR1_der, imagenes.brazoR1_izq], 
-                    [imagenes.piernaR1_der, imagenes.piernaR1_izq], 
-                    imagenes.torsoR1,
-                    [imagenes.antebrazoR1_der, imagenes.antebrazoR1_izq]
-                ]);
-                entidades[(entidades.length - 1)].cambiarcolores();
+                aux_entidad = 0;
             }
-
-            aux_entidad = 0;
         }
         else
         {
@@ -175,7 +192,7 @@ function loop() {
             inv.guardarObjetoEnInventario("Materiales", 1, 85);
             aux_entidad++;
         }
-        ajustarResolucionCanvas(canvas, ctx);
+        //ajustarResolucionCanvas(canvas, ctx);
         ctx.fillStyle = "white";
         ctx.fillRect(0,0, canvas.width, canvas.height);
 
@@ -189,9 +206,29 @@ function loop() {
         //console.log("x: " + espacio_x);*/
 
         entidades.forEach(entidad => {
-            entidad.dibujar(canvas, ctx, 1);
+            if (entidad.tipo === "animal" && entidad.domesticado) {
+                entidad.movimiento.moverAleatorio(espacio_x, espacio_y);
+            }
         });
+
+        actualizarCamara();
+
         jerarquia();
+
+        ctx.save();
+
+        // Desplazamos el mundo según la cámara
+        ctx.translate(-camara.x, -camara.y);
+
+        entidades.forEach(entidad => {
+            if (entidad.tipo === "animal") {
+                entidad.dibujar(canvas, ctx, 0.5);
+            } else {
+                entidad.dibujar(canvas, ctx, 1);
+            }
+        });
+
+        ctx.restore();
         
         //console.log(entidades);
     }
@@ -256,12 +293,45 @@ function loop() {
     requestAnimationFrame(loop);
 }
 
-function jerarquia(){
-    entidades.sort((a, b) => {
-        return ((a.y + a.hitbox.y + a.hitbox.alto) - (b.y + b.hitbox.y + b.hitbox.alto)) || ((b.x + b.hitbox.x + b.hitbox.ancho) - (a.x + a.hitbox.x + a.hitbox.ancho));
-    });
-    
+function actualizarCamara() {
+    const anchoPantalla = canvas.clientWidth;
+    const altoPantalla = canvas.clientHeight;
+
+    const jugadorX = robot1.x + robot1.hitbox.x + robot1.hitbox.ancho / 2;
+    const jugadorY = robot1.y + robot1.hitbox.y + robot1.hitbox.alto / 2;
+
+    // Posición ideal de la cámara: jugador en el centro
+    let camaraX = jugadorX - anchoPantalla / 2;
+    let camaraY = jugadorY - altoPantalla / 2;
+
+    // Límites de la cámara
+    const maxX = Math.max(0, mapa.ancho - anchoPantalla);
+    const maxY = Math.max(0, mapa.alto - altoPantalla);
+
+    // Evitar que la cámara salga del mapa
+    camara.x = Math.max(0, Math.min(camaraX, maxX));
+    camara.y = Math.max(0, Math.min(camaraY, maxY));
 }
+
+function jerarquia() {
+    entidades.sort((a, b) => {
+
+        // Si una entidad es un animal dentro de un corral,
+        // usamos la profundidad del animal normalmente.
+        const profundidadA = a.y + a.hitbox.y + a.hitbox.alto;
+        const profundidadB = b.y + b.hitbox.y + b.hitbox.alto;
+
+        // Si el corral y uno de sus animales se comparan,
+        // el corral siempre se dibuja primero.
+        if (a.tipo === "corral" && b.corral === a) return -1;
+        if (b.tipo === "corral" && a.corral === b) return 1;
+
+        return profundidadA - profundidadB ||
+            b.x - a.x;
+    });
+}
+
+
 
 function ajustarResolucionCanvas(can, contexto, bool = true) {
     let anchoVisual, altoVisual;
@@ -325,43 +395,68 @@ window.addEventListener("keydown", (e) => {
         {
             robot1.velocidad +=5;
         }
-        if(tecla == "r" && !inv_activo && !craf_activo)
-        {
-            const rango = 90;
+        if (tecla == "r" && !teclas[tecla] && !inv_activo && !craf_activo) {
 
-            // Centro del jugador
-            const jugador_x = robot1.x + robot1.hitbox.x + robot1.hitbox.ancho / 2;
-            const jugador_y = robot1.y + robot1.hitbox.y + robot1.hitbox.alto / 2;
+            // Si hay un inventario de construcción abierto, cerrarlo.
+            if (inv_de_construccion_activo) {
+                inv_de_construccion_activo = false;
+                ingreso_inv.classList.remove("visible");
+                parcelaAbierta = null;
+            }
 
-            let encontrado = -1;
+            // Primero intentar recoger un animal salvaje.
+            else if (recogerAnimalSalvaje()) {
+                // Animal recogido.
+            }
 
-            entidades.forEach(entidad => {
+            // Después intentar recolectar una fuente de recursos.
+            else if (recolectarFuenteRecurso()) {
+                // Recurso recolectado.
+            }
 
-                if(entidad.id == robot1.id) return;
+            // Si no hay animales ni fuentes cerca, buscar construcciones.
+            else {
+                const rango = 90;
 
-                if(entidad.tipo != "corral" && entidad.tipo != "parcela") return;
+                const jugador_x = robot1.x + robot1.hitbox.x + robot1.hitbox.ancho / 2;
+                const jugador_y = robot1.y + robot1.hitbox.y + robot1.hitbox.alto / 2;
 
-                // Centro de la hitbox de la entidad
-                const entidad_x = entidad.x + entidad.hitbox.x + entidad.hitbox.ancho / 2;
-                const entidad_y = entidad.y + entidad.hitbox.y + entidad.hitbox.alto / 2;
+                let encontrada = null;
+                let distanciaMenor = Infinity;
 
-                // Distancia entre los centros
-                const dx = jugador_x - entidad_x;
-                const dy = jugador_y - entidad_y;
+                entidades.forEach(entidad => {
 
-                const distancia = Math.sqrt(dx * dx + dy * dy);
+                    if (entidad.id == robot1.id) return;
 
-                if(distancia <= rango)
-                {
-                    encontrado = entidad.id;
+                    if (entidad.tipo != "corral" && entidad.tipo != "parcela") return;
+
+                    const entidad_x = entidad.x + entidad.hitbox.x + entidad.hitbox.ancho / 2;
+                    const entidad_y = entidad.y + entidad.hitbox.y + entidad.hitbox.alto / 2;
+
+                    const dx = jugador_x - entidad_x;
+                    const dy = jugador_y - entidad_y;
+
+                    const distancia = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distancia <= rango && distancia < distanciaMenor) {
+                        distanciaMenor = distancia;
+                        encontrada = entidad;
+                    }
+                });
+
+                if (encontrada) {
+                    inv_de_construccion_activo = true;
+                    ingreso_inv.classList.add("visible");
+
+                    if (encontrada.tipo == "parcela") {
+                        parcelaAbierta = encontrada;
+                        rellenarInventarioParcela(encontrada);
+                    }
+                    else if (encontrada.tipo == "corral") {
+                        parcelaAbierta = encontrada;
+                        rellenarInventarioCorral(encontrada);
+                    }
                 }
-            });
-
-            if(encontrado != -1)
-            {
-                inv_de_construccion_activo = inv_de_construccion_activo? false: true;
-                ingreso_inv.classList.toggle("visible");
-                console.log(inv_de_construccion_activo);
             }
         }
 
@@ -383,15 +478,487 @@ window.addEventListener("resize", function(){
     ajustarResolucionCanvas(equipamiento, ctx_robot, false);
 });
 
+function rellenarInventarioParcela(parcela)
+{
+    const contConstr = document.querySelector("#inventari_de_construcciones");
+    const espacios = contConstr.querySelectorAll(".espacio");
+
+   //console.log(parcela);
+
+           //console.log(contConstr);
+    espacios.forEach((slot, i) => {
+           //console.log("asfdsdvgess");
+
+        const id = parcela.cultivo[i];
+        const estado = parcela.estado[i];
+
+        const seleccionado = slot.querySelector(".seleccionado");
+        const idObjeto = slot.querySelector(".id_objeto");
+        const nombre = slot.querySelector(".nombre_objeto");
+        const cantidad = slot.querySelector(".cantidad");
+        const descripcion = slot.querySelector(".descripcion");
+        const imagen = slot.querySelector(".imagen_Item");
+
+        // Limpiar el espacio
+        seleccionado.textContent = "false";
+        idObjeto.textContent = "";
+        nombre.textContent = "";
+        cantidad.textContent = "";
+        descripcion.textContent = "";
+        imagen.src = "";
+
+           //console.log("asfdsdvgess");
+        // Si está vacío, no mostrar ningún cultivo
+        if(estado == "vacio" || id == null)
+        {
+
+           //console.log("asfdsdvgess");
+            return;
+        }
+
+        // Buscar la definición del cultivo por su ID
+        const cultivo = Objetos.find(
+            c => c.id == id
+        );
+
+        if(!cultivo) return;
+
+        idObjeto.textContent = id;
+        nombre.textContent = cultivo.nombre;
+
+        descripcion.textContent = estado;
+
+        if (estado === "sembrado") {
+            descripcion.textContent = parcela.regada[i]
+                ? "Regada"
+                : "Necesita agua";
+        }
+
+        cantidad.textContent =
+            estado == "listo" ? "Cosechar" : "Creciendo";
+
+        // Mostrar imagen de la etapa actual
+
+           //console.log("asfdsdvgess");
+        if(cultivo.etapas && cultivo.etapas.length > 0)
+        {
+            const etapa = cultivo.etapas[0];
+
+           //console.log("asfdsdvgess");
+
+            imagen.src = typeof etapa == "string"
+                ? etapa
+                : etapa.src;
+        }
+    });
+}
+function rellenarInventarioCorral(corral)
+{
+    const contConstr = document.querySelector("#inventari_de_construcciones");
+    const espacios = contConstr.querySelectorAll(".espacio");
+
+    espacios.forEach((slot, i) => {
+        const seleccionado = slot.querySelector(".seleccionado");
+        const idObjeto = slot.querySelector(".id_objeto");
+        const nombre = slot.querySelector(".nombre_objeto");
+        const cantidad = slot.querySelector(".cantidad");
+        const descripcion = slot.querySelector(".descripcion");
+        const imagen = slot.querySelector(".imagen_Item");
+
+        // Limpiar el espacio.
+        seleccionado.textContent = "false";
+        idObjeto.textContent = "";
+        nombre.textContent = "";
+        cantidad.textContent = "";
+        descripcion.textContent = "";
+        imagen.src = "";
+
+        // Si todavía no hay un animal en esta posición.
+        if (!corral.animales[i]) return;
+
+        const animal = corral.animales[i].tipo;
+
+        idObjeto.textContent = animal.id;
+        nombre.textContent = animal.nombre;
+        cantidad.textContent = "1";
+        descripcion.textContent = corral.animales[i].alimentado
+            ? "Alimentado"
+            : "Sin alimentar";
+
+        imagen.src = animal.src;
+    });
+}
+
+function recolectarFuenteRecurso() {
+    const rango = 90;
+
+    const jugador_x = robot1.x + robot1.hitbox.x + robot1.hitbox.ancho / 2;
+    const jugador_y = robot1.y + robot1.hitbox.y + robot1.hitbox.alto / 2;
+
+    let fuenteCercana = null;
+    let distanciaMenor = Infinity;
+
+    entidades.forEach(entidad => {
+        if (entidad.tipo !== "fuente_recurso") return;
+
+        const entidad_x = entidad.x + entidad.hitbox.x + entidad.hitbox.ancho / 2;
+        const entidad_y = entidad.y + entidad.hitbox.y + entidad.hitbox.alto / 2;
+
+        const dx = jugador_x - entidad_x;
+        const dy = jugador_y - entidad_y;
+
+        const distancia = Math.sqrt(dx * dx + dy * dy);
+
+        if (distancia <= rango && distancia < distanciaMenor) {
+            distanciaMenor = distancia;
+            fuenteCercana = entidad;
+        }
+    });
+
+    if (!fuenteCercana) return false;
+
+    const drops = fuenteCercana.recolectar();
+
+    if (drops === false) {
+        return true;
+    }
+
+    drops.forEach(recurso => {
+        inv.guardarObjetoEnInventario(
+            "Materiales",
+            recurso.id,
+            recurso.cantidad
+        );
+        console.log(recurso);
+    });
+
+    return true;
+}
+
+function recogerAnimalSalvaje() {
+    const rango = 90;
+
+    const jugador_x = robot1.x + robot1.hitbox.x + robot1.hitbox.ancho / 2;
+    const jugador_y = robot1.y + robot1.hitbox.y + robot1.hitbox.alto / 2;
+
+    let animalCercano = null;
+    let distanciaMenor = Infinity;
+
+    entidades.forEach(entidad => {
+
+        if (
+            entidad.tipo !== "animal" ||
+            entidad.domesticado ||
+            entidad.corral !== null
+        ) return;
+
+        const animal_x = entidad.x + entidad.hitbox.x + entidad.hitbox.ancho / 2;
+        const animal_y = entidad.y + entidad.hitbox.y + entidad.hitbox.alto / 2;
+
+        const dx = jugador_x - animal_x;
+        const dy = jugador_y - animal_y;
+
+        const distancia = Math.sqrt(dx * dx + dy * dy);
+
+        if (distancia <= rango && distancia < distanciaMenor) {
+            distanciaMenor = distancia;
+            animalCercano = entidad;
+        }
+    });
+
+    if (!animalCercano) return false;
+
+    const idObjeto = animalCercano.datos.id;
+
+    const guardado = inv.guardarObjetoEnInventario("Rapido", idObjeto, 1);
+
+    if (!guardado) {
+        alert("No tenés espacio en el inventario rápido.");
+        return true;
+    }
+
+    eliminarEntidad(animalCercano);
+
+    return true;
+}
+
+function eliminarEntidad(entidad) {
+    if (!entidad) return false;
+
+    // Liberar las posiciones que ocupaba en las matrices de colisión.
+    quitar_espacio(entidad);
+
+    // Eliminar de la lista principal de entidades.
+    entidades = entidades.filter(e => e !== entidad);
+
+    // Eliminar de la lista de entidades dibujables.
+    entidades_dibujables = entidades_dibujables.filter(e => e !== entidad);
+
+    return true;
+}
+
+function quitar_espacio(entidad) {
+    const x = entidad.x + entidad.hitbox.x;
+    const y = entidad.y + entidad.hitbox.y;
+    const ancho = entidad.hitbox.ancho;
+    const alto = entidad.hitbox.alto;
+    const id = entidad.id;
+
+    for (let i = x; i < x + ancho; i++) {
+        espacio_x[i] = espacio_x[i].filter(espacio => espacio !== id);
+    }
+
+    for (let i = y; i < y + alto; i++) {
+        espacio_y[i] = espacio_y[i].filter(espacio => espacio !== id);
+    }
+}
+
+const botonRegar = document.getElementById("regar_todo");
+
+if (botonRegar) {
+    botonRegar.addEventListener("click", () => {
+
+        if (!inv_de_construccion_activo || !parcelaAbierta) return;
+
+        let cantidad = 0;
+
+        if (parcelaAbierta.tipo === "parcela") {
+            cantidad = parcelaAbierta.regarTodo();
+        } 
+        else if (parcelaAbierta.tipo === "corral") {
+            cantidad = parcelaAbierta.alimentar();
+        }
+
+        if (parcelaAbierta.tipo === "parcela") {
+            rellenarInventarioParcela(parcelaAbierta);
+        }
+        else if (parcelaAbierta.tipo === "corral") {
+            rellenarInventarioCorral(parcelaAbierta);
+        }
+
+       //console.log(`Se regaron o alimentaron ${cantidad} espacios.`);
+    });
+}
+
+// Siembra usando la casilla actualmente seleccionada del inventario rápido.
+function sembrarJugador(parcela, posicion)
+{
+    // inv.id_select_inv es el índice 0-4 de la barra rápida.
+    const id = inv.transformar("Rapido", inv.id_select_inv);
+
+    if(id === false)
+    {
+       //console.log("No tenés ningún objeto seleccionado en el inventario rápido.");
+        return;
+    }
+
+    // Buscar el objeto por su ID y comprobar que tenga datos de cultivo.
+    const cultivo = Objetos.find(objeto =>
+        objeto.id == id &&
+        objeto.etapas &&
+        objeto.tiempo !== undefined
+    );
+
+   //console.log(Objetos[id].id == id + " gbf" + Objetos[id].etapas + " bgsdf" + Objetos[id].tiempo !== undefined);
+
+    if(!cultivo)
+    {
+       //console.log("El objeto seleccionado no es una semilla.");
+        return;
+    }
+
+    // Verificar que la casilla tenga al menos una unidad.
+    const slotRapido = inv.rapidos[inv.id_select_inv];
+    const cantidad = Number(
+        slotRapido.querySelector(".cantidad").textContent
+    );
+
+    if(!Number.isFinite(cantidad) || cantidad <= 0)
+    {
+       //console.log("No tenés semillas disponibles.");
+        return;
+    }
+
+    // Parcela.sembrar recibe el ID del cultivo.
+    const sembrado = parcela.sembrar(posicion, cultivo.id);
+
+    if(!sembrado)
+    {
+       //console.log("Ese espacio de la parcela no está vacío o no se pudo sembrar.");
+        return;
+    }
+
+    // Descontar una unidad desde la clase Inventario.
+    // Esto también sincroniza el inventario principal, secundario y rápido.
+    const descontado = inv.reducirObjetoDeInventario("Rapido", id, 1);
+
+    if(!descontado)
+    {
+        // En condiciones normales no debería ocurrir porque ya comprobamos la cantidad.
+        console.error("El cultivo se plantó, pero no se pudo descontar la semilla.");
+    }
+
+    rellenarInventarioParcela(parcela);
+
+   //console.log("Sembraste:", cultivo.nombre);
+}
+
+// Evento delegado: permite hacer clic en cualquiera de los 8 espacios,
+// incluso después de que se actualice el contenido HTML.
+const contenedorParcelas = document.getElementById("inventari_de_construcciones");
+
+function cocecharParcela(parcela, posicion)
+{
+    // Comprobar que la posición tenga una planta lista para cosechar.
+    if(parcela.estado[posicion] !== "listo")
+    {
+       //console.log("No hay ningún cultivo listo para cosechar.");
+        return;
+    }
+
+    const cultivo = parcela.obtenerCultivo(posicion);
+
+    if(!cultivo)
+    {
+       //console.log("No se encontraron los datos del cultivo.");
+        return;
+    }
+
+    // Obtener los objetos que entrega la cosecha.
+    const cosecha = parcela.cosechar(posicion);
+
+   //console.log("Resultado de la cosecha:", cosecha);
+   //console.log("Inventario:", inv);
+   console.log("Métodos del inventario:", Object.getOwnPropertyNames(
+        Object.getPrototypeOf(inv)
+    ));
+
+    if(!cosecha)
+    {
+       //console.log("No se pudo cosechar.");
+        return;
+    }
+
+    // Comprobar si hay espacio en el inventario rápido.
+    for(const [id, cantidad] of Object.entries(cosecha))
+    {
+        const agregado = inv.guardarObjetoEnInventario("Rapido", Number(id), cantidad);
+
+        if(!agregado)
+        {
+           //console.log("No hay espacio suficiente en el inventario rápido.");
+
+            // Restaurar el cultivo en la parcela.
+            parcela.cultivo[posicion] = cultivo.id;
+            parcela.progreso[posicion] = cultivo.tiempo;
+            parcela.regada[posicion] = true;
+            parcela.estado[posicion] = "listo";
+
+            return;
+        }
+    }
+
+    rellenarInventarioParcela(parcela);
+
+   //console.log("Cosechaste:", cultivo.nombre);
+}
+function ingresarAnimal(corral)
+{
+    // Obtener el objeto seleccionado en el inventario rápido.
+    const id = inv.transformar("Rapido", inv.id_select_inv);
+
+    if (id === false) return;
+
+    // Buscar el objeto y comprobar que sea un animal.
+    const animal = Objetos.find(objeto =>
+        objeto.id == id &&
+        objeto.categoria === "animal"
+    );
+
+    if (!animal) {
+       //console.log("El objeto seleccionado no es un animal.");
+        return;
+    }
+
+    // Comprobar que haya unidades disponibles.
+    const slotRapido = inv.rapidos[inv.id_select_inv];
+
+    const cantidad = Number(
+        slotRapido.querySelector(".cantidad").textContent
+    );
+
+    if (!Number.isFinite(cantidad) || cantidad <= 0) {
+       //console.log("No tenés animales disponibles.");
+        return;
+    }
+
+    // Intentar introducir el animal en el corral.
+    const agregado = corral.agregarAnimal(id, entidades_id++, entidades);
+
+    if (!agregado) {
+       //console.log("El corral está lleno o no se pudo agregar el animal.");
+        return;
+    }
+
+    // Descontar una unidad del inventario del jugador.
+    const descontado = inv.reducirObjetoDeInventario("Rapido", id, 1);
+
+    if (!descontado) {
+        // Si no se pudo descontar, retirar el animal del corral.
+        corral.quitarAnimal(corral.animales.length - 1);
+
+        console.error("No se pudo descontar el animal del inventario.");
+        return;
+    }
+
+    // Actualizar los espacios del corral.
+    rellenarInventarioCorral(corral);
+
+   //console.log("Agregaste una", animal.nombre, "al corral.");
+}
+contenedorParcelas.addEventListener("click", (e) => {
+
+    if(!inv_de_construccion_activo) return;
+    if(!parcelaAbierta) return;
+
+    const slot = e.target.closest(".espacio");
+
+    if(!slot || !contenedorParcelas.contains(slot)) return;
+
+    const espacios = Array.from(
+        contenedorParcelas.querySelectorAll(".espacio")
+    );
+
+    const posicion = espacios.indexOf(slot);
+
+    if(posicion === -1) return;
+
+
+    if (parcelaAbierta.tipo === "parcela") {
+        cocecharParcela(parcelaAbierta, posicion);
+        sembrarJugador(parcelaAbierta, posicion);
+    }
+    else if (parcelaAbierta.tipo === "corral") {
+        ingresarAnimal(parcelaAbierta);
+    }
+});
+
 
 ajustarResolucionCanvas(canvas, ctx);
 
 //evento personalizado
 document.addEventListener('construir', (e) => {
     const propiedades = e.detail;
+   //console.log(propiedades.tipo);
     if(propiedades.tipo == "parcela_cultivos")
     {
         const construccion = new Parcela(robot1.x + (-20 + 2 *20 * robot1.direccion.x) + robot1.hitbox.x, robot1.y + (-15 + 2 *20 * robot1.direccion.y), Objetos[propiedades.id].hitbox, entidades_id++, imagenesExtra[propiedades.id]);//Tengo que cambiar esta linea, para que se construya a distinta distancia según el tamaño de la construccion
+        entidades.push(construccion);
+        actualizar_espacio(construccion);
+    }
+    else if(propiedades.tipo == "corral")
+    {
+        const construccion = new Corral(robot1.x + (-20 + 2 *20 * robot1.direccion.x) + robot1.hitbox.x, robot1.y + (-15 + 2 *20 * robot1.direccion.y), Objetos[propiedades.id].hitbox, entidades_id++, imagenesExtra[propiedades.id]);//Tengo que cambiar esta linea, para que se construya a distinta distancia según el tamaño de la construccion
         entidades.push(construccion);
         actualizar_espacio(construccion);
     }
@@ -583,6 +1150,22 @@ Promise.all([
             id.classList.add("id_objeto");
         */
     }
+
+    const datosArbol = Objetos.find(objeto => objeto.id === 16);
+
+    if (datosArbol) {
+        const arbol = new FuenteRecurso(
+            300, // Posición X
+            200, // Posición Y
+            entidades_id++,
+            datosArbol
+        );
+
+        entidades.push(arbol);
+        actualizar_espacio(arbol);
+    }
+
+
     loop();
 
 }).catch(error => {
@@ -606,7 +1189,7 @@ Guardar.addEventListener("click", () => {
     const datosjson = JSON.stringify(datos);
     const mundojson = JSON.stringify(mundo);
 
-    console.log(mundojson);
-    console.log("");
-    console.log(datosjson);
+   //console.log(mundojson);
+   //console.log("");
+   //console.log(datosjson);
 });
